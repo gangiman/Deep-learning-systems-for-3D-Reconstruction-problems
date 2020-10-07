@@ -191,13 +191,13 @@
       \vfill
       {\LARGE \textit{\textbf{Doctoral Thesis}} \par by \par}
       \smallskip
-      {\LARGE Evgeniya Ustinova \par}
+      {\LARGE Alexandr Notchenko \par}
       \vfill
       {\large DOCTORAL PROGRAM IN COMPUTATIONAL AND DATA SCIENCE AND ENGINEERING \par}
       \bigskip
       \bigskip
       \bigskip
-      {\large Supervisor \par Professor Victor Lempitsky \par}
+      {\large Supervisor \par Professor Evgeny Burnaev \par}
       %{\large A thesis submitted in partial fulfillment for the \par}
       %{\large degree of Doctor of Philosophy \par}
       %\bigskip
@@ -210,7 +210,7 @@
       \bigskip
       \vfill
       {\large Moscow \par}
-      {\large $\copyright$ \authornames ~2019 \par}
+      {\large $\copyright$ \authornames ~2020 \par}
       \bigskip
     \end{center}
     \par
