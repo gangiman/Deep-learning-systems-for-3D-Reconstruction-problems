@@ -1,0 +1,68 @@
+\subsection{Related work}
+\label{sec:related}
+
+\subsection{Face super-resolution approaches}
+
+Initially, super-resolution problem has been formulated for low-resolution image sequence that can be used to produced one image of higher resolution. Under this approach, reconstruction constraints are used to make sure that resulting high-resolution image is consistent with the input sequence. 
+Maximum a posteriori (MAP) framework has been used in \cite{HardieBA97, SchultzS96, baker2002limits} to take into account such reconstruction constraints along with priors on the high-resolution image.
+
+Precise image registration has been shown to be very important for multi-image \cite{HardieBA97, IraniP91, SchultzS96} and super-resolution methods but is rarely achievable for real  low-resolution data, especially for images depicting non-rigid objects such as faces. In the case of multi-image super-resolution, approximate low-parametric registration could be used instead. For single-image super-resolution, such registration with canonical pose can also be used in order to use stronger face-specific priors \cite{LiuSF07}.
+
+
+Having assumed ideal image registration, Baker \emph{et al.} \cite{baker2002limits} demonstrate the effect of introducing additional recognition-based prior. The authors include it into the task formulation as additional constraints based on particular examples from  training set chosen by similarity to the regions of the input image.  Later, more advanced techniques for modeling such face-specific constraints were introduced in \cite{LiuSF07} for single-image face super-resolution. The authors decomposed such constraints to \emph{global} and \emph{local} constraints. A similar idea was also adopted in \cite{TuzelTH16} to build a ConvNet architecture for single-image face super-resolution.
+
+
+%TODO : maybe elaborate on this.
+%correspondence between low res and high-res patches 
+%dictionary learning: faces \cite{YangWLCH12, TianT16}, direct patch correspondence :  \cite{MaZQ10}, methods are also very dependent on alignment, general and CNN :  \cite{DongLHT16} 
+
+\subsection{Deep learning for face super-resolution}
+
+Several recent deep learning approached \cite{TuzelTH16,ZhuLLT16,xu2017learning,huang2017wavelet} focus on single-image face super-resolution problem.
+Tuzel \emph{et al.} \cite{TuzelTH16} suggested the end-to-end learning scheme to obtain high quality results even in the case of 8x down-sampling. The architecture includes two parts corresponding to global and local modeling of the face features. In the \emph{global} network, the fully-connected layers are used to capture the global face structure, while the \emph{local} part consists of convolution layers that are used to model local face features. Additionally, authors apply adversarial learning to achieve more realistic results. 
+Below, we use the \textit{Perceptual loss} for the similar goal.
+
+Xu \emph{et al.} \cite{xu2017learning} also use generative adversarial networks (GANs) \cite{goodfellow2014generative} for single-image face super-resolution. The authors introduce additional recognition-based losses. First, feature matching loss ensures that reconstructed high-resolution image and ground truth image have similar features extracted from the discriminator network. This approach resembles \textit{Perceptual losses}.  Second, multi-class discriminator was used to learn one generator network for two different domains of texts and faces. %The authors demonstrate visual improvement of combination of feature-level and GAN losses over using only GAN loss. Together these losses help to build a strong prior on generated images and achieve better qualitative and quantitative results. 
+
+
+Zhu \emph{et al.}~\cite{ZhuLLT16}  proposed a cascaded scheme that includes iterative high-resolution image refinement and pose estimation from these refined images. This approach is motivated by the fact that face super-resolution and face pose estimation tasks are related, and it is easier to increase image resolution knowing the pose of the face and vice versa. Special gated architecture is introduced to effectively combine high-frequency and low-frequency information and make use of face pose estimated at previous scale levels.
+
+Huang \emph{et al.} \cite{huang2017wavelet} use another recognition-based loss: the proposed neural network is trained to predict wavelet transform coefficients which helps to capture and match information at different scales.
+
+All the aforementioned methods only consider single-frame face super-resolution/restoration. To the best of our knowledge, none of the recent works on deep face super-resolution consider multi-frame scenario. It should also be mentioned that methods \cite{TuzelTH16,xu2017learning,huang2017wavelet} use pre-aligned images for training and testing. (However, \cite{huang2017wavelet} demonstrate very impressive results for difficult face poses.) In contrast, we stick to 'more real' scenario when no alignment is applied to high-resolution ground-truth images before down-sample them. 
+
+
+\subsection{Restoration and recognition}
+%\cite{Hennings-YeomansBK08, ZhangYZNH11}
+%The idea of combining the two tasks of face image restoration and face recognition has been investigated in several works
+
+
+Initially, recognition was incorporated into face super-resolution in the form of face-specific priors \cite{baker2002limits, LiuSF07}. Several works considered an explicit combination of face recognition and face restoration tasks: \cite{Hennings-YeomansBK08, ZhangYZNH11}.
+The proposed approaches perform recognition using a limited number of gallery images. In parallel, they reconstruct the input image and classify it based on labels of the most relevant examples found in the train set. Here we work in a different setting using a feed-forward deep neural network to produce the restored high-resolution image without using the gallery set at test time.
+
+\subsection{Deep learning for video-based super-resolution}
+As mentioned earlier, video data bring more useful information compared to isolated frames and can be used to enhance the restoration algorithms. Naturally, most recent deep learning approaches, which focus on video super-resolution \cite{LiaoTLMJ15, SongDQ16, TaoGLWJ17}, use motion estimation to align a number of subsequent frames to make use of sub-pixel motion and reveal more object details. Liao~\emph{et al.}~\cite{LiaoTLMJ15} use different optical flow methods to generate super-resolution "drafts". Such drafts can then be further combined into the final reconstruction using a number of convolutional layers. Kappeler~\emph{et al.}~\cite{KappelerYDK16} also experiment with different variants of video-based super-resolution architecture incorporating neighbouring frames alignment. 
+
+%here it is interesting to check if Warping Subnet even changes during training => it would be possible to say that we benefit from end-to-end learring in this case.
+Our idea is to adopt similar approach based on video-data and frame alignment for human faces. Importantly, we aim not only at enhancing image quality but also at preserving face identities and therefore improving face verification quality for the restored images.
+ 
+   
+
+
+
+
+
+%\begin{figure*}
+%\begin{center}
+
+%\includegraphics[width=\textwidth]{images/method/vgg_loss.pdf}
+
+%\caption{General scheme of learning super-resolution with perceptual loss. Along with L2 loss, the \textit{Perceptual loss} \cite{JohnsonAF16} is used, that is the loss computed for high-level features extracted from pre-trained CNN. The weights of the pre-trained CNN are fixed during training. See \ref{sec:vgg_loss} for the details.}
+
+%\label{fig:vgg_loss}
+
+%\end{center}
+
+%\end{figure*}
+
+

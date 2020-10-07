@@ -1,0 +1,326 @@
+\section{Experiments}
+\label{sect:experiments}
+
+We now perform evaluation and the comparison of the two approaches and their variants. 
+
+
+\bigskip\indent\textbf{Datasets and protocols} 
+%\subsubsection{Datasets and protocols}
+
+\label{sect:datasets}
+
+\bigskip\indent\textbf{Surveillance data}\\
+%\subsubsubsection{Surveillance data}
+\label{sect:surveillance}
+For the surveillance image domain ($T$, as denoted in \sect{strategies}), we have obtained a surveillance dataset comprising faces from five cameras in Moscow subway. Our dataset consists of two subsets of images, denoted as \texttt{LR} (low-resolution) and \texttt{HR} (high-resolution) according to their size in pixels. Sizes are calculated as the face bounding box heights. Mean face heights for \texttt{LR} and \texttt{HR} subsets were $49.72$ and $106.19$ pixels correspondingly. The \texttt{LR} images range from $37$ to $63$ pixels, and \texttt{HR} images from $75$ to $224$. The DLib \cite{dlib09} library was used for face detection and subsequent alignment. 
+ 
+Generally, the identities of people occurring in the video are unknown, and therefore we mine matching faces in the dataset by considering temporal tracks in videos. We assume that face images from different tracks are non-matching. The matching pairs then correspond to pairs of faces from the same track, such that one image belongs to the LR subset and the other belongs to the HR subset. Columns 1 and 3 in \fig{lr_hr_gan_res_ytube_initial_degraded} show some examples of matched pairs. Usually, the quality of face images increases when the person approaches the camera, and therefore \texttt{HR}-subset images are often (but not always) visually better than those present in the \texttt{LR} subset. The division into \texttt{LR} and \texttt{HR} subsets is introduced to ensure that the matched pairs of frames correspond to distinct frames of the temporal tracks. We stress that the mined matching pairs are used for evaluation (testing) only and are not used for training of any networks in our experiments.
+
+We use $100$ identities that are present in both \texttt{LR} and \texttt{HR} for parameter validation and $100$ identities for test. For each of the test identity, there is a pair of matching tracks (one LR track and one HR track). The goal of algorithms is then to build descriptors that would be similar for frames coming from the HR and the LR tracks of the same identity, and would be dissimilar for the HR and the LR tracks corresponding to different identities.
+
+$7,535$ images of identities not present in the test set are used for training the unsupervised domain transfer described in \sect{domain_transfer} (tracking-based information was not used to train the ConvNets). The mean number of frames for each identity in \texttt{LR} and \texttt{HR} test data are $18.62$ and $17.72$ correspondingly.
+ 
+ To evaluate the recognition quality, we match identities across the \texttt{LR} and \texttt{HR} in the following way: we calculate the cosine similarity between the frame set $t_{id_1}^{LR}$ of identity $id_1$ and the frame set, $t_{id_2}^{HR}$ of identity $id_2$ by averaging the similarities of each pair of frames: 
+
+ \begin{align}
+     S(t_{id_1}^{LR},t_{id_2}^{HR}) = \sum_{i=0, j= 0}^{|t_{id_1}^{LR}|, |t_{id_2}^{HR}|} S(f_{id_1,i}^{LR},f_{id_2,j}^{LR} ), \\
+     S(f_{id_1,i}^{LR},f_{id_2,j}^{LR} ) =  cos(d_{id_1,i}^{LR},d_{id_2,j}^{LR}),
+ \end{align}
+ where $d_{id_1,i}^{LR}$,$d_{id_2,j}^{HR}$ are the descriptors of the corresponding frames calculated by face recognition neural network $R$ \ref{sect:face_recognition}.
+%f_{id_1,i}^{low} \subseteq t_{id_1}^{low} , %f_{id_2,j}^{low} \subseteq t_{id_1}^{low}
+
+%\subsubsection{Evaluation metrics}
+\bigskip\indent\textbf{Evaluation metrics}\\
+We focus our evaluation on the surveillance data domain. As already mentioned above, during evaluation, we compare pairs of \textit{tracks}, where the first track comes from the \texttt{LR} subset and the second track comes from the \texttt{HR} subset. 
+
+When comparing the two tracks using the recognition metrics, we match all possible pairs of frames and compute the mean average cosine similarity between the computed descriptors over all pairs (more sophisticated schemes involving minimal pairs did not result in better performance). Depending on whether the mean average cosine similarity is higher or lower than a certain threshold $\tau$, we treat a certain pair of tracks as matching or non-matching.
+
+ By considering various $\tau$, we then compute the \textit{ROC curve}, the area under the ROC curve (ROC AUC), the $100$\% - EER (Equal Error Rate) statistics, and the average precision (AP) metrics. 
+
+
+\bigskip\indent\textbf{Internet data}\\
+%\subsubsubsection{Internet data}
+For the Internet image domain ($S$, as denoted in \sect{strategies}) we use two face recognition datasets: YouTube Faces (YTF) \cite{WolfHM11} and the VGG Face datasets \cite{parkhi2015deep}. %Celeb-A \cite{liu2015faceattributes},
+
+%todo check
+%The Celeb-A dataset~\cite{liu2015faceattributes} consists of $202,599$ images of high quality and is used for training CycleGAN-based  domain transfer described in \sect{domain_transfer}. 
+
+
+% ----------------to main intro
+ The Youtube Faces (YTF) dataset~\cite{WolfHM11} and the VGG Face dataset~\citep{parkhi2015deep} are used for the finetuning of the face recognition neural network as described in \sect{face_recognition}.
+
+%YTF consists of $3,425$ videos of $1,595$
+% people collected from YouTube, with an average of 2 videos per identity. The VGG Face dataset contains $2,6$M images of $2,622$ identities. 
+
+We show that face recognition improves, when using our CycleGAN-based data augmentation when trained on either YTF or VGG Face. Generally, YTF and VGG Face represent two different types of face images that can be mined from the Internet (with YTF having lower quality).
+
+
+
+
+
+%All the images in the four mentioned datasets are aligned in the same way: DLib is used for feature detection and alignment by $3$ eyes and nose feature-points, so that their target positions are the following :
+
+
+\bigskip\indent\textbf{Compared variants of recognition networks} \\
+%\subsubsection{Compared variants of recognition networks}
+\label{sect:ft}
+We compare the following adaptation/transfer strategies for training the recognition networks:
+\begin{itemize}
+
+\item \textit{no ft} -- the pre-trained VGG-face model~\cite{parkhi2015deep} with no re-training is used to compute descriptors of the surveillance-domain images.
+
+
+\item \textit{ft initial} -- the VGG-face model is fine-tuned using the original version of the YTF or the VGG Face datasets (no domain adaptation). 
+
+\item \textit{ft degraded} -- the VGG-face model fine-tuned using the degraded version of the YTF or VGG Face datasets transferred to the target (surveillance) domain (using domain adaptation),
+
+\item \textit{ft union} -- the VGG-face model fine-tuned using \textbf{both} the initial and the degraded versions  of the YTF or VGG Face datasets (using domain adaptation). 
+
+\end{itemize}
+
+The YTF dataset images and the corresponding degraded images are shown  in \fig{lr_hr_gan_res_ytube_initial_degraded} (the two last columns).
+%The two last variants \textit{ft degraded} and \textit{ft union} perform domain adaptation, as all or part of the training data are transferred to the target domain.
+
+
+
+\bigskip\indent\textbf{Training details}  \\
+%\subsubsection{Training details}
+\label{sect:training}
+The CycleGAN-based domain transfer consists of $3$ types of modules (see \sect{domain_transfer}).
+Encoders $E_T$ and $E_S$ have the following architecture:
+\begin{center}
+\begin{scriptsize}
+\begin{tabular}{l | c c c c c c c}
+\hline
+  \#conv layer      &1   &2      &3    &4     &5    &6    &7     \\
+  num of filters    &32  &64     &128  &128   &128  &128  & 128  \\
+  kernel size       &3   &3      &3    &3     & 3   &3    &3     \\
+  stride/pad        &1/0 &2/1    &2/1  &1/1   &1/1  &1/1  & 1/1  \\
+  \#res block       & -  & -     & -   & 0    &0    &1    &1     \\
+\hline
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\vspace{0.5em}
+
+% EncShared(
+%   (from_img): ModuleList(
+%     (0): Conv2d(3, 32, kernel_size=(1, 1), stride=(1, 1))
+%   )
+%   (enc_blocks): ModuleList(
+%     (0): Sequential(
+%       (0): Conv2d(32, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+%       (1): InstanceNorm2d(64, eps=1e-05, momentum=0.99, affine=True)
+%       (2): LeakyReLU(0.01, inplace)
+%     )
+%     (1): Sequential(
+%       (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+%       (1): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%       (2): LeakyReLU(0.01, inplace)
+%     )
+%   )
+% )
+
+% Enc(
+%   (enc_blocks): ModuleList(
+%   )
+%   (res_blocks): ModuleList(
+%     (0): ResBlock(
+%       (model): Sequential(
+%         (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (1): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%         (2): LeakyReLU(0.01, inplace)
+%         (3): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (4): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%       )
+%     )
+%     (1): ResBlock(
+%       (model): Sequential(
+%         (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (1): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%         (2): LeakyReLU(0.01, inplace)
+%         (3): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (4): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%       )
+%     )
+%   )
+% )
+
+The architecture of generators $G_T$, $G_S$ is as follows:
+\begin{center}
+\begin{scriptsize}
+\begin{tabular}{l | c c c c c c c}
+\hline
+  \#conv layer      &1      &2    &3     &4    &5    &6    & 7 \\
+  num of filters    &128    &128  &128   &128  &64   &32   & 3 \\
+  kernel size       &3      &3    &3     & 3   &3    &3    & 1 \\
+  stride/pad        &1/1    &1/1  &1/1   &1/1  &1/1  &1/1  & 1/0  \\
+  \#res block       &0      &0    &1     &1    &-    &-    & -  \\
+\hline
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\vspace{0.5em}
+
+Instance normalization~\cite{UlyanovVL17} and Leaky ReLU~\cite{HeZRS15} with negative slope set to $0.01$ are inserted after each of the convolution layers. Except for the last layers of $G_T$ and $G_S$, where \texttt{tanh} non-linearity is used (for the subsequent feeding of the result into the discriminator). To keep the input image size unchanged,  $\times 2$ nearest neighbor upsampling is done before the convolutions $3$ and $4$.
+All input images are normalized to $64\times64$ pixels (output images are therefore of the same size). 
+
+
+% Dec(
+%   (to_img): ModuleList(
+%     (0): Sequential(
+%       (0): Conv2d(32, 3, kernel_size=(1, 1), stride=(1, 1))
+%       (1): Tanh()
+%     )
+%   )
+%   (upsample): Upsample(scale_factor=2, mode=nearest)
+%   (res_blocks): ModuleList(
+%     (0): ResBlock(
+%       (model): Sequential(
+%         (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (1): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%         (2): LeakyReLU(0.01, inplace)
+%         (3): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (4): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%       )
+%     )
+%     (1): ResBlock(
+%       (model): Sequential(
+%         (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (1): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%         (2): LeakyReLU(0.01, inplace)
+%         (3): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+%         (4): InstanceNorm2d(128, eps=1e-05, momentum=0.99, affine=True)
+%       )
+%     )
+%   )
+%   (dec_blocks): ModuleList(
+%     (0): Sequential(
+%       (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+%       (1): LeakyReLU(0.01, inplace)
+%     )
+%     (1): Sequential(
+%       (0): Conv2d(64, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+%       (1): LeakyReLU(0.01, inplace)
+%     )
+%   )
+% )
+
+
+%Finally, discriminators $D_A$ and $D_B$ were derived from the
+%VGG-face model~\cite{parkhi2015deep}, which was used for calculating face descriptors, leading to the following archiecture:
+Finally, discriminators $D_A$ and $D_B$ have the following architecture: 
+\begin{center}
+\begin{scriptsize}
+\begin{tabular}{l |c c c c c }
+\hline
+  \#conv layer      &1      &2    &3     &4    &5  \\
+  num of filters    &64     &128  &256   &256  &1  \\
+  kernel size       &3      &3    &3     & 3   &3  \\
+  stride/pad        &2/1    &2/1  &2/1   &2/1  &1/0\\
+\hline
+\end{tabular}
+\end{scriptsize}
+\end{center}
+\vspace{0.5em}
+Leaky ReLU \cite{HeZRS15} with negative slope parameter set to $0.01$ is used as an activation. The final fully-connected layer with one output unit is added to $D_A$ and $D_B$.
+
+
+% Dis(
+%   (to_pred): ModuleList(
+%     (0): Conv2d(256, 1, kernel_size=(1, 1), stride=(1, 1))
+%     (1): Conv2d(256, 1, kernel_size=(1, 1), stride=(1, 1))
+%   )
+%   (blocks): ModuleList(
+%     (0): Sequential(
+%       (0): Conv2d(128, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+%       (1): LeakyReLU(0.01, inplace)
+%     )
+%     (1): Sequential(
+%       (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1))
+%       (1): LeakyReLU(0.01, inplace)
+%     )
+%   )
+% )
+
+
+According to the strategies described in \sect{ft}, we fine-tune the VGG-face model, having added new $128$-dimensional embedding layer instead of the initial classification layer (\textit{fc8}). All the results are reported for the \textit{fc7} layer though, as we found it to work better across all compared methods.
+
+ADAM optimization~\cite{Kingma14} was used for both optimization objectives of the domain transfer task and the face recognition task, the learning rates were set to $1e-4$ and $1e-7$ correspondingly. Batch sizes were $16$ and $64$. Learning processes took $50$ epochs for the domain transfer,  and from $80$ to $200$ epochs for the face recognition task. Parameters $\lambda_1$ and $\lambda_2$ were set to $10$ in the loss \eq{domain_loss}. Parameters $\alpha$, $\beta$ and $C$ of the loss \eq{bindev} were set to $2$, $0.5$ and $10$.
+
+For training the face recognition models described in \sect{ft}, the training batches had the following structure: in each batch, there were up to $3$ examples for each class for the VGG Face dataset and up to $10$ examples for the YTF dataset. For the \textit{ft union} model, each training batch was formed out of the examples of one of the domains. The sampling process alternated between the domains at each iteration.
+
+
+  
+ \begin{figure}
+  \centering
+    \includegraphics[width=\linewidth]{Chapters/face/Fig3.eps}
+    \caption{The ROC curves for our face recognition models for different types of test data. Left -- \textit{no ft} model, test data transformation (the curve is denoted by 'restored') improves recognition. Middle -- \textit{ft initial}, the results for test data transformation are not clearly better than the results for initial images. Right -- \textit{ft union} model, the best results are for initial test data, without transformation. See \ref{sect:restoration_comparison} for the details. }\label{fig:roc_oxford_gan_vs_initial}
+  \end{figure}
+
+\bigskip\indent\textbf{Does restoration help recognition?} \\
+%\subsubsection{Does restoration help recognition?}
+\label{sect:restoration_comparison}
+We start by assessing the improvement that the restoration process brings to the recognition. For this we evaluate the performance of the three different recognition networks discussed above, when they are applied either to untransformed surveillance-domain images or to surveillance-domain images transformed to the Internet image domain (using the learned mapping $F^{T \rightarrow S}$). See  \fig{lr_hr_gan_res_ytube_initial_degraded} for the example results of the Internet domain  transfer.
+
+The ROC-curves in  \fig{roc_oxford_gan_vs_initial} shows that while the restoration process helps for the \textit{no ft} network, it actually \textit{hurts} for the better-performing \textit{ft initial} and \textit{ft union} networks. While trying to improve the results of the reverse transfer, we have also tried to transfer only the LR subset of the training images, while keeping the HR subset intact, but this lead to uniformly worse results.
+
+We conclude that restoration does not necessarily help the recognition process in our setting. 
+
+
+
+\begin{figure}
+ \centering
+    \includegraphics[width=\linewidth]{Chapters/face/Fig4.eps}
+    \caption{The change of the recognition metrics for our surveillance validation set. \textit{ft degraded} and \textit{ft union} models that use our image-level domain adaptation overfit less than \textit{ft initial} that use only the initial Internet-domain data. The improvement is consistent across the two cases when VGG face and YTF datasets were used as Internet image data. See subsection \ref{sect:ft} for the models description.}\label{fig:validation_ytube}
+  \end{figure}
+  
+  \begin{figure}
+
+  \centering
+    \includegraphics[width=\linewidth]{Chapters/face/Fig5.eps}
+    \caption{The ROC curves for the fine-tuning strategies described in \sect{ft}. Our surveillance data is used for test. \textit{ft degraded} and \textit{ft union} models that use our image-level domain adaptation are better than other models. }\label{fig:roc_oxford_ytube}
+  \end{figure}
+  
+ \input{Chapters/face/table_ft}
+ 
+%\subsubsection{Does domain adaptation help recognition?}
+\bigskip\indent\textbf{Does domain adaptation help recognition?} \\
+\label{sect:results}
+We now consider the second scenario based on domain adaptation and thus compare the performance of different recognition networks described above on surveillance data. Our findings for image level domain adaptation are summarized in Table~\ref{tab:comparison}, which shows metric values for the compared training settings, and \fig{validation_ytube}, which shows validation metrics changes during training. Finally, \fig{roc_oxford_ytube} shows the final ROC curves.
+
+The following can be observed. First, fine-tuning the VGG Face model on either VGG Face dataset or the YTF dataset using the BinDev loss (\textit{ft initial}) lead to a considerable improvement over the original state of the network.
+Furthermore, we found that fine-tuning in the \textit{ft degraded} setting is clearly beneficial compared to \textit{ft initial} setting in the case of the VGG Face training dataset, and a little bit better for the YTF training data, overall making a case for image-level domain adaptation. The results of the \textit{ft union} setting are uniformly better than \textit{ft initial} and \textit{ft degraded} suggesting that the automatically degraded data are a useful augmentation, but that the original data should not be discarded. 
+Finally, \fig{tsne} gives an additional evidence of the success of domain adaptation. It shows that the feature distribution of our surveillance data is more intermixed with those of the degraded version of the YTF dataset than its initial version. This demonstrates the relevance of the suggested augmentation (via image-level domain adaptation).
+
+
+
+% \subsubsection{Comparison to the reverse domain transfer}
+% \label{sect:restoration_comparison}
+
+% We have also investigated the restoration-based approach (\sect{strategies}), using the reverse mapping $F^{S \rightarrow T}$ that also comes out as the result of training the model \ref{sect:domain_transfer}. 
+% Here we test our previously trained face recognition models (described in  \sect{ft}) on different variants of test data. See  \fig{lr_hr_gan_res_ytube_initial_degraded} for the example results of the Internet domain  transfer.
+
+% We have evaluated the effect of such reverse transfer to the higher-quality domain at test term for the \textit{no ft}, \textit{ft initial}, and \textit{ft union} networks described in the previous subsection. The ROC-curves in  \fig{roc_oxford_gan_vs_initial} shows that while the reverse transfer helps for the \textit{no ft} network, it actually hurts for the better working \textit{ft initial} and \textit{ft union} networks. While trying to improve the results of the reverse transfer, we have also tried to transfer only the LR subset of the training images, while keeping the HR subset intact, but this lead to uniformly worse results.
+
+%in the case of the pre-trained VGG face network (\textit{no-ft}), transferring low-quality test images into the Internet data domain improves recognition. Nevertheless, if we use one of the fine-tuned models for recognition, the results for the initial test images are not worse than those for transferred images. Moreover, ROC curve for initial test images is the highest for our best \textit{ft union} model as shown in \ref{fig:roc_oxford_gan_vs_initial}-right.
+
+
+
+%\subsubsection{Comparison to feature-level domain adaptation}
+
+\bigskip\indent\textbf{Comparison to feature-level domain adaptation} \\
+\label{sect:grl}
+We have additionally compared our image-level domain adaptation (all the experiments and discussions above) to the feature-level domain-adversarial adaptation approach described in \chapt{gradrev}. Tuning this approach required some effort (several modifications from the settings of \chapt{gradrev} were needed to make such adaptation work). We thus built a DANN (Deep Adversarial Neural Network) based on the VGG-face network. The  domain classifier consists of three fully-connected layers: $512$ units in the first two layers (Leaky ReLU \cite{HeZRS15} non-linearities were used) and one classification layer with $1$ unit. Dropout with $0.5$ probability was inserted before the classification layer. The Gradient Reversal layer is attached after the \textit{fc6} layer of VGG-face. We found that schedule for the adaptation parameter  $\lambda$ is very important for this task. Instead of the schedule suggested in \chapt{gradrev} (which did not lead to good results in our comparison), we set $\lambda$ to $1e-3$ for the first $20$ epochs and then increased it to $1e-2$. 
+
+Using the scheme described above when training on the VGG Face dataset, we have achieved the following results: $100$\% - EER was $88.64$, ROC AUC was $96.69$ and the average precision was $52.11$. This is better than the results of our \textit{ft initial} setting, but worse than those of \textit{ft degraded} and \textit{ft union} settings (for the last, the results are $91.31$, $97.80$ and $54.89$ correspondingly). Other setting for feature-level domain adaptation that we have tried lead to worse results.
+
+
+
+
+
+
+  
+  
+  
+  

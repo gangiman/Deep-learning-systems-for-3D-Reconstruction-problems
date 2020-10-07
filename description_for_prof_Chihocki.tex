@@ -1,0 +1,683 @@
+
+
+%% ----------------------------------------------------------------
+%% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
+%% ----------------------------------------------------------------
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{Thesis}  % Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
+\graphicspath{Figures/}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+
+\usepackage[table,xcdraw]{xcolor}
+
+% Include any extra LaTeX packages required
+\usepackage[square, authoryear, comma]{natbib}  % 
+%Use the "Natbib" style for the references in the Bibliography
+%\usepackage[backend=biber,style=alphabetic,sorting=nyt]{biblatex}
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+\hypersetup{urlcolor=blue, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+
+\newcommand{\bilinearroot}{Chapters/bilinear}
+
+\newcommand{\fig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\pr}[1]{Problem~\ref{pr:#1}}
+\newcommand{\sect}[1]{Section~\ref{sect:#1}}
+\newcommand{\chapt}[1]{Chapter~\ref{chapt:#1}}
+\newcommand{\tab}[1]{Table~\ref{tab:#1}}
+\newcommand{\alg}[1]{Algorithm~\ref{alg:#1}}
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+
+\usepackage{verbatimbox}
+\usepackage{todonotes}
+\usepackage{gensymb}
+\usepackage{enumitem}
+
+%\usepackage{subfigure}
+\usepackage{graphicx}
+%\usepackage{caption}
+\usepackage{subcaption}
+\newcommand{\ie}{\textit{i}.\textit{e}.}
+\newcommand{\eg}{\textit{e}.\textit{g}.}
+%\newcommand{\todo}[1][]{\@latex@warning{TODO #1}\fbox{TODO\dots}}
+
+
+\usepackage{tabularx,lipsum,environ,amsmath,amssymb}
+\newcounter{problemcounter}
+\renewcommand{\theproblemcounter}{\arabic{problemcounter}}
+\makeatletter
+\newcommand{\problemtitle}[1]{\gdef\@problemtitle{#1}}% Store problem title
+\newcommand{\probleminput}[1]{\gdef\@probleminput{#1}}% Store problem input
+\newcommand{\problemquestion}[1]{\gdef\@problemquestion{#1}}% Store problem question
+\NewEnviron{problem}{
+\refstepcounter{problemcounter}
+\label{#1}%
+
+   \problemtitle{}
+   \probleminput{}\problemquestion{}% Default input is empty
+  \BODY% Parse input
+  \par\addvspace{.5\baselineskip}
+  \noindent
+  \begin{tabularx}{\textwidth}{@{\hspace{\parindent}} l X c}
+    \multicolumn{2}{@{\hspace{\parindent}}l}{Problem~\theproblemcounter. \textit{\@problemtitle}} \\% Title
+    \hline
+    \textbf{Input:} & \@probleminput \\% Input
+    \textbf{Task:} & \@problemquestion% Question
+    \\\hline
+  \end{tabularx}
+  \par\addvspace{.5\baselineskip}
+}
+
+%\usepackage{amsmath,amssymb} % define this before the line numbering.
+%\usepackage{placeins}
+%\usepackage{color}
+%\usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
+%\usepackage{subfigure}
+%\usepackage{subcaption}
+%\usepackage{xr-hyper}
+%\usepackage[colorlinks=true]{hyperref}
+%\usepackage{textcomp}
+
+% Tikz-related stuff.
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{fit}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{3d}
+
+% PGF-plots-related stuff.
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+
+% \usepgfplotslibrary{external}
+% \tikzexternalize
+
+\usepackage{nomencl}
+\makenomenclature
+\renewcommand{\nomname}{List of Abbreviations}
+
+\newcommand{\Sp}{{\mathcal S}^{+}}
+\newcommand{\Sgen}{{\mathcal S}}
+\newcommand{\Sm}{{\mathcal S}^{-}}
+\newcommand{\spr}[2]{{\langle{}#1,#2\rangle}}
+\newcommand{\prp}{p^{+}}
+\newcommand{\prm}{p^{-}}
+\newcommand{\Hp}{H^{+}}
+\newcommand{\Hm}{H^{-}}
+\newcommand{\hp}{h^{+}}
+\newcommand{\hm}{h^{-}}
+
+%%%%%%%%GRADREV HEADER
+
+  
+    \usepackage{subfig}
+    \usepackage{algorithm}
+    \usepackage{algorithmic}
+    \usepackage{amsmath}
+    \usepackage{amssymb}
+    \usepackage{amsfonts}
+    \usepackage{dsfont}
+    \usepackage{xspace}
+    \usepackage{xr}
+    \usepackage{multirow}
+    \usepackage{multicol}
+    \usepackage{siunitx}
+    \usepackage{afterpage}
+    \usepackage{bbm}
+    \usepackage{enumerate}
+    \usepackage{booktabs}
+    \usepackage{natbib}
+    \usepackage{soul}
+    \usepackage{mathtools}
+    %\usepackage[colorlinks=false,allbordercolors={1 1 1}]{hyperref}
+    %\usepackage[hidelinks]{hyperref}
+    
+    % Moscow header
+  %  \newcommand{\theHalgorithm}{\arabic{algorithm}}
+    \newcommand{\dataset}{{\cal D}}
+    \newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
+    
+     
+    \def\x{{\mathbf x}}
+    \def\f{{\mathbf f}}
+    
+    \def\S{{\cal S}}
+    \def\T{{\cal T}}
+    
+    \def\R{{\mathds R}}
+    
+    \def\tf{{\theta_f}}
+    \def\td{{\theta_d}}
+    \def\ty{{\theta_y}}
+    \def\htf{{\hat\theta_f}}
+    \def\htd{{\hat\theta_d}}
+    \def\hty{{\hat\theta_y}}
+    \newcommand{\ys}{y}
+    \newcommand{\yt}{y}
+
+    % uncertainty is separated with a "plus-minus" symbol
+    \sisetup{separate-uncertainty=true}
+    
+    \usepackage{tikz}
+    \usetikzlibrary{positioning}
+    \usetikzlibrary{calc}
+    
+    \usepackage{pgfplots}
+    \pgfplotsset{compat=newest} 
+    \pgfplotsset{plot coordinates/math parser=false}
+    
+    % This is needed for plots.
+    \newlength\figureheight
+    \newlength\figurewidth
+    
+    
+    %\newcommand{\subfig}[1]{{\em(#1)}}
+    
+    %\renewcommand{\topfraction}{0.85}
+    %\renewcommand{\textfraction}{0.1}
+    %\renewcommand{\floatpagefraction}{0.85}
+    %\parskip 0pt
+    
+    \makeatletter
+    \newcommand{\todo}[1][]{\@latex@warning{TODO #1}\fbox{TODO\dots}}
+    \makeatother
+    
+    
+    % Quebec's header
+    
+    
+    \newcommand{\phib}{{\pmb \phi}}
+    \newcommand{\uu}{{\mathbf{u}}}
+    %\renewcommand{\ww}{\uu}
+    
+    \newcommand{\redplus}{``\red{$\boldsymbol{{+}}$}''}
+    \newcommand{\greenminus}{``\green{$\boldsymbol{{\pmb{-}}}$}''}
+    
+    % To harmonize the transatlantic notation! 
+    \renewcommand{\eqdef}{=}
+    \newcommand{\Acal}{{\mathcal{A}}}
+    \newcommand{\Xcal}{{\mathcal{X}}}
+    \newcommand{\Ycal}{{\mathcal{Y}}}
+    \newcommand{\Lcal}{{\mathcal{L}}}
+    \newcommand{\Dcal}{{\mathcal{D}}}
+    \newcommand{\Hcal}{{\mathcal{H}}}
+    \renewcommand{\Xcal}{X}
+    \renewcommand{\Ycal}{Y}
+    \newcommand{\dsum}{\displaystyle\sum}
+    \newcommand{\dprod}{\displaystyle\prod}
+    
+    
+    \DeclareMathOperator*{\argmax}{\mathrm{argmax}}
+    \DeclareMathOperator*{\argmin}{\mathrm{argmin}}
+    
+    \newcommand{\DS}{{\Dcal_\textsc{S}}}
+    \newcommand{\DT}{{\Dcal_\textsc{T}}}
+    \newcommand{\DSX}{{\Dcal_\textsc{S}^{_\Xcal}}}
+    \newcommand{\DTX}{{\Dcal_\textsc{T}^{_\Xcal}}}
+    
+    \newcommand{\RDS}{R_{\DS}}
+    \newcommand{\RDT}{R_{\DT}}
+    \newcommand{\RS}{R_{S}}
+    \newcommand{\RD}{R_{D}}
+    \renewcommand{\S}{\DSX}
+    \renewcommand{\T}{\DTX}
+    \newcommand{\xb}{{\mathbf x}}
+    \newcommand{\yb}{{\mathbf y}}
+
+
+
+
+%%%%%%%%
+\def\mystrut{\rule[-.3\baselineskip]{0pt}{0.5\baselineskip}}
+
+\input{colors}
+
+%% ----------------------------------------------------------------
+\begin{document}
+%\frontmatter      % Begin Roman style (i, ii, iii, iv...) page numbering
+
+% Set up the Title Page
+\title  {Image-based human re-identification and recognition using deep learning methods}
+\authors  {Evgeniya Ustinova}
+\addresses  {\groupname\\\deptname\\\univname}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
+\date       {\today}
+\subject    {}
+\keywords   {}
+
+\maketitle
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+%% ----------------------------------------------------------------
+% Declaration Page required for the Thesis, your institution may give you a different text to place here
+%\Declaration{
+
+%\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+%I, AUTHOR NAME, declare that this thesis titled, `THESIS TITLE' and the work presented in it are my own. I confirm that:
+
+%\begin{itemize}
+%\item[\tiny{$\blacksquare$}] This work was done wholly or mainly while in candidature for a research degree at this University.
+
+%\item[\tiny{$\blacksquare$}] Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
+
+%\item[\tiny{$\blacksquare$}] Where I have consulted the published work of others, this is always clearly attributed.
+
+%\item[\tiny{$\blacksquare$}] Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
+
+%\item[\tiny{$\blacksquare$}] I have acknowledged all main sources of help.
+
+%\item[\tiny{$\blacksquare$}] Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.
+%\\
+%\end{itemize}
+
+
+%Signed:\\
+%\rule[1em]{25em}{0.5pt}  % This prints a line for the signature
+
+%Date:\\
+%\rule[1em]{25em}{0.5pt}  % This prints a line to write the date
+%}
+%\clearpage  % Declaration ended, now start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+%\pagestyle{empty}  % No headers or footers for the following pages
+
+%\null\vfill
+% Now comes the "Funny Quote", written in italics
+%\textit{``You're just too good to be true \\
+%Can't take my eyes off you.''}
+
+%\begin{flushright}
+%Bob Crewe, Bob Gaudio
+%\end{flushright}
+
+%\vfill\vfill\vfill\vfill\vfill\vfill\null
+%\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+
+\clearpage  % Abstract ended, start a new page
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+% The Acknowledgements page, for thanking everyone
+%\acknowledgements{
+%\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+%The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
+
+%}
+%\clearpage  % End of the Acknowledgements
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{Contents}}  % Set the left side page header to "Contents"
+%\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Figures}}  % Set the left side page header to "List if Figures"
+%\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Tables}}  % Set the left side page header to "List of Tables"
+%\listoftables  % Write out the List of Tables
+
+%% ----------------------------------------------------------------
+\setstretch{1.5}  % Set the line spacing to 1.5, this makes the following tables easier to read
+
+%\clearpage  % Start a new page
+%\lhead{\emph{Abbreviations}}  % Set the left side page header to "Abbreviations"
+%\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
+%{
+% \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+%\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+%
+%}
+
+%% ----------------------------------------------------------------
+%\clearpage  % Start a new page
+%\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
+%\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
+%{
+% Constant Name & Symbol & = & Constant Value (with units) \\
+%Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+
+%}
+
+%% ----------------------------------------------------------------
+%\clearpage  %Start a new page
+%\lhead{\emph{Symbols}}  % Set the left side page header to "Symbols"
+%\listofnomenclature{lll}  % Include a list of Symbols (a three column table)
+%{
+% symbol & name & unit \\
+%$a$ & distance & m \\
+%$P$ & power & W (Js$^{-1}$) \\
+%& & \\ % Gap to separate the Roman symbols from the Greek
+%$\omega$ & angular frequency & rads$^{-1}$ \\
+%}
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+
+\setstretch{1.3}  % Return the line spacing back to 1.3
+
+%\pagestyle{empty}  % Page style needs to be empty for this page
+%\dedicatory{For/Dedicated to/To my\ldots}
+
+% \addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+
+
+\bigskip\ident\textbf{1. What is the title, topic and scope of your thesis?}
+
+\textbf{Title:} Image-based human re-identification and
+recognition using deep learning methods.
+
+\textbf{The topic} of my work is human recognition. 
+Namely, two very popular tasks: person re-identification and face recognition.
+
+Person re-identification is to match full-body pedestrian images across possibly non-overlapping camera views. Face recognition task is to match face images. Both problems can be characterized as retrieval problems, as the key task is to estimate the similarity of two images in the presence of different sources of variation, \eg{} pose, illumination.
+
+
+\textbf{Scope of the work.}
+
+This work investigates deep learning techniques for person re-identification, surveillance face recognition and deep embedding learning in general. Namely, the training of siamese neural networks is considered. Siamese architecture has been suggested by \cite{Bromley93} for signature verification. It allows to learn a mapping from an image space to a descriptor space in such a way that similarity for a pair of images can be estimated using the pair of corresponding descriptors (most often, Euclidean distance or angular similarity are used). 
+Three important aspects of training siamese neural network for retrieval and human recognition are addressed: architecture design, objective function design, cross-domain training.  
+
+
+\bigskip\ident\textbf{2. Formulation of problem (and sub problems if any) if possible also in mathematical form
+e.g., as optimization problem}
+
+Informally, the key problem is to be able to estimate the similarity between two images in such a way that semantically related (\eg{} depicting the same person) images have a high similarity value and semantically unrelated have a low similarity value. 
+
+For person re-identification the following formulation is  used:
+\begin{problem}
+\label{pr:identification}
+  \problemtitle{Re-identification}
+  \probleminput{Query image $q$, gallery images $G=\{g_i\}_{i=1}^{n_G}$}
+  \problemquestion{Find such an image $g_j \in G$ from the gallery that $g_j$ depicts the same identity as $q$: $l_q = l_{g_j}$}
+\end{problem}
+
+The quality of re-identification algorithm is most often assessed in the following way. For each pedestrian query image, the set of images (often captured by a different surveillance camera) are sorted in the order of decreasing similarity. The most popular quality metric is Recall@K (also called Cumulative matching Characteristic curve). For each K, it shows  the percentage of queries to have a correct match among the first K examples of the sorted gallery. 
+
+
+For face recognition, the verification scenario is more often used, which is to classify the pairs of face images to two classes: matching or non-matching pair. 
+
+\begin{problem}
+\label{pr:verification}
+  \problemtitle{Verification}
+  \probleminput{A pair of images $(q_1, q_2)$}
+  \problemquestion{Determine whether the images $q_1$ and $q_2$ depict the same person or two different persons: 
+                   $l_{q_1} ?= l_{q_2}$}
+\end{problem}
+
+
+ROC and precision-recall curves are used to evaluate the results for this task.
+
+Since the siamese architecture is adopted in this work as a base architecture, the task is to build a mapping (parametrized by a feed-forward deep neural network) from an image space $\mathcal I$ to a descriptor space $X$: $\mathcal I \rightarrow X$, so that the corresponding metrics (Recall@K and ROC-related metrics) are maximized. 
+
+The existing methods use various optimization formulations for the problems. For example, different objective functions can be used (\eg{} pairwise or tripletwise objectives, where the latter takes into account relative similarity). In one of the chapters of this work, a new objective is suggested.
+
+
+\bigskip\ident\textbf{
+To which area or categories your research belong,
+e.g., AI ML deep learning, optimization,
+linear algebra, numerical analysis, statistics Which of these areas are most useful and helpful?}
+
+The research mostly belongs to deep learning: the work addresses different schemes and approaches to learning deep neural networks for a number of problems related to human recognition and retrieval. It mostly considers feed-forward architectures, layer design, objective function design as well as application of recent deep learning methods (\eg{} image-to-image translation, domain-adversarial training). In all cases, standard backpropagation enabled by the existing gradient-based optimization algorithms (Stochastic Gradient Descent with momentum, ADAM) is used.
+
+\bigskip\ident\textbf{
+3. What was main Motivations and Justifications: Why this topic /problem is important and interesting?
+What are challenging and open problems? What are potential practical applications?
+What is theoretical value?}
+
+%todo check whether there is something on person reid human performance
+
+\textbf{Person re-identification and retrieval}\\
+Human recognition is a very important direction in analysis of surveillance information. An opportunity to automatically retrieve and compare human images are central for a wide range of applications from long-term multi-camera tracking, forensic analysis and security to retail and advertising. However, it is rather challenging task to collect large amount of labeled surveillance data due to legal issues and also due to a time-consuming process of labeling such data. Therefore, the surveillance datasets are most often of small or middle size, which constitutes an additional difficulty for training neural networks for such problems.
+
+Deep learning has already approached human performance in face recognition \citep{Taigman14,SchroffKP15,parkhi2015deep}. However, for person re-identification, the results achieved by neural networks were rather modest \citep{ahmed2015improved,Li14} and did not clearly outperform those of some non-deep methods \citep{paisitkriangkrai2015learning} (on the moment of publication of our results). Therefore this work addresses deep learning methods for person re-identification and suggests several improvements over the existing methods (on the moment of publication), including those regarding a neural network architecture and an objective function. % The performance of the new objective is demonstrated for a range of retrieval tasks and datasets (not limited by only person re-identification). However, it is still an open question which objective function is better to use in an arbitrary case: it is more about trying different objectives and comparing the results.
+
+
+
+
+\textbf{Cross-domain human recognition}\\
+Additionally, this work addresses several cross-domain scenarios related to human recognition. Cross-domain training is a very important direction, as there are many cases when the system is trained on data that differ from the test data, which often leads to a performance drop. In this cross-domain section, the thesis does not suggest new methods but applies several existing in order to find good strategies of domain adaptation. 
+
+For person re-identification, the most often cross-domain scenario is training and testing on images captured by two  different set of cameras. This may be challenging due to different distributions of data, \eg{} different lighting conditions. This is an important case because collecting  labeled data from each set of target cameras is very time-consuming and is not always possible.   % and the applicability of domain-adversarial training is checked.
+%For human recognition, the case of surveillance face recognition is considered, where the model trained on labeled high quality images is applied to surveillance lower-quality data.
+
+ For face recognition, the important problem is to apply the powerful systems that are trained using high-quality images to lower-quality surveillance data. Main motivation here is quite similar to that of cross-domain person re-identification. Typically, powerful face recognition models are trained using millions of images harvested from the Internet. Usually such images are taken by professional photographers and are of much better quality than those captured by surveillance systems. It is also hardly possible to collect an appropriate amount of training data for direct training for surveillance face recognition. That is why, like in the case of person re-identification, it is much more desirable to find a way to utilize unlabeled data from the target domain. 
+
+
+
+
+
+Regarding a theoretical value, it is very important also to build an understanding how to approach similarity estimation problems in general and particularly for human images to be able to improve the organization of large image collections, also including  cross-domain scenarios. This direction has a rich history and remains very popular in the research community.
+
+
+\bigskip\ident\textbf{
+4. What is the state of the arts and which recent papers/works / software are the most
+close/similar / related to your research results?}
+
+
+\textbf{Objective functions for retrieval (siamese neural networks) -- Chapter 3}\\
+Regarding different objective functions, contrastive \citep{Chopra05}, triplet \citep{SchroffKP15} and LSSS  \citep{Song16} losses should be mentioned. The LSSS loss was shown to outperform popular contrastive and triplet losses for a number of retrieval datasets, therefore we compare our results to it. Related loss \citep{Tadmor2016LearningAM}, also implicitly working with quadruplets, was suggested concurrently to ours.
+
+
+
+\textbf{Person re-identification architectures -- Chapter 4}\\
+One of the best performing non-deep methods for person re-identification is suggested by \citet{paisitkriangkrai2015learning}. One of our goals was to improve over this method using deep learning.
+
+In deep learning, the architecture choice for person re-identification is far from obvious which is evidenced by multiple suggested variants \citep{Yi14,Li14, ahmed2015improved, wu2016personnet,VariorHW16, VariorSLXW16,cheng2016person,li2017learning, zhao2017spindle,saquib2018pose, suh2018part, kalayeh2018human}. Moreover, the results of rather shallow architectures \citep{Yi14} may be not so far from that of much deeper ones \citep{VariorHW16}.
+
+When I started working on the task, there were not many deep learning works on person re-identification \citep{Yi14,Li14,ahmed2015improved}.
+
+Further I shortly mention several works, most of them (except for \citep{Yi14,Li14,ahmed2015improved}) are concurrent or later than ours. It should also be noted that I have not mentioned all of these works (especially those that are later than ours) in the thesis' text, but I am going to do this to make the history of person re-identification more  complete.
+
+The closest to our approaches are \citep{Yi14,cheng2016person} as they used separate streams to process horizontal stripes of the pedestrian image, both works consider $2$-depth convolutional streams.
+
+
+The later work \citep{li2017learning} (after our work) use the same approach of multistream CNN (with a deeper $4$-layer architecture), but the authors additionally use Spatial Transformer Networks on each of the substreams, showing the results better than ours. Even better results were shown in \citep{zhao2017spindle}, where a special pose-predicting subnetwork is utilized to propose part-based regions for feature pooling. \citep{saquib2018pose, suh2018part, kalayeh2018human} continue the idea of body-part prediction.
+%in 17 they started to use the pretrained networks!http://openaccess.thecvf.com/content_cvpr_2017/papers/Chen_Beyond_Triplet_Loss_CVPR_2017_paper.pdf http://openaccess.thecvf.com/content_cvpr_2018/papers/Sarfraz_A_Pose-Sensitive_Embedding_CVPR_2018_paper.pdf http://openaccess.thecvf.com/content_cvpr_2018/papers/Kalayeh_Human_Semantic_Parsing_CVPR_2018_paper.pdf http://openaccess.thecvf.com/content_cvpr_2018/papers/Chang_Multi-Level_Factorisation_Net_CVPR_2018_paper.pdf
+
+Several other approaches \citep{Li14, ahmed2015improved, wu2016personnet} also train neural networks for person re-identification. However, they do not build a mapping to a descriptor space, but map a pair of images directly to a similarity score. Such an approach may allow to model the image difference more explicitly but is less scalable than that of building a mapping to a descriptor space. 
+
+
+
+%The performance of deep learning methods for person re-identification has improved marginally during recent time due to using more modern architectures like \resnet (examples). However, \cite{} have continued the work on adopting Bilinear CNNs for person re-identification  {todo}. 
+
+\textbf{Cross-domain person re-identification -- Chapter 5}\\
+For cross-domain person re-identification, on the moment of submission, the non-deep method of \citet{MaLYL15} demonstrated the best results in cross-domain person re-identification. The authors mimic the negative pairs in target domain by random sampling. Our results for cross-domain person re-identification are lower and just demonstrate the applicability of the domain-adversarial training to non-classification tasks (being the part of the paper on this method).
+
+It should be mentioned, that later successfull methods for cross-domain person re-identification (\citep{deng2018image}) are based on image-level adaptation that we also use for a different task (surveillance face recognition) in Chapter 6.
+
+\textbf{Surveillance face recognition  -- Chapter 6}\\
+For surveillance face recognition,
+two papers \citep{HongIRY17,SohnLZY0C17} are the closest to ours. In these works, it is shown that domain-specific data augmentation is essential for training face recognition systems.  However, in both works, the data augmentation is performed 'by hand' (the degradation types and hyper-parameters for transforms are chosen and fixed), the domain adaptation is performed at feature level. In should be noted, that the feature-level (like in the above-mentioned methods) and image-level (like in this thesis) can be applied together. The feature-level domain adaptation is also included to the comparison in Chapter 6.
+
+\bigskip\ident\textbf{
+5. How you verified and confirmed your working hypothesis? What kind of benchmarks and tests
+you have performed? For how many subjects?
+Have made any comparison with existing methods? Have you applied your algorithms
+or methods for any real images or real-life data?
+}
+
+Several publicly available datasets for person re-identification and retrieval are used in this work.
+Namely, \textbf{Chapters 3} uses the following re-identification datasets:
+\begin{itemize}
+   
+\item Market-1501 \citep{zheng2015scalable} contains $32,643$ images of 1,501 identities, each identity is captured by from two to six cameras. The dataset is randomly divided into the test set of 750 identities and the train set of 751 identities. 
+ \item CUHK03 \citep{Li14} includes $13,164$ images of $1,360$ pedestrians captured from 3 pairs of cameras. The two versions of the dataset are provided: \textit{CUHK03-labeled} and \textit{CUHK03-detected} with manually labeled bounding boxes and automatically detected ones accordingly.  $1,360$ identities are split into $1,160$ identities for training, $100$ for validation and 100 for testing.
+ 
+ \end{itemize}
+\textbf{Chapters 3} also uses the following retrieval datasets:
+\begin{itemize}
+    \item The CUB-200-2011 dataset includes 11,788 images of 200 classes corresponding to different birds species. As in \citep{Song16} we use the first 100 classes for training
+(5,864 images) and the remaining classes for testing
+(5,924 images).
+% %Online products
+\item  The Online Products dataset includes 120,053 images of 22,634 classes. Classes correspond to a number of online products from eBay.com. There are approximately 5.3 images for each product. We used the standard split from \citep{Song16}: 11,318 classes (59,551 images)  are used for training and 11,316 classes (60,502 images) are used for testing.
+\end{itemize}
+
+\textbf{Chapters 4} uses already mentioned CUHK03 and Market-1501 datasets, and also CUHK01:
+CUHK01 \citep{LiZW12} contains images of $971$ identities from two disjoint camera views. Each identity has two samples per camera view. $485$ identities are randomly chosen for training and the other $486$ for test.  
+
+\textbf{Chapters 5} uses the following re-identification datasets:
+\begin{itemize}
+    \item  PRID \citep{Hirzer_h.:person} contains images of $385$ persons viewed from camera A and images of $749$ persons viewed from camera B,  $200$ persons appear in both cameras. $100$ persons appearing in both camera views are used for training. The images of the other $100$ persons from camera A are used as probe, all images from camera B excluding those used in training ($649$ in total) are used as gallery at test time. 
+    
+    \item VIPeR \citep{Gray07evaluatingappearance} also contains images taken with two cameras, and in total $632$ persons are captured, for every person, there is one image for each of the two camera views. Images of $316$ identities are used for training and all others for testing.
+    
+
+    \item CUHK02 \citep{li2013locally} consists of images from five pairs of cameras, two images for each person from each of the two cameras. It contains $7264$ images for $1816$ identities, captured by $5$ pairs of cameras.
+\end{itemize}
+
+\textbf{Chapters 6} uses two face recognition datasets for training:
+\begin{itemize}
+     \item One dataset is of lower quality: Youtube Faces (YTF) \citep{WolfHM11}   consists of $3,425$ videos of $1,595$
+ people collected from YouTube, with an average of 2 videos per identity. 
+     \item  One dataset is of higher quality: VGG Face \citep{parkhi2015deep} contains $2,6$M images of $2,622$ identities harvested from the Internet. 
+ \end{itemize}
+Surveillance data were used for evaluation: $100$ identities were used for test and $100$ for evaluation, $7,535$ images are used for training the unsupervised domain transfer.
+
+
+\bigskip\ident\textbf{6. Have you developed any specific software or toolboxes?
+if yes, in which language and platform? Is this software available for testing?}
+
+The methods described in Chapters 3, 4, 5  are implemented using \texttt{Caffe}-package (C++ and Python) \citep{jia2014caffe} package for deep learning. The code for Chapter 6 is developed using Pytorch (Python) \citep{paszke2017automatic} and utilizes the existing  CycleGAN \citep{ZhuPIE17} code. 
+They are available at:
+\begin{itemize}
+    \item Chapter 3: \url{https://github.com/madkn/HistogramLoss},
+    \item Chapter 4:
+    \url{https://github.com/madkn/MultiregionBilinearCNN-ReId}
+    \item Chapter 6: the code is not available now, but is ready for publication
+\end{itemize}
+
+
+
+\bigskip\ident\textbf{7. What approach and methods you developed?
+What in your opinion is the most original and new in your thesis?}
+
+\begin{itemize}
+    \item Chapter 3: a novel loss function for similarity learning with siamese neural networks,
+    \item  Chapter 4:
+    a new architecture for person re-identification that is based on Bilinear CNNs for fine-grained recognition,
+    \item Chapter 5:
+    extended and validated the domain-adversarial training method for siamese learning,
+    \item Chapter 6:
+    evaluated and compared strategies for using image-level domain adaptation for surveillance face recognition;
+\end{itemize}
+
+In my opinion, the most original contribution is that presented in Chapter 3. The new loss function is based on comparison of two $1$-dimensional distributions of similarity values for positive (matching) and negative (non-matching) pairs of examples. Like most previous losses, it is based on the idea of making the distributions of the similarities of the positive and negative pairs less overlapping. Unlike other losses used for deep embeddings, the new loss comes with virtually no parameters that need to be tuned. It also incorporates information across a large number of quadruplets formed from training samples in the mini-batch and implicitly takes into account all of such quadruplets.
+
+
+
+\bigskip\ident\textbf{8. Which results presented in your thesis you already published, when and where?
+Which of your papers in you opinion is the best one?
+}
+
+{\large
+ List of publications:}
+
+
+
+\begin{itemize}
+    \item Chapter 5:
+Yaroslav Ganin, Evgeniya Ustinova, Hana Ajakan, Pascal Germain, Hugo Larochelle, Fran\c{c}ois Laviolette, Mario Marchand and Victor Lempitsky. Domain-adversarial training of neural networks. The Journal of Machine Learning Research, JMLR, 17(1), pages 2096-2030, 2016.
+    
+    \item Chapter 3 (in my opinion, it is the best one):
+Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram loss. Advances in Neural Information Processing Systems, NIPS, 2016.
+
+    The Russian Federation patent №2641447 has also been issued for this work.
+    
+    \item Chapter 4:
+    Evgeniya Ustinova, Yaroslav Ganin and Victor Lempitsky,  Multi-region bilinear convolutional neural networks for person re-identification. Advanced Video and Signal based Surveillance, AVSS, 2017.
+    
+\end{itemize}
+
+
+\textbf{Which materials do you plan still publish or submit, if any and when an where?}
+
+The materials of Chapter 6 are currently under review in \textit{Machine Vision and Applications}.
+
+\bigskip\ident\textbf{9. What are weak points or missing, if any, in your thesis?
+}
+
+
+%It is rather difficult to compare the methods for such problems as person re-identification, as different methods use different combinations of objectives, architectures and evaluation data. Thus, in Chapters 4 (showing state-of-the-art in person re-identification on the moment of publication), we compared the final results to the previous and some of the concurrent methods that may differ in many ways from ours.
+
+Generally, the field that I have been working on develops  extremely fast, and now there exist works showing much better results than those demonstrated in this thesis. For example, the methods  that explicitly utilise pose prediction or segmentation and more modern general purpose architectures improve the results very much \citep{saquib2018pose, suh2018part, kalayeh2018human}. Thus, unfortunately, the results of Chapter 4 become more historical than useful today. However, it can be considered as a part of a popular research direction dedicated to using multiplicative feature interactions in neural networks.
+
+Additionally, the above-mentioned new methods for person re-identification and retrieval should also be mentioned in the related work section of this thesis.
+
+In Chapter 3, for the design of the new objective function, the comparison to parametric estimation of similarity distribution is missing. I made some experiments, but still have not included them in the chapter. They were uniformly worse than the results already presented in the chapter, but I think that it is still important to compare the parametric and non-paramentric variants of distribution estimation. Additionally, besides the objective described in this chapter I also tried several different variants (with negative results). I think, that they still should also be mentioned in the work. It would be also be interesting to compare the suggested objective function to some of the newer ones. I do not think that the latter is critical, but it can improve the actuality of this work.
+
+\textbf{What are the future directions in this specific area or research ?
+What are still difficult and open problems ?}
+
+In person re-identification (and also surveillance face recognition), it is still very difficult to create working person re-identification systems. Mainly, because it is unclear what to expect from their work. In large public places, \eg{} parks, thousands of people are passing in different directions appearing in the views of hundreds of cameras. In contrast, the existing evaluation scenarios include small sets of cameras capturing rather limited number of identities (around $700$ in gallery) with a rather specific appearance distribution inherent to a particular geographic location and season. Additionally, they mostly use the closed-set scenario, where there is a correct match in a gallery for each query. However, in real applications, there may be (and possibly are more often) situations, when the are no images in the gallery for a given query. This situation is referred to as an open-set scenario. Most of the methods today address the closed-set scenario, this work also falls under this category. Fortunately, new datasets and protocols designed for the more challenging open-set variant, and therefore closer to real world applications, have started to appear.
+
+Domain adaptation also remains a very difficult issue. The image-level domain adaptation methods now show the best results in person re-identification \citep{deng2018image}, but they mostly change the coloring and illumination of the images. However, other sources of variation are not modeled or taken into account (\eg{} pose) in such methods. It is also hard to say what should be done, when the view point change is dramatic across the domains. However, similar case for faces is approached in \cite{HongIRY17} by 3d-rendering augmentation. Additionally, the direction of factorized image generation (\eg{} one identity in different poses) is also very popular today and may bring some results in the direction of domain-specific data augmentation. 
+
+%It is also quite difficult to say which objective function should be utilised and why.  However, some light has been shed onto the related topic of hard examples mining in \cite{wu2017sampling}.
+
+
+\bigskip\ident\textbf{
+10. In summary, please specify in bullet points the main results
+and achievements (avoid repeating exactly sentence from your thesis ).}
+
+The main results are
+\begin{itemize}
+    \item Chapter 3: A novel loss function for similarity learning with siamese neural networks, that does not require any kind of tunable hyper parameters (like thresholds), because it compares two distributions of similarity values for positive and negative pairs, the ovelap of these distributions is minimised and in such a way the positive pairs end up with higher similarities than negative pairs. These distributions are estimated in non-parametric way (using kernel density estimation) allowing for backpropagation. We demonstrate good results across several datasets: two person re-identification datasets, and two retrieval datasets of different topic (birds species and online products). 
+    \item Chapter 4:
+    A new architecture for person re-identification that is based on Bilinear CNNs for fine-grained recognition.  The global pooling of the Bilinear CNN that is applied after the feature multiplication, is replaced by region-wise pooling. So the pooling is done inside smaller areas instead of all the spatial locations. The demonstrated results are better than the baselines for three popular datasets, for the two largest of them state-of-the art results are achieved (on the moment of publication).
+    \item Chapter 5: the domain-adversarial training method  is extended and validated for siamese learning. It is performed by replacing the label predictor by a siamese-trained descriptor predictor. The corresponding paper on domain-adversarial training includes these results.
+    
+    \item Chapter 6:
+ Strategies for image-level domain adaptation for surveillance face recognition are compared and evaluated. Namely, CycleGAN \citep{ZhuPIE17} model is adopted. This is done to mimic the target-specific degradations (\eg{} illumination, blur), without their explicit modeling or picking their parameters by hand. A detailed comparison of techniques and strategies for domain adaptation is performed, including feature-level domain adaptation from Chapter 5, the 'backward' mapping from the target domain to source domain, that comes with cycle-consistent image-to-image translation. The best strategy was to use both initial source data and the source data that are transferred to target domain with the image-to-image translation technique \citep{ZhuPIE17}. 
+\end{itemize}
+
+
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+
+% \addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+% \backmatter
+
+%% ----------------------------------------------------------------
+\label{Bibliography}
+\lhead{\emph{Bibliography}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{plainnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+\end{document}  % The End
+%% ---------------------------------------------------------------- 

@@ -1,0 +1,112 @@
+\section{Deep Domain Adaptation}
+
+\def\x{{\mathbf x}}
+\def\f{{\mathbf f}}
+
+\def\S{{\cal S}}
+\def\T{{\cal T}}
+
+\def\R{{\mathds R}}
+
+\def\tf{{\theta_f}}
+\def\td{{\theta_d}}
+\def\ty{{\theta_y}}
+\def\htf{{\hat\theta_f}}
+\def\htd{{\hat\theta_d}}
+\def\hty{{\hat\theta_y}}
+
+\subsection{The model}
+
+We now detail the proposed model for the domain adaptation. We assume that the model works with input samples $\x \in X$, where $X$ is some input space and certain labels (output) $y$ from the label space $Y$. Below, we assume classification problems where $Y$ is a finite set ($Y=\{1,2,\dots L\}$), however our approach is generic and can handle any output label space that other deep feed-forward models can handle. We further assume that there exist two distributions $\S(x,y)$ and $\T(x,y)$ on $X\otimes Y$, which will be referred to as the source distribution and the target distribution (or the source domain and the target domain). Both distributions are assumed complex and unknown, and furthermore similar but different (in other words, $\S$ is ``shifted'' from $\T$ by some {\em domain shift}). 
+
+Our ultimate goal is to be able to predict labels $y$ given the input $\x$ for the target distribution. At training time, we have an access to a large set of training samples $\{\x_1,\x_2,\dots,\x_N\}$ from both the source and the target domains distributed according to the marginal distributions $\S(\x)$ and $\T(\x)$. We denote with $d_i$ the binary variable ({\em domain label}) for the $i$-th example, which indicates whether $x_i$ come from the source distribution ($\x_i{\sim}\S(\x)$ if $d_i{=}0$) or from the target distribution ($\x_i{\sim}\T(\x)$ if $d_i{=}1$). For the examples from the source distribution ($d_i{=}0$) the corresponding labels $y_i \in Y$ are known at training time. For the examples from the target domains, we do not know the labels at training time, and we want to predict such labels at test time.
+
+We now define a deep feed-forward architecture that for each input $\x$ predicts its label $y \in Y$ {\em and} its domain label $d \in \{0,1\}$. We decompose such mapping into three parts. We assume that the input $\x$ is first mapped by a mapping $G_f$ (a {\em feature extractor}) to a $D$-dimensional feature vector $\f \in \R^D$. The feature mapping may also include several feed-forward layers and we denote the vector of parameters of all layers in this mapping as $\tf$, i.e.\ $\f = G_f(\x;\tf)$. Then, the feature vector $\f$ is mapped by a mapping $G_y$ ({\em label predictor}) to the label $y$, and we denote the parameters of this mapping with $\ty$. Finally, the same feature vector $\f$ is mapped to the domain label $d$ by a mapping $G_d$ ({\em domain classifier}) with the parameters $\td$ (\fig{arch}).
+
+During the learning stage, we aim to minimize the label prediction loss on the annotated part (i.e.\ the source part) of the training set, and the parameters of both the feature extractor and the label predictor are thus optimized in order to minimize the empirical loss for the source domain samples. This ensures the discriminativeness of the features $\f$ and the overall good prediction performance of the combination of the feature extractor and the label predictor on the source domain.
+
+At the same time, we want to make the features $\f$ domain-invariant. That is, we want to make the distributions $S(\f) = \{G_f(\x; \tf)\,|\, \x{\sim}S(\x)\}$ and $T(\f) = \{G_f(\x; \tf)\,|\, \x{\sim}T(\x)\}$ to be similar. Under the {\em covariate shift} assumption, this would make the label prediction accuracy on the target domain to be the same as on the source domain~\cite{Shimodaira00}. Measuring the dissimilarity of the distributions $S(\f)$ and $T(\f)$ is however non-trivial, given that $\f$ is high-dimensional, and that the distributions themselves are constantly changing as learning progresses. One way to estimate the dissimilarity is to look at the loss of the domain classifier $G_d$, provided that the parameters $\td$ of the domain classifier have been trained to discriminate between the two feature distributions in an optimal way. 
+
+This observation leads to our idea. At training time, in order to obtain domain-invariant features, we seek the parameters $\tf$ of the feature mapping that {\em maximize} the loss of the domain classifier (by making the two feature distributions as similar as possible), while simultaneously seeking the parameters $\td$ of the domain classifier that {\em minimize} the loss of the domain classifier. In addition, we seek to minimize the loss of the label predictor. 
+
+More formally, we consider the functional:
+\begin{gather} 
+E(\tf,\ty,\td) =  \sum_{\substack{i=1..N\\d_i = 0}} L_y\left( \strut G_y(G_f(\x_i;\tf);\ty), y_i\right) -\nonumber\\ \lambda \sum_{i=1..N} L_d \left( \strut G_d(G_f(\x_i;\tf);\td), y_i\right) = \nonumber\\= \sum_{\substack{i=1..N\\d_i = 0}} L^i_y( \tf, \ty) - \lambda \sum_{i=1..N} L^i_d( \tf, \td) 
+\label{eq:func}
+\end{gather}
+Here, $L_y(\cdot,\cdot)$ is the loss for label prediction (e.g.\ multinomial), $L_d(\cdot,\cdot)$ is the loss for the domain classification (e.g.\ logistic), while $L^i_y$ and $L^i_d$ denote the corresponding loss functions evaluated at the $i$-th training example. 
+
+Based on our idea, we are seeking the parameters $\htf,\hty,\htd$ that deliver a saddle point of the functional \eq{func}:
+
+\begin{gather}
+(\htf,\hty) = \arg\min_{\tf,\ty} E(\tf,\ty,\htd)\,\label{eq:opt1}\\\label{eq:opt2}
+\htd = \arg\max_\td E(\htf,\hty, \td)\,.
+\end{gather}
+
+At the saddle point, the parameters $\td$ of the domain classifier $\td$ minimize the domain classification loss (since it enters into \eq{func} with the minus sign) while the parameters $\ty$ of the label predictor minimize the label prediction loss. The feature mapping parameters $\tf$ {\em minimize} the label prediction loss (i.e.\ the features are discriminative), while {\em maximizing} the domain classification loss (i.e.\ the features are domain-invariant). The parameter $\lambda$ controls the trade-off between the two objectives that shape the features during learning.
+
+Below, we demonstrate that standard stochastic gradient solvers (SGD) can be adapted for the search of the saddle point \eq{opt1}-\eq{opt2}.
+
+\subsection{Optimization with backpropagation}
+
+A saddle point \eq{opt1}-\eq{opt2} can be found as a stationary point of the following stochastic updates:
+
+\begin{align}
+\tf \quad &\longleftarrow \quad \tf \;-\; \mu \left(\frac{\partial L^i_y}{\partial \tf}-\lambda\frac{\partial L^i_d}{\partial \tf} \right) \label{eq:upd1}\\
+\ty \quad &\longleftarrow \qquad \ty \;-\; \mu \frac{\partial L^i_y}{\partial \ty}\label{eq:upd2}\\
+\td \quad &\longleftarrow \qquad \td \;-\; \mu \frac{\partial L^i_d}{\partial \td} \label{eq:upd3}
+\end{align}
+where $\mu$ is the learning rate (which can vary over time).
+
+The updates \eq{upd1}-\eq{upd3} are very similar to stochastic gradient descent (SGD) updates for a feed-forward deep model that comprises feature extractor fed into the label predictor and into the domain classifier. The difference is the $-\lambda$ factor in \eq{upd1} (the difference is important, as without such factor, stochastic gradient descent would try to make features dissimilar across domains in order to minimize the domain classification loss). Although direct implementation of \eq{upd1}-\eq{upd3} as SGD is not possible, it is highly desirable to reduce the updates \eq{upd1}-\eq{upd3} to some form of SGD, since SGD (and its variants) is the main learning algorithm implemented in most packages for deep learning. 
+
+Fortunately, such reduction can be accomplished by introducing a special {\bf gradient reversal layer} (GRL) defined as follows. The gradient reversal layer has no parameters associated with it (apart from the meta-parameter $\lambda$, which is not updated by backpropagation). During the forward propagation, GRL acts as an identity transform. During the backpropagation though, GRL takes the gradient from the subsequent level, multiplies it by $-\lambda$ and passes it to the preceding layer. Implementing such layer using existing object-oriented packages for deep learning is simple, as defining procedures for forwardprop (identity transform), backprop (multiplying by a constant), and parameter update (nothing) is trivial. 
+
+The GRL as defined above is inserted between the feature extractor and the domain classifier, resulting in the architecture depicted in \fig{arch}. As the backpropagation process passes through the GRL, the partial derivatives of the loss that is downstream the GRL (i.e.\ $L_d$) w.r.t.\ the layer parameters that are upstream the GRL (i.e.\ $\tf$) get multiplied by $-\lambda$, i.e.\ $\frac{\partial L_d}{\partial \tf}$ is effectively replaced with $-\lambda\frac{\partial L_d}{\partial \tf}$. Therefore, running SGD in the resulting model implements the updates \eq{upd1}-\eq{upd3} and converges to a saddle point of \eq{func}.
+
+Mathematically, we can formally treat the gradient reversal layer as a ``pseudo-function'' $R_\lambda(\x)$ defined by two (incompatible) equations describing its forward- and backpropagation behaviour:
+\begin{align}
+R_\lambda(\x) = \x\\
+\frac{dR_\lambda}{d\x} = -\lambda \mathbf{I}
+\end{align}
+where $\mathbf{I}$ is an identity matrix.
+We can then define the objective ``pseudo-function'' of $(\tf,\ty,\td)$ that is being optimized by the stochastic gradient descent within our method:
+\begin{gather}
+\tilde E(\tf,\ty,\td) =  \sum_{\substack{i=1..N\\d_i = 0}} L_y\left( \strut G_y(G_f(\x_i;\tf);\ty), y_i\right) +\nonumber\\ \sum_{i=1..N} L_d \left( \strut G_d(R_\lambda(G_f(\x_i;\tf));\td), y_i\right) \label{eq:pseudoobj}
+\end{gather}
+
+Running updates \eq{upd1}-\eq{upd3} can then be implemented as doing SGD for \eq{pseudoobj} and leads to the emergence of features that are domain-invariant and discriminative at the same time. After the learning, the label predictor $y(\x) = G_y(G_f(\x;\tf);\ty)$ can be used to predict labels for samples from the target domain (as well as from the source domain).
+
+The simple learning procedure outlined above can be re-derived/generalized along the lines suggested in \cite{Goodfellow14} (see \cite{SuppMat}).
+
+% \subsection{Relation to $ \mathcal{H} \Delta \mathcal{H} $-distance}
+% \label{sect:theory}
+
+% In this section we give a brief analysis of our method in terms of $ \mathcal{H} \Delta \mathcal{H} $-distance \cite{Ben10,Cortes11} which is widely used in the theory of non-conservative domain adaptation. Formally,
+% \begin{multline}
+%   d_{\mathcal{H} \Delta \mathcal{H}} (\mathcal{S}, \mathcal{T}) = 2 \sup_{h_1, h_2 \in \mathcal{H}} \left| P_{\mathbf{f} \sim \mathcal{S}} [h_1(\mathbf{f}) \neq h_2(\mathbf{f})] - \right. \\
+%   \left. - P_{\mathbf{f} \sim \mathcal{T}} [h_1(\mathbf{f}) \neq h_2(\mathbf{f})] \right|
+% \label{eq:hdh_dist}
+% \end{multline}
+% defines a discrepancy distance between two distributions $ \mathcal{S} $ and $ \mathcal{T} $ w.r.t. a hypothesis set $ \mathcal{H} $. Using this notion one can obtain a probabilistic bound \cite{Ben10} on the performance $ \varepsilon_\mathcal{T}(h) $ of some classifier $ h $ from $ \mathcal{T} $ evaluated on the target domain given its performance $ \varepsilon_\mathcal{S}(h) $ on the source domain:
+% \begin{equation}
+%   \varepsilon_\mathcal{T}(h) \leq \varepsilon_\mathcal{S}(h) + \frac{1}{2} d_{\mathcal{H} \Delta \mathcal{H}} (\mathcal{S}, \mathcal{T}) + C \, ,
+% \end{equation}
+% where $ \mathcal{S} $ and $ \mathcal{T} $ are source and target distributions respectively, and $ C $ does not depend on particular $ h $. 
+
+% Consider fixed $ \mathcal{S} $ and $ \mathcal{T} $ over the representation space produced by the feature extractor $ G_f $ and a family of label predictors $ \mathcal{H}_p $. We assume that the family of domain classifiers $ \mathcal{H}_d $ is rich enough to contain the symmetric difference hypothesis set of $ \mathcal{H}_p $:
+% \begin{equation}
+%   \mathcal{H}_p \Delta \mathcal{H}_p = \left\{ h \, | \, h = h_1 \oplus h_2 \, , \; h_1, h_2 \in \mathcal {H}_p \right\} \, .
+% \end{equation}
+% It is not an unrealistic assumption as we have a freedom to pick $ \mathcal{H}_d $ whichever we want. For example, we can set the architecture of the domain discriminator to be the layer-by-layer concatenation of two replicas of the label predictor followed by a two layer non-linear perceptron aimed to learn the \texttt{XOR}-function. Given the assumption holds, one can easily show that training the $ G_d $ is closely related to the estimation of $ d_{\mathcal{H}_p \Delta \mathcal{H}_p} (\mathcal{S}, \mathcal{T}) $. Indeed, 
+% \begin{equation}
+% \begin{split}
+%   &d_{\mathcal{H}_p \Delta \mathcal{H}_p}  (\mathcal{S}, \mathcal{T}) =\\ 
+%   & = 2 \sup_{h \in \mathcal{H}_p \Delta \mathcal{H}_p} \left| P_{\mathbf{f} \sim \mathcal{S}} [h(\mathbf{f}) = 1] - P_{\mathbf{f} \sim \mathcal{T}} [h(\mathbf{f}) = 1] \right| \leq \\
+%   & \leq 2 \sup_{h \in \mathcal{H}_d} \left| P_{\mathbf{f} \sim \mathcal{S}} [h(\mathbf{f}) = 1] - P_{\mathbf{f} \sim \mathcal{T}} [h(\mathbf{f}) = 1] \right| = \\
+%   & = 2 \sup_{h \in \mathcal{H}_d} \left| 1 - \alpha(h) \right| = 2 \sup_{h \in \mathcal{H}_d} \left[ \alpha(h) - 1 \right]
+% \end{split}
+% \end{equation}
+% where $ \alpha(h) = P_{\mathbf{f} \sim \mathcal{S}} [h(\mathbf{f}) = 0] + P_{\mathbf{f} \sim \mathcal{T}} [h(\mathbf{f}) = 1] $ is maximized by the optimal $ G_d $.
+
+% Thus, optimal discriminator gives the upper bound for $ d_{\mathcal{H}_p \Delta \mathcal{H}_p}  (\mathcal{S}, \mathcal{T}) $. At the same time, backpropagation of the reversed gradient changes the representation space so that $ \alpha(G_d) $ becomes smaller effectively reducing $ d_{\mathcal{H}_p \Delta \mathcal{H}_p}  (\mathcal{S}, \mathcal{T}) $ and leading to the better approximation of $ \varepsilon_\mathcal{T}(G_y) $ by $ \varepsilon_\mathcal{S}(G_y) $.

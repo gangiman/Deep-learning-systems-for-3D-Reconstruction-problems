@@ -1,0 +1,55 @@
+\begin{tikzpicture}[font=\scriptsize]
+
+\begin{axis}[%
+width=0.95092\figurewidth,
+height=\figureheight,
+at={(0\figurewidth,0\figureheight)},
+scale only axis,
+xmin=1,
+xmax=50,
+xlabel={Rank},
+ymin=0,
+ymax=1,
+ylabel={Identification rate (\%)},
+axis x line*=bottom,
+axis y line*=left,
+legend style={at={($ (0,1) + (+0.1cm,+0.1cm) $)},anchor=north west,align=left,legend cell align=left,draw=black},
+xmajorgrids,
+ymajorgrids,
+grid style={dashed}
+]
+\addplot [color=blue,solid,line width=1.0pt]
+  table[row sep=crcr]{%
+1      0.0664556962025 \\
+5      0.167721518987 \\
+10      0.253164556962 \\
+15      0.275316455696 \\
+20      0.316455696203 \\
+25      0.348101265823 \\
+30      0.379746835443 \\
+35      0.414556962025 \\
+40      0.45253164557 \\
+45      0.474683544304 \\
+50      0.496835443038 \\
+};
+\addlegendentry{DML};
+
+\addplot [color=cyan,solid,line width=1.0pt]
+  table[row sep=crcr]{%
+1      0.0632911392405 \\
+5      0.161392405063 \\
+10      0.259493670886 \\
+15      0.338607594937 \\
+20      0.389240506329 \\
+25      0.417721518987 \\
+30      0.439873417722 \\
+35      0.471518987342 \\
+40      0.496835443038 \\
+45      0.518987341772 \\
+50      0.53164556962 \\
+};
+\addlegendentry{DML, adaptation};
+
+
+\end{axis}
+\end{tikzpicture}%

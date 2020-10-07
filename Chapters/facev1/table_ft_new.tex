@@ -1,0 +1,23 @@
+
+\begin{table}
+\centering
+\flushbottom
+
+\centering
+\caption{Quality metrics for different face recognition models compared in this work (\ref{sect:ft}). Surveillance data are used for evaluation. The best model is \textit{ft union}, it is trained on both initial and degraded data.}
+\label{tab:comparison}
+\resizebox{0.7\columnwidth}{!}{
+\begin{tabular}{c|ccc|ccc}
+\hline
+%\multicolumn{1}{|l|}{}   & \multicolumn{6}{c|}{Train datasets}                      \\ \hline
+\multicolumn{1}{l|}{}   & \multicolumn{3}{c|}{train: VGG Face} & \multicolumn{3}{c}{train: YTF} \\ \hline
+Fine-tuning type & 100\%$-$eer & roc auc & AP & 100\%$-$eer   & roc auc   & AP  \\ \hline
+no ft                   &  83.89 & 91.86 & 22.04  &  83.89 & 91.86 & 22.04  \\ %\hline
+ft initial               &  89.12 & 96.25 & 42.02  &  89.24 & 96.19 & 40.81 \\ %\hline
+ft degraded             &  91.55 & 97.70 & 52.55 &  \bf{90.04} & 96.54 & 42.07   \\ %\hline
+ft union                & \bf{92.94} &  \bf{98.08} & \bf{57.30}  &  89.37 & \bf{96.96} & \bf{45.45}      \\ \hline
+\end{tabular}
+}
+\end{table}
+
+  

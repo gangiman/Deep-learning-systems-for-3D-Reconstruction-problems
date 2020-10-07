@@ -1,0 +1,55 @@
+% Please add the following required packages to your document preamble:
+% \usepackage[table,xcdraw]{xcolor}
+% If you use beamer only pass "xcolor=table" option, i.e. \documentclass[xcolor=table]{beamer}
+\begin{table}
+\centering
+\caption[User study on images of faces]{\textbf{User assessment for the photorealism of the results for the four methods.} During the session, each user observed 20 instances of results of each method embedded within 3 real images. The participants were asked to click on the re-synthesized image in as little time as they could. The first three parts of the table specify the number of correct guesses (the smaller the better). The last line indicates the mean time needed to make a guess (the larger the better). The performance is not far from the performance of a random guess, thus, re-synthesized images could be hardly distinguished from the real ones.}
+\label{tab:user_nns}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+               & \multicolumn{1}{l|}{\cellcolor[HTML]{EFEFEF}\textbf{EFF}} & \multicolumn{1}{l|}{\cellcolor[HTML]{EFEFEF}\textbf{NNSF}} & \multicolumn{1}{l|}{\cellcolor[HTML]{EFEFEF}\textbf{CFW}} & \multicolumn{1}{l|}{\cellcolor[HTML]{EFEFEF}\textbf{CFW+LCM}} \\ \hline
+\rowcolor[HTML]{FDE7E5} 
+\multicolumn{5}{|c|}{\cellcolor[HTML]{FDE7E5}Correctly guessed (out of 20)}                                                                                                                                                                                           \\ \hline
+\rowcolor[HTML]{FDE7E5} 
+Mean          & 7.12                                                       & 5.68        & 6.16                                 & \textbf{5.58}                                                          \\ \hline
+\rowcolor[HTML]{FDE7E5} 
+Std          & 0.87                                                       & 0.98        & 0.92                                 & 1.10                                                          \\ \hline
+\rowcolor[HTML]{FDE7E5} 
+Median         & \textbf{6}                                                 & \textbf{6}                                                  & \textbf{6}                                                & \textbf{6}                                                    \\ \hline
+\rowcolor[HTML]{FDE7E5} 
+Max            & 13                                                         & 10                                                          & 10                                                        & \textbf{9}                                                    \\ \hline
+\rowcolor[HTML]{FDE7E5} 
+Min            & 4                                                          & 2                                                           & \textbf{1}                                                & 2                                                             \\ \hline
+\rowcolor[HTML]{DEFDDE} 
+\multicolumn{5}{|c|}{\cellcolor[HTML]{DEFDDE}Correctly guessed within 4 seconds (out of 20)}                                                                                                                                                                          \\ \hline
+\rowcolor[HTML]{DEFDDE} 
+Mean           & 1.9                                                       & \textbf{1.66}                                               &1.98                                                      & 1.85                                                           \\ \hline
+\rowcolor[HTML]{DEFDDE} 
+Std          & 0.54                                                       & 0.67        & 0.59                                 & 0.62                                                         \\ \hline
+\rowcolor[HTML]{DEFDDE} 
+Median         & 1                                                          & 1                                                           & 2                                                         & \textbf{0}                                                    \\ \hline
+\rowcolor[HTML]{DEFDDE} 
+Max            & 6                                                          & 7                                                           & 6                                                         & \textbf{5}                                                    \\ \hline
+\rowcolor[HTML]{DEFDDE} 
+Min            & \textbf{0}                                                 & \textbf{0}                                                  & \textbf{0}                                                & \textbf{0}                                                    \\ \hline
+\rowcolor[HTML]{ECF4FF} 
+\multicolumn{5}{|c|}{\cellcolor[HTML]{ECF4FF}Correctly guessed within 2 seconds (out of 20)}                                                                                                                                                                          \\ \hline
+\rowcolor[HTML]{ECF4FF} 
+Mean          & \textbf{0.56}                                              & 0.80                                                         & 1.09                                                       & 0.96                                                            \\ \hline
+\rowcolor[HTML]{ECF4FF} 
+Std          & 0.69                                                       & 0.55        & 0.48                                 & 0.46                                                         \\ \hline
+\rowcolor[HTML]{ECF4FF} 
+Median         & \textbf{0}                                                 & \textbf{0}                                                  & \textbf{0}                                                & \textbf{0}                                                    \\ \hline
+\rowcolor[HTML]{ECF4FF} 
+Max            & \textbf{4}                                                 & 6                                                           & 5                                                         & \textbf{4}                                                    \\ \hline
+\rowcolor[HTML]{ECF4FF} 
+Min            & \textbf{0}                                                 & \textbf{0}                                                  & \textbf{0}                                                & \textbf{0}                                                    \\ \hline
+\rowcolor[HTML]{FBFBE6} 
+\multicolumn{5}{|c|}{\cellcolor[HTML]{FBFBE6}Mean time to make a guess}                                                                                                                                                                                               \\ \hline
+\rowcolor[HTML]{FBFBE6} 
+Mean time, sec & 7.7                                                        & 7.3                                                         & 9.1                                                       & \textbf{9.7}                                                  \\ \hline
+\rowcolor[HTML]{FBFBE6} 
+Std, sec & 1.9                                                        & 2.5                                                         & 2.0                                                       & 2.2                                                  \\ \hline
+\end{tabular}
+\end{table}

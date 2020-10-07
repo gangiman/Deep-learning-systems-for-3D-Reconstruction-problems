@@ -1,0 +1,10 @@
+Dear Editor, Dear Reviewers,  
+
+We are submitting our manuscript titled "Getting Off the Internet: Practical Domain Adaptation for Face Recognition" for the consideration of publication in Machine Vision and Applications as a short article. 
+
+In many practical scenarios of face recognition, test data are significantly different from the Intenet-based face datasets commonly used for training the best-performing neural networks.  In this work, we look for the approach that would allow reusing the existing large annotated datasets under such scenarios. In particular, we consider the use of unaligned image translation in order to bridge this domain gap, and come up with recipes on how to properly use unaligned image translation as well as with some negative results (on how not to use it).
+
+We believe that our study is helpful for building real face recognition systems for the challenging image-capturing conditions and therefore is in the scope of Machine Vision and Applications.  We confirm that this manuscript has not been published elsewhere and is not under consideration by another journal or conference.  
+
+Yours Sincerely, 
+The Authors

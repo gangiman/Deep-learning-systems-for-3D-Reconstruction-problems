@@ -1,0 +1,25 @@
+\begin{table}
+\centering
+\caption{Quality metrics of our approach compared to that of \citep{ganin2016domain} and \citep{SohnLZY0C17} and some combinations of these methods with ours. Surveillance data are used for evaluation. 'fm loss' and 'fr loss' stand for Feature Matching loss and Feature Reconstruction loss as defined in \citep{SohnLZY0C17}. 'adv loss' column shows if the method of \citep{ganin2016domain} for feature-level domain adaptation is used. 'aug type' column shows which augmentation method is used for each of the models: 'CycleGAN' means our CycleGAN based augmentation, 'predefined' means the procedure used in \citep{SohnLZY0C17}. The \textit{ft union} model is denoted A in this table. Model B combines feature-level ('adv loss') and image-level domain adaptation ('aug type' is set to 'CycleGAN'), it outperforms model A slightly. Overall, augmentation choice is very important: models D and I are trained using scheme from \citep{SohnLZY0C17} with different augmentation methods, and model D performs better than model I and on par with B.}
+\label{tab:comparison_other}
+\resizebox{0.7\columnwidth}{!}{
+\begin{tabular}{cccccccc}
+\hline
+&fm loss & fr loss & adv loss & aug type & 100\% - eer    & roc auc        & AP             \\ \hline
+\multicolumn{8}{c}{ours}                                                             \\ \hline
+A &-  & -  & -   & CycleGAN          & 89.37          & \textbf{96.96} & 45.45          \\
+B &-  & -  & \checkmark   & CycleGAN          & \textbf{89.75} & 96.72          & \textbf{46.22} \\
+C &-  & -  & \checkmark   & -             & 88.30          & 95.63          & 39.01          \\
+\hline
+\multicolumn{8}{c}{our implementation of \citep{SohnLZY0C17}}                 \\ \hline
+D &\checkmark  & \checkmark  & \checkmark   & CycleGAN        & \textbf{90.34} & \textbf{96.83} & \textbf{43.08} \\
+E &-  & -  & \checkmark   & CycleGAN        & 89.26          & 96.52          & 42.75      \\
+F &-  & \checkmark  & \checkmark   & CycleGAN        & 89.86          & 96.51          & 40.10         \\
+G &\checkmark  & -  & \checkmark   & CycleGAN        & 88.05          & 96.06          & 40.89          \\
+H &\checkmark  & \checkmark  & -   & CycleGAN        & 89.79          & 96.76          & 42.56          \\ \hline
+I &\checkmark  & \checkmark  & \checkmark   & predefined            & \textbf{89.22}          & \textbf{96.16}          & \textbf{40.66} \\
+J &-  & -  & \checkmark   & predefined            & 88.69          & 95.92          & 38.92 \\ \hline
+
+\end{tabular}
+}
+\end{table}

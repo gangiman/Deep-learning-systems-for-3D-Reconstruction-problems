@@ -1,0 +1,53 @@
+\begin{tikzpicture}[
+  black!50, text=black,
+  node distance=4mm,
+  grlnode/.style={
+    align=center,
+    circle,minimum size=6mm,
+    inner sep=5pt,
+    very thick,draw=black!50,
+    font=\ttfamily
+  },
+  fnode/.style={
+    align=center,
+    % The shape:
+    rectangle,minimum size=6mm,rounded corners,
+    % The rest
+    inner sep=5pt,
+    very thick,draw=black!50,
+    top color=fnodetop,bottom color=fnodebottom,
+    font=\ttfamily},
+  cnode/.style={
+    fnode,top color=cnodetop,bottom color=cnodebottom},
+  dnode/.style={
+    fnode,top color=dnodetop,bottom color=dnodebottom},
+  vhedge/.style={
+    rounded corners,to path=|- (\tikztotarget)}]
+  \matrix[row sep=5mm,column sep=5mm] {
+    \node (conv1) [fnode] {conv 5x5\\32 maps\\ReLU}; &
+    \node (pool1) [fnode] {max-pool 2x2\\2x2 stride}; &
+    \node (conv2) [fnode] {conv 5x5\\48 maps\\ReLU}; &
+    \node (pool2) [fnode] {max-pool 2x2\\2x2 stride}; &
+  
+    \node (fc3)   [cnode] {fully-conn\\100 units\\ReLU}; &
+    \node (fc4)   [cnode] {fully-conn\\100 units\\ReLU}; &
+    \node (fc5)   [cnode] {fully-conn\\10 units\\Soft-max}; \\
+  
+    & & &
+    \node (grl) [grlnode] {GRL}; &
+  
+    \node (fc1_d) [dnode] {fully-conn\\100 units\\ReLU}; &
+    \node (fc2_d) [dnode] {fully-conn\\1 unit\\Logistic}; \\
+  };
+  
+  \path (conv1) edge[-latex,shorten >=1pt,very thick] (pool1);
+  \path (pool1) edge[-latex,shorten >=1pt,very thick] (conv2);
+  \path (conv2) edge[-latex,shorten >=1pt,very thick] (pool2);
+  \path (pool2) edge[-latex,shorten >=1pt,very thick] (fc3);
+  \path (fc3)   edge[-latex,shorten >=1pt,very thick] (fc4);
+  \path (fc4)   edge[-latex,shorten >=1pt,very thick] (fc5);
+  
+  \path (pool2.south) edge[-latex,shorten >=1pt,very thick] (grl.north);
+  \path (grl) edge[-latex,shorten >=1pt,very thick] (fc1_d);
+  \path (fc1_d) edge[-latex,shorten >=1pt,very thick] (fc2_d);
+\end{tikzpicture}

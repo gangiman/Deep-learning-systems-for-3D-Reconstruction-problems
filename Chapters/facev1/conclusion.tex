@@ -1,0 +1,30 @@
+
+\section{Discussion and Conclusions}
+\label{sect:conclusion}
+
+% Discuss your conclusions in order of most to least important.
+
+ In this chapter, we have compared the image-based domain adaptation techniques for face recognition in the presence of strong image degradation. We consider the recently proposed CycleGAN approach for learning mappings between the two domains of surveillance data and Internet face images. We demonstrate that the strategy of transferring the labeled Internet data to the surveillance domain and subsequent retraining the face recognition network helps to improve the recognition quality on real surveillance test data. We have investigated the variants of this approach, and have demonstrated that training on both transferred and original Internet data leads to the optimal performance. Finally, we show that in the case of our domain pair, the image-level adaptation approach outperforms feature-level domain adaptation. 
+
+%Compare your results with those from other studies: Are they consistent? If not, discuss possible reasons for the difference.
+ We found our results consistent with \citep{SohnLZY0C17}, where face recognition for the low-quality is also considered. In \citep{SohnLZY0C17},  verification accuracy was improved using carefully chosen data augmentation. However, we also show that for our data, the approach analogical to \citep{SohnLZY0C17} benefits considerably from using our automatic augmentation. 
+ %It is an interesting fact, that the improvement remained noticeable even when the data augmentation and the feature-level domain adaptation were applied simultaneously. Here, in contrast, we suggest performing the data augmentation in a more automatic way. Although we do not experiment with the combination of feature-level and image-level approaches to domain adaptation, we compare them independently. The combination of these adaptation techniques may further improve the results.
+
+
+% Mention any inconclusive results and explain them as best you can. You may suggest additional experiments needed to clarify your results.
+In our experiments, best results were achieved with training on both domains. An explanation can be given that the domain transfer model is imperfect and may push different images of the same identity too far as we do not use any kind of verification loss for training (ideally, this would require another pre-trained network for the low-quality domain, which essentially is the goal of this work). Therefore, keeping the initial data in the training set may result in less overfitting. %This can be explained by the fact that our target domain is not uniform in terms of data quality. We use two parts of the same track to generate matching pairs for each identity: e.g. these parts of each track differ in resolution (see \ref{fig:lr_hr_gan_res_ytube_initial_degraded}, columns $1$ and $3$). Therefore, using training data of diverse quality may lead to better results.  -- not true, checked.
+
+% Briefly describe the limitations of your study to show reviewers and readers that you have considered your experiment’s weaknesses. Many researchers are hesitant to do this as they feel it highlights the weaknesses in their research to the editor and reviewer. However doing this actually makes a positive impression of your paper as it makes it clear that you have an in depth understanding of your topic and can think objectively of your research.
+
+As an important negative result, we show that using CycleGAN-based restoration of lower-quality domain images by transferring them to the higher-quality domain does not bring consistent improvement to the recognition performance, which is also consistent with the results of \citep{SohnLZY0C17}. We speculate that such transfer may distort some details of the images in a non-identity preserving way.
+
+Our study considers a practically important domain of image data. 
+We note, however, that our findings might not transfer to other pairs of domains in image adaptation as optimal strategies may vary for different domains of data. Here were are experimenting with the two domains, one of which is associated with the information loss, including identity information crucial for our main task (face verification). In our case, the strategy of translation from the target domain to the source domain (\‘restoration\’) did not quite work, or it was harder to make it work than the opposite approach. However, this strategy might be more applicable to some other domains, e.g. high-quality city photos and synthetic city images.
+
+
+
+% Discuss what your results may mean for researchers in the same field as you, researchers in other fields, and the general public. How could your findings be applied?
+ 
+% State how your results extend the findings of previous studies.
+% If your findings are preliminary, suggest future studies that need to be carried out.
+% At the end of your Discussion and Conclusions sections, state your main conclusions once again.

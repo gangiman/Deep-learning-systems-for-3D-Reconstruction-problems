@@ -1,0 +1,548 @@
+%% ----------------------------------------------------------------
+%% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
+%% ----------------------------------------------------------------
+
+% Set up the document
+\documentclass[a4paper, 11pt, oneside]{Thesis}  % Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
+\graphicspath{Figures/}  % Location of the graphics files (set up for graphics to be in PDF format)
+
+
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{fancyvrb}
+% Include any extra LaTeX packages required
+\usepackage[square, authoryear, comma]{natbib}  % 
+%Use the "Natbib" style for the references in the Bibliography
+%\usepackage[backend=biber,style=alphabetic,sorting=nyt]{biblatex}
+\usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
+\usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
+\hypersetup{urlcolor=blue, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
+
+\newcommand{\bilinearroot}{Chapters/bilinear}
+
+\newcommand{\fig}[1]{Figure~\ref{fig:#1}}
+\newcommand{\pr}[1]{Problem~\ref{pr:#1}}
+\newcommand{\sect}[1]{Section~\ref{sect:#1}}
+\newcommand{\chapt}[1]{Chapter~\ref{chapt:#1}}
+\newcommand{\tab}[1]{Table~\ref{tab:#1}}
+\newcommand{\alg}[1]{Algorithm~\ref{alg:#1}}
+\newcommand{\eq}[1]{(\ref{eq:#1})}
+\newcommand*{\tran}{^{\mkern-1.5mu\mathsf{T}}}
+\usepackage{verbatimbox}
+\usepackage{todonotes}
+\usepackage{gensymb}
+\usepackage{enumitem}
+
+%\usepackage{subfigure}
+\usepackage{graphicx}
+%\usepackage{caption}
+\usepackage{subcaption}
+\newcommand{\ie}{\textit{i}.\textit{e}.,}
+\newcommand{\eg}{\textit{e}.\textit{g}.,}
+%\newcommand{\todo}[1][]{\@latex@warning{TODO #1}\fbox{TODO\dots}}
+
+
+\usepackage{tabularx,lipsum,environ,amsmath,amssymb}
+\newcounter{problemcounter}
+\renewcommand{\theproblemcounter}{\arabic{problemcounter}}
+\makeatletter
+\newcommand{\problemtitle}[1]{\gdef\@problemtitle{#1}}% Store problem title
+\newcommand{\probleminput}[1]{\gdef\@probleminput{#1}}% Store problem input
+\newcommand{\problemquestion}[1]{\gdef\@problemquestion{#1}}% Store problem question
+\NewEnviron{problem}{
+\refstepcounter{problemcounter}
+\label{#1}%
+
+   \problemtitle{}
+   \probleminput{}\problemquestion{}% Default input is empty
+  \BODY% Parse input
+  \par\addvspace{.5\baselineskip}
+  \noindent
+  \begin{tabularx}{\textwidth}{@{\hspace{\parindent}} l X c}
+    \multicolumn{2}{@{\hspace{\parindent}}l}{Problem~\theproblemcounter. \textit{\@problemtitle}} \\% Title
+    \hline
+    \textbf{Input:} & \@probleminput \\% Input
+    \textbf{Task:} & \@problemquestion% Question
+    \\\hline
+  \end{tabularx}
+  \par\addvspace{.5\baselineskip}
+}
+
+%\usepackage{amsmath,amssymb} % define this before the line numbering.
+%\usepackage{placeins}
+%\usepackage{color}
+%\usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
+%\usepackage{subfigure}
+%\usepackage{subcaption}
+%\usepackage{xr-hyper}
+%\usepackage[colorlinks=true]{hyperref}
+%\usepackage{textcomp}
+
+% Tikz-related stuff.
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{calc}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{fit}
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{3d}
+
+% PGF-plots-related stuff.
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+
+% \usepgfplotslibrary{external}
+% \tikzexternalize
+
+\usepackage{nomencl}
+\makenomenclature
+\renewcommand{\nomname}{List of Abbreviations}
+
+\newcommand{\Sp}{{\mathcal S}^{+}}
+\newcommand{\Sgen}{{\mathcal S}}
+\newcommand{\Sm}{{\mathcal S}^{-}}
+\newcommand{\spr}[2]{{\langle{}#1,#2\rangle}}
+\newcommand{\prp}{p^{+}}
+\newcommand{\prm}{p^{-}}
+\newcommand{\Hp}{H^{+}}
+\newcommand{\Hm}{H^{-}}
+\newcommand{\hp}{h^{+}}
+\newcommand{\hm}{h^{-}}
+
+%%%%%%%%GRADREV HEADER
+
+  
+    \usepackage{subfig}
+    \usepackage{algorithm}
+    \usepackage{algorithmic}
+    \usepackage{amsmath}
+    \usepackage{amssymb}
+    \usepackage{amsfonts}
+    \usepackage{dsfont}
+    \usepackage{xspace}
+    \usepackage{xr}
+    \usepackage{multirow}
+    \usepackage{multicol}
+    \usepackage{siunitx}
+    \usepackage{afterpage}
+    \usepackage{bbm}
+    \usepackage{enumerate}
+    \usepackage{booktabs}
+    \usepackage{natbib}
+    \usepackage{soul}
+    \usepackage{mathtools}
+    %\usepackage[colorlinks=false,allbordercolors={1 1 1}]{hyperref}
+    %\usepackage[hidelinks]{hyperref}
+    
+    % Moscow header
+  %  \newcommand{\theHalgorithm}{\arabic{algorithm}}
+    \newcommand{\dataset}{{\cal D}}
+    \newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
+    
+     
+    \def\x{{\mathbf x}}
+    \def\f{{\mathbf f}}
+    
+    \def\S{{\cal S}}
+    \def\T{{\cal T}}
+    
+    \def\R{{\mathds R}}
+    
+    \def\tf{{\theta_f}}
+    \def\td{{\theta_d}}
+    \def\ty{{\theta_y}}
+    \def\htf{{\hat\theta_f}}
+    \def\htd{{\hat\theta_d}}
+    \def\hty{{\hat\theta_y}}
+    \newcommand{\ys}{y}
+    \newcommand{\yt}{y}
+
+    % uncertainty is separated with a "plus-minus" symbol
+    \sisetup{separate-uncertainty=true}
+    
+    \usepackage{tikz}
+    \usetikzlibrary{positioning}
+    \usetikzlibrary{calc}
+    
+    \usepackage{pgfplots}
+    \pgfplotsset{compat=newest} 
+    \pgfplotsset{plot coordinates/math parser=false}
+    
+    % This is needed for plots.
+    \newlength\figureheight
+    \newlength\figurewidth
+    
+    
+    %\newcommand{\subfig}[1]{{\em(#1)}}
+    
+    %\renewcommand{\topfraction}{0.85}
+    %\renewcommand{\textfraction}{0.1}
+    %\renewcommand{\floatpagefraction}{0.85}
+    %\parskip 0pt
+    
+    \makeatletter
+    \newcommand{\todo}[1][]{\@latex@warning{TODO #1}\fbox{TODO\dots}}
+    \makeatother
+    
+    
+    % Quebec's header
+    
+    
+    \newcommand{\phib}{{\pmb \phi}}
+    \newcommand{\uu}{{\mathbf{u}}}
+    %\renewcommand{\ww}{\uu}
+    
+    \newcommand{\redplus}{``\red{$\boldsymbol{{+}}$}''}
+    \newcommand{\greenminus}{``\green{$\boldsymbol{{\pmb{-}}}$}''}
+    
+    % To harmonize the transatlantic notation! 
+    \renewcommand{\eqdef}{=}
+    \newcommand{\Acal}{{\mathcal{A}}}
+    \newcommand{\Xcal}{{\mathcal{X}}}
+    \newcommand{\Ycal}{{\mathcal{Y}}}
+    \newcommand{\Lcal}{{\mathcal{L}}}
+    \newcommand{\Dcal}{{\mathcal{D}}}
+    \newcommand{\Hcal}{{\mathcal{H}}}
+    \renewcommand{\Xcal}{X}
+    \renewcommand{\Ycal}{Y}
+    \newcommand{\dsum}{\displaystyle\sum}
+    \newcommand{\dprod}{\displaystyle\prod}
+    
+    
+    \DeclareMathOperator*{\argmax}{\mathrm{argmax}}
+    \DeclareMathOperator*{\argmin}{\mathrm{argmin}}
+    
+    \newcommand{\DS}{{\Dcal_\textsc{S}}}
+    \newcommand{\DT}{{\Dcal_\textsc{T}}}
+    \newcommand{\DSX}{{\Dcal_\textsc{S}^{_\Xcal}}}
+    \newcommand{\DTX}{{\Dcal_\textsc{T}^{_\Xcal}}}
+    
+    \newcommand{\RDS}{R_{\DS}}
+    \newcommand{\RDT}{R_{\DT}}
+    \newcommand{\RS}{R_{S}}
+    \newcommand{\RD}{R_{D}}
+    \renewcommand{\S}{\DSX}
+    \renewcommand{\T}{\DTX}
+    \newcommand{\xb}{{\mathbf x}}
+    \newcommand{\yb}{{\mathbf y}}
+
+
+
+\usepackage{nomencl}
+\makenomenclature
+ 
+\renewcommand{\nomname}{List of abbreviations}
+
+%%%%%%%%
+\def\mystrut{\rule[-.3\baselineskip]{0pt}{0.5\baselineskip}}
+
+\input{colors}
+
+%% ----------------------------------------------------------------
+\begin{document}
+
+\begin{titlepage}
+ \begin{center}
+ \phantom{a}\vspace{3.2cm}
+ 
+\includegraphics[width=6cm]{sk.png}
+  
+  \large% SKOLKOVO INSTITUTE OF SCIENCE AND TECHNOLOGY
+  \vspace{3.2cm}
+  
+  {\LARGE\bf Deep learning systems for 3D Reconstruction problems}
+  \vspace{3cm}
+  
+  { \sl Doctoral Thesis\medskip
+  
+  by}\medskip
+  
+  Alexandr Notchenko
+  \vspace{2cm}
+
+  
+  
+  
+ \end{center}
+
+\end{titlepage}
+
+
+\frontmatter      % Begin Roman style (i, ii, iii, iv...) page numbering
+
+% Set up the Title Page
+\title  {Deep learning systems for 3D Reconstruction problems}
+\authors  {Alexandr Notchenko}
+\addresses  {\groupname\\\deptname\\\univname}  % Do not change this here, instead these must be set in the "Thesis.cls" file, please look through it instead
+\date       {\today}
+\subject    {}
+\keywords   {}
+
+\maketitle
+%% ----------------------------------------------------------------
+
+\setstretch{1.3}  % It is better to have smaller font and larger line spacing than the other way round
+
+% Define the page headers using the FancyHdr package and set up for one-sided printing
+\fancyhead{}  % Clears all page headers and footers
+\rhead{\thepage}  % Sets the right side header to show the page number
+\lhead{}  % Clears the left side page header
+
+\pagestyle{fancy}  % Finally, use the "fancy" page style to implement the FancyHdr headers
+
+%% ----------------------------------------------------------------
+% Declaration Page required for the Thesis, your institution may give you a different text to place here
+%\Declaration{
+
+%\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+%I, AUTHOR NAME, declare that this thesis titled, `THESIS TITLE' and the work presented in it are my own. I confirm that:
+
+%\begin{itemize}
+%\item[\tiny{$\blacksquare$}] This work was done wholly or mainly while in candidature for a research degree at this University.
+
+%\item[\tiny{$\blacksquare$}] Where any part of this thesis has previously been submitted for a degree or any other qualification at this University or any other institution, this has been clearly stated.
+
+%\item[\tiny{$\blacksquare$}] Where I have consulted the published work of others, this is always clearly attributed.
+
+%\item[\tiny{$\blacksquare$}] Where I have quoted from the work of others, the source is always given. With the exception of such quotations, this thesis is entirely my own work.
+
+%\item[\tiny{$\blacksquare$}] I have acknowledged all main sources of help.
+
+%\item[\tiny{$\blacksquare$}] Where the thesis is based on work done by myself jointly with others, I have made clear exactly what was done by others and what I have contributed myself.
+%\\
+%\end{itemize}
+
+
+%Signed:\\
+%\rule[1em]{25em}{0.5pt}  % This prints a line for the signature
+
+%Date:\\
+%\rule[1em]{25em}{0.5pt}  % This prints a line to write the date
+%}
+%\clearpage  % Declaration ended, now start a new page
+
+%% ----------------------------------------------------------------
+% The "Funny Quote Page"
+%\pagestyle{empty}  % No headers or footers for the following pages
+
+%\null\vfill
+% Now comes the "Funny Quote", written in italics
+%\textit{``You're just too good to be true \\
+%Can't take my eyes off you.''}
+
+%\begin{flushright}
+%Bob Crewe, Bob Gaudio
+%\end{flushright}
+
+%\vfill\vfill\vfill\vfill\vfill\vfill\null
+%\clearpage  % Funny Quote page ended, start a new page
+%% ----------------------------------------------------------------
+
+% The Abstract Page
+\addtotoc{Abstract}  % Add the "Abstract" page entry to the Contents
+\abstract{
+\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+This work considers two popular human recognition problems,   namely, person re-identification and face recognition. For both of these tasks, similarity estimation for pairs of images is the core problem. Generally, no examples of test identities are exposed
+during the training stage, so the system should be able to learn the similarity concept from the training data and to generalize it onto unseen identities.
+
+Training of siamese neural networks is at the center of this work. Provided with an appropriate objective function, they are able to learn a mapping from an input image space to a high-dimensional descriptor space in such a way that the semantic similarity of input images can be estimated using Euclidean distance or angular similarity between the corresponding embeddings (descriptors). Three important aspects of building siamese deep neural networks for person re-identification are considered: the architecture design, the objective function design, and deep domain adaptation techniques. Domain adaptation is additionally considered for face recognition. 
+
+While deep learning has approached human performance in face recognition, the results for person re-identification have been relatively modest during recent time. Two improvements related to training siamese neural networks for person re-identification are suggested in this work. First of them is a loss function for siamese training, called Histogram loss. The new loss does not introduce parameters that need to be tuned and shows favorable results across a range of datasets and problems compared to recently proposed alternatives. Second, a new architecture for person re-identification is suggested. As the task of re-identification is inherently associated with non-rigid appearance description, the suggested architecture is based on the deep bilinear convolutional network (Bilinear CNN) that has been proposed recently for fine-grained classification of highly non-rigid objects. Finally, domain adaptation is addressed for both person re-identification and a special case of face recognition related to using surveillance data at the test stage. Domain adversarial training is adopted for person re-identification and shown to improve the results in the cross-domain setting. Feature-level and more recent image-level deep adaptation techniques are evaluated and viable strategies are suggested for surveillance face recognition.
+
+
+
+}
+
+\clearpage  % Abstract ended, start a new page
+%% ----------------------------------------------------------------
+
+{\large
+ List of publications:}
+
+
+
+\begin{itemize}
+    \item 
+Yaroslav Ganin, Evgeniya Ustinova, Hana Ajakan, Pascal Germain, Hugo Larochelle, Fran\c{c}ois Laviolette, Mario Marchand and Victor Lempitsky. Domain-adversarial training of neural networks. The Journal of Machine Learning Research, JMLR, 17(1), pages 2096-2030, 2016.
+ \textit{Personal contribution: developing the variant of the method for similarity learning, designing and conducting the experiments for person re-identification, text writing (partially)}
+           
+    \item
+Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram loss. Advances in Neural Information Processing Systems, NIPS, 2016.
+\textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing (partially).}
+       
+    \item
+    Evgeniya Ustinova, Yaroslav Ganin and Victor Lempitsky,  Multi-region bilinear convolutional neural networks for person re-identification. IEEE International Conference on Advanced Video Signal-based Surveillance, AVSS, 2017.
+    \textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing (partially).}
+    
+\end{itemize}
+
+\clearpage
+\setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
+
+% The Acknowledgements page, for thanking everyone
+%\acknowledgements{
+%\addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
+
+%The acknowledgements and the people to thank go here, don't forget to include your project advisor\ldots
+
+%}
+%\clearpage  % End of the Acknowledgements
+%% ----------------------------------------------------------------
+
+\pagestyle{fancy}  %The page style headers have been "empty" all this time, now use the "fancy" headers as defined before to bring them back
+
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{Contents}}  % Set the left side page header to "Contents"
+\tableofcontents  % Write out the Table of Contents
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Figures}}  % Set the left side page header to "List if Figures"
+%\listoffigures  % Write out the List of Figures
+
+%% ----------------------------------------------------------------
+%\lhead{\emph{List of Tables}}  % Set the left side page header to "List of Tables"
+%\listoftables  % Write out the List of Tables
+
+%% ----------------------------------------------------------------
+\setstretch{1.5}  % Set the line spacing to 1.5, this makes the following tables easier to read
+
+%\clearpage  % Start a new page
+%\lhead{\emph{Abbreviations}}  % Set the left side page header to "Abbreviations"
+%\listofsymbols{ll}  % Include a list of Abbreviations (a table of two columns)
+%{
+% \textbf{Acronym} & \textbf{W}hat (it) \textbf{S}tands \textbf{F}or \\
+%\textbf{LAH} & \textbf{L}ist \textbf{A}bbreviations \textbf{H}ere \\
+%
+%}
+
+%% ----------------------------------------------------------------
+%\clearpage  % Start a new page
+%\lhead{\emph{Physical Constants}}  % Set the left side page header to "Physical Constants"
+%\listofconstants{lrcl}  % Include a list of Physical Constants (a four column table)
+%{
+% Constant Name & Symbol & = & Constant Value (with units) \\
+%Speed of Light & $c$ & $=$ & $2.997\ 924\ 58\times10^{8}\ \mbox{ms}^{-\mbox{s}}$ (exact)\\
+
+%}
+
+%% ----------------------------------------------------------------
+%\clearpage  %Start a new page
+%\lhead{\emph{Symbols}}  % Set the left side page header to "Symbols"
+%\listofnomenclature{lll}  % Include a list of Symbols (a three column table)
+%{
+% symbol & name & unit \\
+%$a$ & distance & m \\
+%$P$ & power & W (Js$^{-1}$) \\
+%& & \\ % Gap to separate the Roman symbols from the Greek
+%$\omega$ & angular frequency & rads$^{-1}$ \\
+%}
+%% ----------------------------------------------------------------
+% End of the pre-able, contents and lists of things
+% Begin the Dedication page
+
+\setstretch{1.3}  % Return the line spacing back to 1.3
+
+%\pagestyle{empty}  % Page style needs to be empty for this page
+%\dedicatory{For/Dedicated to/To my\ldots}
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+
+
+%% ----------------------------------------------------------------
+\mainmatter	  % Begin normal, numeric (1,2,3...) page numbering
+\pagestyle{fancy}  % Return the page headers back to the "fancy" style
+
+% Include the chapters of the thesis, as separate files
+% Just uncomment the lines as you write the chapters
+
+
+
+
+\nomenclature{CNN}{Convolutional Neural Network}
+\nomenclature{PCA}{Principal Component Analysis}
+\nomenclature{t-SNE}{t-distributed Stochastic Neighbor Embedding}
+
+\nomenclature{CMC curve}{Cumulative Matching Characteristic curve}
+\nomenclature{SGD}{Stochastic Gradient Descent}
+\nomenclature{ReLU}{Rectified Linear Unit}
+\nomenclature{CycleGAN}{Cycle-Consistent Generative Adversarial Network}
+\nomenclature{DML}{Deep Metric Learning}
+\nomenclature{LSSS loss}{Lifted Structured Softmax Similarity loss} 
+ 
+ 
+\printnomenclature
+
+
+\input{intro.tex}
+\newpage 
+\input{related_new.tex}
+
+\newpage 
+\input{Chapters/histloss/hist-paper}
+\newpage 
+\input{Chapters/bilinear/bilinear-paper}
+\newpage 
+\input{Chapters/gradrev/main}
+\newpage 
+\input{Chapters/facev1/main}
+\newpage 
+\input{conclusion}
+
+
+%% ----------------------------------------------------------------
+% Now begin the Appendices, including them as separate files
+
+\addtocontents{toc}{\vspace{2em}} % Add a gap in the Contents, for aesthetics
+
+\appendix 
+
+%\mbox{}
+ 
+
+
+
+% Cue to tell LaTeX that the following 'chapters' are Appendices
+
+%\input{Appendices/AppendixA}	% Appendix Title
+
+%\input{Appendices/AppendixB} % Appendix Title
+
+%\input{Appendices/AppendixC} % Appendix Title
+
+\addtocontents{toc}{\vspace{2em}}  % Add a gap in the Contents, for aesthetics
+\backmatter
+
+%% ----------------------------------------------------------------
+\label{Bibliography}
+\lhead{\emph{Bibliography}}  % Change the left side page header to "Bibliography"
+\bibliographystyle{plainnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
+\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+
+
+\begin{titlepage}
+ \begin{center}
+ \phantom{a}\vspace{13.2cm}
+ 
+\includegraphics[width=6cm]{sk.png}
+  
+ 
+  \vspace{7cm}
+  
+  2019
+
+  \vspace{2cm}
+
+  
+  
+  
+ \end{center}
+
+\end{titlepage}
+\end{document}  % The End
+%% ---------------------------------------------------------------- 
