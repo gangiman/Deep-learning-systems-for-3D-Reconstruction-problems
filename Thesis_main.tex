@@ -347,12 +347,15 @@
 \abstract{
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
-This work considers two popular human recognition problems,   namely, person re-identification and face recognition. For both of these tasks, similarity estimation for pairs of images is the core problem. Generally, no examples of test identities are exposed
-during the training stage, so the system should be able to learn the similarity concept from the training data and to generalize it onto unseen identities.
 
-Training of siamese neural networks is at the center of this work. Provided with an appropriate objective function, they are able to learn a mapping from an input image space to a high-dimensional descriptor space in such a way that the semantic similarity of input images can be estimated using Euclidean distance or angular similarity between the corresponding embeddings (descriptors). Three important aspects of building siamese deep neural networks for person re-identification are considered: the architecture design, the objective function design, and deep domain adaptation techniques. Domain adaptation is additionally considered for face recognition. 
+This work considers 3D reconstruction problems, mainly a task of recreating a scene with many objects of different nature such as indoor structure of buildings, furniture, common objects and human bodies. Current state of the art systems are highly specialised in processing a specific subset of objects similar in their spatial and visual nature, and dont generalize well outside of it.
 
-While deep learning has approached human performance in face recognition, the results for person re-identification have been relatively modest during recent time. Two improvements related to training siamese neural networks for person re-identification are suggested in this work. First of them is a loss function for siamese training, called Histogram loss. The new loss does not introduce parameters that need to be tuned and shows favorable results across a range of datasets and problems compared to recently proposed alternatives. Second, a new architecture for person re-identification is suggested. As the task of re-identification is inherently associated with non-rigid appearance description, the suggested architecture is based on the deep bilinear convolutional network (Bilinear CNN) that has been proposed recently for fine-grained classification of highly non-rigid objects. Finally, domain adaptation is addressed for both person re-identification and a special case of face recognition related to using surveillance data at the test stage. Domain adversarial training is adopted for person re-identification and shown to improve the results in the cross-domain setting. Feature-level and more recent image-level deep adaptation techniques are evaluated and viable strategies are suggested for surveillance face recognition.
+Computing relevant spatial features for sensor data is a crucial problem for Deep Learning based 3D reconstruction pipelines. Choice of scene representation for predictions and reconstructions also imensly importnant. Controling the domain to which different models compute predictions from sensor data, leads to a new level of quality, accuracy and applicability. This work pruposes a conceptual framework which unifyes 3D reconstruction models and provides ways to improve these models to solve their repsective tasks.
+
+
+While deep learning has approached super-human performance in 2D image recognition, the results for 3D reconstruction have been relatively modest during recent years. Multiple improvements to 3D reconstruction methods are presented in this work.
+
+% Two improvements related to training siamese neural networks for person re-identification are suggested in this work. First of them is a loss function for siamese training, called Histogram loss. The new loss does not introduce parameters that need to be tuned and shows favorable results across a range of datasets and problems compared to recently proposed alternatives. Second, a new architecture for person re-identification is suggested. As the task of re-identification is inherently associated with non-rigid appearance description, the suggested architecture is based on the deep bilinear convolutional network (Bilinear CNN) that has been proposed recently for fine-grained classification of highly non-rigid objects. Finally, domain adaptation is addressed for both person re-identification and a special case of face recognition related to using surveillance data at the test stage. Domain adversarial training is adopted for person re-identification and shown to improve the results in the cross-domain setting. Feature-level and more recent image-level deep adaptation techniques are evaluated and viable strategies are suggested for surveillance face recognition.
 
 
 
@@ -365,21 +368,41 @@ While deep learning has approached human performance in face recognition, the re
  List of publications:}
 
 
-
 \begin{itemize}
-    \item 
-Yaroslav Ganin, Evgeniya Ustinova, Hana Ajakan, Pascal Germain, Hugo Larochelle, Fran\c{c}ois Laviolette, Mario Marchand and Victor Lempitsky. Domain-adversarial training of neural networks. The Journal of Machine Learning Research, JMLR, 17(1), pages 2096-2030, 2016.
- \textit{Personal contribution: developing the variant of the method for similarity learning, designing and conducting the experiments for person re-identification, text writing (partially)}
-           
     \item
-Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram loss. Advances in Neural Information Processing Systems, NIPS, 2016.
-\textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing (partially).}
-       
+    % A. Notchenko, E. Kapushev, \& E. Burnaev. Large-Scale Shape Retrieval with Sparse 3D Convolutional Neural Networks // AIST-2017, Lecture Notes in Computer Science, Springer
+    Alexandr Notchenko, Yermek Kapushev, and Evgeny Burnaev. "Large-scale shape retrieval with sparse 3d convolutional neural networks." In International Conference on Analysis of Images, Social Networks and Texts, pp. 245-254. Springer, Cham, 2017.
+    \textit{Personal contribution: developing the variant of the method for shape retrieval, designing and conducting the experiments for feature learning, text writing}
+
     \item
-    Evgeniya Ustinova, Yaroslav Ganin and Victor Lempitsky,  Multi-region bilinear convolutional neural networks for person re-identification. IEEE International Conference on Advanced Video Signal-based Surveillance, AVSS, 2017.
-    \textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing (partially).}
+    % Voinov, O., Artemov, A., Egiazarian, V., Notchenko, A., Bobrovskikh, G., Zorin, D., \& Burnaev, E. Perceptual Deep Depth Super-Resolution. Proceedings of the IEEE international conference on computer vision. 2019.
+    Oleg Voynov, Alexey Artemov, Vage Egiazarian, Alexander Notchenko, Gleb Bobrovskikh, Evgeny Burnaev, and Denis Zorin. "Perceptual deep depth super-resolution." In Proceedings of the IEEE International Conference on Computer Vision, pp. 5653-5663. 2019.
+    \textit{Personal contribution: existing approaches analysis, conducting the experiments, text writing.}
     
+    \item
+    Rakhimov, R, Bogomolov, E, Notchenko, A, Mao, F, Artemov, A, Zorin, D, Burnaev, E. Making DensePose fast and light. Proceedings of the IEEE Winter Conference on Applications of Computer Vision 2021.
+    \textit{Personal contribution: existing approaches analysis, method development, designing the experiments, text writing.}
+
+    \item 
+    Alexander Notchenko, Vladislav Ishimtzev, Alexey Bokhovkin, Alexey Artemov, Denis Zorin, and Evgeny Burnaev. Part Segmentation of the real-world 3D Scenes. (unpublished) 2021.
+    \textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing.}
 \end{itemize}
+
+
+% \begin{itemize}
+%     \item 
+% Yaroslav Ganin, Evgeniya Ustinova, Hana Ajakan, Pascal Germain, Hugo Larochelle, Fran\c{c}ois Laviolette, Mario Marchand and Victor Lempitsky. Domain-adversarial training of neural networks. The Journal of Machine Learning Research, JMLR, 17(1), pages 2096-2030, 2016.
+%  \textit{Personal contribution: developing the variant of the method for similarity learning, designing and conducting the experiments for person re-identification, text writing (partially)}
+           
+%     \item
+% Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram loss. Advances in Neural Information Processing Systems, NIPS, 2016.
+% \textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing (partially).}
+       
+%     \item
+%     Evgeniya Ustinova, Yaroslav Ganin and Victor Lempitsky,  Multi-region bilinear convolutional neural networks for person re-identification. IEEE International Conference on Advanced Video Signal-based Surveillance, AVSS, 2017.
+%     \textit{Personal contribution: existing approaches analysis, method development, designing and conducting the experiments, text writing (partially).}
+    
+% \end{itemize}
 
 \clearpage
 \setstretch{1.3}  % Reset the line-spacing to 1.3 for body text (if it has changed)
@@ -465,15 +488,15 @@ Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram 
 
 
 \nomenclature{CNN}{Convolutional Neural Network}
-\nomenclature{PCA}{Principal Component Analysis}
+% \nomenclature{PCA}{Principal Component Analysis}
 \nomenclature{t-SNE}{t-distributed Stochastic Neighbor Embedding}
 
-\nomenclature{CMC curve}{Cumulative Matching Characteristic curve}
+% \nomenclature{CMC curve}{Cumulative Matching Characteristic curve}
 \nomenclature{SGD}{Stochastic Gradient Descent}
 \nomenclature{ReLU}{Rectified Linear Unit}
-\nomenclature{CycleGAN}{Cycle-Consistent Generative Adversarial Network}
+% \nomenclature{CycleGAN}{Cycle-Consistent Generative Adversarial Network}
 \nomenclature{DML}{Deep Metric Learning}
-\nomenclature{LSSS loss}{Lifted Structured Softmax Similarity loss} 
+% \nomenclature{LSSS loss}{Lifted Structured Softmax Similarity loss} 
  
  
 \printnomenclature
@@ -481,18 +504,17 @@ Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram 
 
 \input{intro.tex}
 \newpage 
-\input{related_new.tex}
-
+\input{related.tex}
 \newpage 
-\input{Chapters/histloss/hist-paper}
-\newpage 
-\input{Chapters/bilinear/bilinear-paper}
-\newpage 
-\input{Chapters/gradrev/main}
-\newpage 
-\input{Chapters/facev1/main}
-\newpage 
-\input{conclusion}
+% \input{Chapters/histloss/hist-paper}
+% \newpage 
+% \input{Chapters/bilinear/bilinear-paper}
+% \newpage 
+% \input{Chapters/gradrev/main}
+% \newpage 
+% \input{Chapters/facev1/main}
+% \newpage 
+% \input{conclusion}
 
 
 %% ----------------------------------------------------------------
@@ -534,7 +556,7 @@ Evgeniya Ustinova and Victor Lempitsky. Learning deep embeddings with histogram 
  
   \vspace{7cm}
   
-  2019
+  2020
 
   \vspace{2cm}
 
