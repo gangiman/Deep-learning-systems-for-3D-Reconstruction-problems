@@ -1,0 +1,77 @@
+\section{Sparse Neural Networks}
+\label{sec:3}
+Using sparsity to make a neural network computations more efficient is pioneered by Benjamin Graham \cite{graham2014spatially}, who developed a low-level C++/CUDA library SparseConvNet\footnote{\url{https://github.com/btgraham/SparseConvNet}} that implements strided convolutions and max-pooling operations on a $D$-dimensional sparse tensors using GPU. Due to this inherited sparsity we are able to process data in reasonable training and inference time even with input resolution up to hundreds of voxels.
+More precisely an information about voxels in a given layer is not stored in a 3-dimensional array, but in a sparse vector with active cells as elements.
+
+Transformation of data between layers (e.g. convolutions, pooling, nonlinear activation functions), are performed on those sparse vectors. Data in areas with inactive voxels, which are most of them, does not depend on a voxel relative position, therefore it can be replaced by vectors of a smaller size without explicit spatial dimensions.
+
+It's well known that, operating with a sparse data structures is more efficient than working with dense data.
+Another useful property is that we need to store much less data for each object.
+We have computed sparsity for all classes of ModelNet40 train dataset at voxel resolution equal to 40, and it's only 5.5\%.
+
+Paper \cite{wu20153d} describes using 3D convolutions for their deep model.
+Voxel labeled as active when it's intersects with a mesh object, and inactive otherwise.
+This binary representation of 3D shape given as input to a 3D CNN, which has a structure similar to a 2D one.
+The main problem of this approach is ineffectiveness with which data is represented and processed.
+Mentioned model uses $30^3$ cells, which is approximately the number of pixels in 2D applications of CNN.
+If we take into account linear dimensions it's obviously not a lot, as can be seen from Figure~\ref{fig:voxels-examples}.
+That resolution was primarily chosen because of computational resource limitation.
+Besides that, --- convolution is very computationally expensive operation, complexity of which rises very fast with input scale.
+Computational complexity of 3D convolution for image with dimensions of $N \times M \times K$ with filters sizes of $n \times m \times k$ is equal to $\mathcal{O}(NMKnmk)$.
+If we use Fast Fourier Transform (FFT), complexity can be reduced to  $\mathcal{O}((N + n)(M + m)(K + k)\log((N + n)(M + m)(K + k)))$
+in exchange for more memory cost \cite{mathieu2013fast}.
+But even in that case, complexity of convolutions makes it impossible to work with objects in big voxel resolutions.
+
+\subsection{PySparseConvNet}
+
+The SparseConvNet Library is written in C++ programming language, and utilizes a lot of CUDA capabilities for speed and efficiency. But it is very limited when it comes to 
+\begin{itemize}
+\item extending functionality --- class structure and CUDA kernels are very complex, and require re-compilation on every modification,
+\item changing loss functions --- the only learning configuration was SoftMax with log-likelihood loss function,
+\item fine grained access to layer activations --- there was no way to extract activations and therefore features from hidden layers,
+\item interactivity for models exploration --- every experiment had to be a compiled binary with no way to perform operations step by step, to explore properties of models.
+\end{itemize}
+
+Because of all these problems we developed PySparseConvNet\footnote{\url{https://github.com/gangiman/PySparseConvNet}}.
+On implementation level it's a python compiled module that can be used by Python interpreter, and harness all of it's powerful features. Most of modern Deep Learning tools, such as \cite{2016arXiv160502688short,tensorflow2015-whitepaper,tokui2015chainer}, use Python as a way to perform interactive computing.
+
+Interface of PySparseConvNet is much simpler, and consist's of 4 classes:
+
+\begin{itemize}
+\item \textbf{SparseNetwork} --- Network object class, it has all the methods to change it's structure, manipulate weights and activations,
+\item \textbf{SparseDataset} --- Container class for sparse samples and their labels,
+\item \textbf{SparseBatch} --- Gives access to data in dataset when processing separate mini-batches,
+\item \textbf{Off3DPicture} --- Wrapper class for 3D models in OFF (Object File Format), used to voxelize samples to be processed by SparseNetwork.
+\end{itemize}
+
+\begin{table}
+\centering{}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+layer \#  & layer type & size  & stride & channels & spatial size & sparsity (\%)\footnotemark \tabularnewline
+\hline
+0 & Data input & - & - & 1 & 126 & 0.18 \tabularnewline
+1 & Sparse Convolution & 2 & 1 & 8 & 125 & - \tabularnewline
+2 & Leaky ReLU ($\alpha$ = 0.33) & - & - & 32 & 125 & 0.35 \tabularnewline
+3 & Sparse MaxPool & 3 & 2 & 32 & 62 & 0.69 \tabularnewline
+4 & Sparse Convolution & 2 & 1 & 256 & 61 & - \tabularnewline
+5 & Leaky ReLU ($\alpha$ = 0.33) & - & - & 64 & 61 & 1.07 \tabularnewline
+6 & Sparse MaxPool & 3 & 2 & 64 & 30 & 1.93 \tabularnewline
+7 & Sparse Convolution & 2 & 1 & 512 & 29 & - \tabularnewline
+8 & Leaky ReLU ($\alpha$ = 0.33) & - & - & 96 & 29 & 3.26 \tabularnewline
+9 & Sparse MaxPool & 3 & 2 & 96 & 14 & 7.32 \tabularnewline
+10 & Sparse Convolution & 2 & 1 & 768 & 13 & - \tabularnewline
+11 & Leaky ReLU ($\alpha$ = 0.33) & - & - & 128 & 13 & 15.14 \tabularnewline
+12 & Sparse MaxPool & 3 & 2 & 128 & 6 & 46.30 \tabularnewline
+13 & Sparse Convolution & 2 & 1 & 1024 & 5 & - \tabularnewline
+14 & Leaky ReLU ($\alpha$ = 0.33) & - & - & 160 & 5 & 97.54 \tabularnewline
+15 & Sparse MaxPool & 3 & 2 & 160 & 2 & 100.00 \tabularnewline
+16 & Sparse Convolution & 2 & 1 & 1280 & 1 & - \tabularnewline
+17 & Leaky ReLU ($\alpha$ = 0.33) & - & - & 192 & 1 & 100.00 \tabularnewline
+\hline
+\end{tabular}
+\caption{S3DCNN Network architecture.}
+\label{tab:net-architecture}
+\end{table}
+
+\footnotetext{Last column ``sparsity'' is computed for render size = $40$ and averaged for all samples}

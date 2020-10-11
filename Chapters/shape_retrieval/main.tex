@@ -1,0 +1,83 @@
+% \documentclass{llncs}
+
+% % if you need to pass options to natbib, use, e.g.:
+% % \PassOptionsToPackage{numbers, compress}{natbib}
+% % before loading nips_2016
+% %
+% % to avoid loading the natbib package, add option nonatbib:
+% % \usepackage[nonatbib]{nips_2016}
+
+% % \usepackage[final]{nips_2016}
+% % \usepackage[final]{3ddl}
+
+% % to compile a camera-ready version, add the [final] option, e.g.:
+% % \usepackage[final]{nips_2016}
+
+% \usepackage[utf8]{inputenc} % allow utf-8 input
+% \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+% \usepackage{hyperref}       % hyperlinks
+% \usepackage{url}            % simple URL typesetting
+% \usepackage{booktabs}       % professional-quality tables
+% \usepackage{amsfonts}       % blackboard math symbols
+% \usepackage{amsmath}       % blackboard math symbols
+% \usepackage{nicefrac}       % compact symbols for 1/2, etc.
+% \usepackage{microtype}      % microtypography
+% \usepackage{graphicx}
+% % \usepackage{caption}
+% % \usepackage[justification=centering]{caption}
+% % \usepackage{subcaption}
+% \usepackage{wrapfig}
+
+% \title{Large-Scale Shape Retrieval with Sparse 3D Convolutional Neural Networks}
+
+% % The \author macro works with any number of authors. There are two
+% % commands used to separate the names and addresses of multiple
+% % authors: \And and \AND.
+% %
+% % Using \And between authors leaves it to LaTeX to determine where to
+% % break the lines. Using \AND forces a line break at that point. So,
+% % if LaTeX puts 3 of 4 authors names on the first line, and the last
+% % on the second line, try using \AND instead of \And before the third
+% % author name.
+
+
+% \author{Alexandr Notchenko\inst{1}\inst{2} \and Yermek Kapushev\inst{1}\inst{2}
+% \and Evgeny Burnaev\inst{1}
+% }
+
+% \institute{
+% Skolkovo Institute of Science and Technology,\\
+% \email{\{alexandr.notchenko, yermek.kapushev\}@skolkovotech.ru} \\
+% % \email{ermek.kapushev@skolkovotech.ru}
+% \email{e.burnaev@skoltech.ru}
+% \and
+% Institute of Information Transmission Problems}
+
+% % \maketitle
+
+% \begin{document}
+% % \nipsfinalcopy is no longer used
+
+% \maketitle
+
+% \begin{abstract}
+%   In this paper we present results of performance evaluation of S3DCNN --- a Sparse 3D Convolutional Neural Network --- on a large-scale 3D Shape benchmark ModelNet40, and measure how it is impacted by voxel resolution of input shape. We demonstrate comparable classification and retrieval performance to state-of-the-art models, but with much less computational costs in training and inference phases. We also notice that benefits of higher input resolution can be limited by an ability of a neural network to generalize high level features.
+% \end{abstract}
+
+\chapter{Large-Scale Shape Retrieval with Sparse 3D Convolutional Neural Networks}
+
+% \input{Chapters/shape_retrieval/intro}
+
+\input{Chapters/shape_retrieval/retrieval}
+
+\input{Chapters/shape_retrieval/sparse}
+
+\input{Chapters/shape_retrieval/experiments}
+
+\input{Chapters/shape_retrieval/results}
+
+% \clearpage
+% \bibliographystyle{abbrv}
+% \bibliography{bibliography}
+
+% \end{document}

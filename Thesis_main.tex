@@ -35,7 +35,7 @@
 %\usepackage{subfigure}
 \usepackage{graphicx}
 %\usepackage{caption}
-\usepackage{subcaption}
+% \usepackage{subcaption}
 \newcommand{\ie}{\textit{i}.\textit{e}.,}
 \newcommand{\eg}{\textit{e}.\textit{g}.,}
 %\newcommand{\todo}[1][]{\@latex@warning{TODO #1}\fbox{TODO\dots}}
@@ -48,24 +48,24 @@
 \newcommand{\problemtitle}[1]{\gdef\@problemtitle{#1}}% Store problem title
 \newcommand{\probleminput}[1]{\gdef\@probleminput{#1}}% Store problem input
 \newcommand{\problemquestion}[1]{\gdef\@problemquestion{#1}}% Store problem question
-\NewEnviron{problem}{
-\refstepcounter{problemcounter}
-\label{#1}%
+% \NewEnviron{problem}{
+% \refstepcounter{problemcounter}
+% \label{#1}%
 
-   \problemtitle{}
-   \probleminput{}\problemquestion{}% Default input is empty
-  \BODY% Parse input
-  \par\addvspace{.5\baselineskip}
-  \noindent
-  \begin{tabularx}{\textwidth}{@{\hspace{\parindent}} l X c}
-    \multicolumn{2}{@{\hspace{\parindent}}l}{Problem~\theproblemcounter. \textit{\@problemtitle}} \\% Title
-    \hline
-    \textbf{Input:} & \@probleminput \\% Input
-    \textbf{Task:} & \@problemquestion% Question
-    \\\hline
-  \end{tabularx}
-  \par\addvspace{.5\baselineskip}
-}
+%    \problemtitle{}
+%    \probleminput{}\problemquestion{}% Default input is empty
+%   \BODY% Parse input
+%   \par\addvspace{.5\baselineskip}
+%   \noindent
+%   \begin{tabularx}{\textwidth}{@{\hspace{\parindent}} l X c}
+%     \multicolumn{2}{@{\hspace{\parindent}}l}{Problem~\theproblemcounter. \textit{\@problemtitle}} \\% Title
+%     \hline
+%     \textbf{Input:} & \@probleminput \\% Input
+%     \textbf{Task:} & \@problemquestion% Question
+%     \\\hline
+%   \end{tabularx}
+%   \par\addvspace{.5\baselineskip}
+% }
 
 %\usepackage{amsmath,amssymb} % define this before the line numbering.
 %\usepackage{placeins}
@@ -114,120 +114,119 @@
 
 %%%%%%%%GRADREV HEADER
 
-  
-    \usepackage{subfig}
-    \usepackage{algorithm}
-    \usepackage{algorithmic}
-    \usepackage{amsmath}
-    \usepackage{amssymb}
-    \usepackage{amsfonts}
-    \usepackage{dsfont}
-    \usepackage{xspace}
-    \usepackage{xr}
-    \usepackage{multirow}
-    \usepackage{multicol}
-    \usepackage{siunitx}
-    \usepackage{afterpage}
-    \usepackage{bbm}
-    \usepackage{enumerate}
-    \usepackage{booktabs}
-    \usepackage{natbib}
-    \usepackage{soul}
-    \usepackage{mathtools}
-    %\usepackage[colorlinks=false,allbordercolors={1 1 1}]{hyperref}
-    %\usepackage[hidelinks]{hyperref}
-    
-    % Moscow header
-  %  \newcommand{\theHalgorithm}{\arabic{algorithm}}
-    \newcommand{\dataset}{{\cal D}}
-    \newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
-    
-     
-    \def\x{{\mathbf x}}
-    \def\f{{\mathbf f}}
-    
-    \def\S{{\cal S}}
-    \def\T{{\cal T}}
-    
-    \def\R{{\mathds R}}
-    
-    \def\tf{{\theta_f}}
-    \def\td{{\theta_d}}
-    \def\ty{{\theta_y}}
-    \def\htf{{\hat\theta_f}}
-    \def\htd{{\hat\theta_d}}
-    \def\hty{{\hat\theta_y}}
-    \newcommand{\ys}{y}
-    \newcommand{\yt}{y}
 
-    % uncertainty is separated with a "plus-minus" symbol
-    \sisetup{separate-uncertainty=true}
-    
-    \usepackage{tikz}
-    \usetikzlibrary{positioning}
-    \usetikzlibrary{calc}
-    
-    \usepackage{pgfplots}
-    \pgfplotsset{compat=newest} 
-    \pgfplotsset{plot coordinates/math parser=false}
-    
-    % This is needed for plots.
-    \newlength\figureheight
-    \newlength\figurewidth
-    
-    
-    %\newcommand{\subfig}[1]{{\em(#1)}}
-    
-    %\renewcommand{\topfraction}{0.85}
-    %\renewcommand{\textfraction}{0.1}
-    %\renewcommand{\floatpagefraction}{0.85}
-    %\parskip 0pt
-    
-    \makeatletter
-    \newcommand{\todo}[1][]{\@latex@warning{TODO #1}\fbox{TODO\dots}}
-    \makeatother
-    
-    
-    % Quebec's header
-    
-    
-    \newcommand{\phib}{{\pmb \phi}}
-    \newcommand{\uu}{{\mathbf{u}}}
-    %\renewcommand{\ww}{\uu}
-    
-    \newcommand{\redplus}{``\red{$\boldsymbol{{+}}$}''}
-    \newcommand{\greenminus}{``\green{$\boldsymbol{{\pmb{-}}}$}''}
-    
-    % To harmonize the transatlantic notation! 
-    \renewcommand{\eqdef}{=}
-    \newcommand{\Acal}{{\mathcal{A}}}
-    \newcommand{\Xcal}{{\mathcal{X}}}
-    \newcommand{\Ycal}{{\mathcal{Y}}}
-    \newcommand{\Lcal}{{\mathcal{L}}}
-    \newcommand{\Dcal}{{\mathcal{D}}}
-    \newcommand{\Hcal}{{\mathcal{H}}}
-    \renewcommand{\Xcal}{X}
-    \renewcommand{\Ycal}{Y}
-    \newcommand{\dsum}{\displaystyle\sum}
-    \newcommand{\dprod}{\displaystyle\prod}
-    
-    
-    \DeclareMathOperator*{\argmax}{\mathrm{argmax}}
-    \DeclareMathOperator*{\argmin}{\mathrm{argmin}}
-    
-    \newcommand{\DS}{{\Dcal_\textsc{S}}}
-    \newcommand{\DT}{{\Dcal_\textsc{T}}}
-    \newcommand{\DSX}{{\Dcal_\textsc{S}^{_\Xcal}}}
-    \newcommand{\DTX}{{\Dcal_\textsc{T}^{_\Xcal}}}
-    
-    \newcommand{\RDS}{R_{\DS}}
-    \newcommand{\RDT}{R_{\DT}}
-    \newcommand{\RS}{R_{S}}
-    \newcommand{\RD}{R_{D}}
-    \renewcommand{\S}{\DSX}
-    \renewcommand{\T}{\DTX}
-    \newcommand{\xb}{{\mathbf x}}
-    \newcommand{\yb}{{\mathbf y}}
+\usepackage{subfig}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{dsfont}
+\usepackage{xspace}
+\usepackage{xr}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{siunitx}
+\usepackage{afterpage}
+\usepackage{bbm}
+\usepackage{enumerate}
+\usepackage{booktabs}
+\usepackage{natbib}
+\usepackage{soul}
+\usepackage{mathtools}
+%\usepackage[colorlinks=false,allbordercolors={1 1 1}]{hyperref}
+%\usepackage[hidelinks]{hyperref}
+
+% Moscow header
+%  \newcommand{\theHalgorithm}{\arabic{algorithm}}
+\newcommand{\dataset}{{\cal D}}
+\newcommand{\fracpartial}[2]{\frac{\partial #1}{\partial  #2}}
+
+ 
+\def\x{{\mathbf x}}
+\def\f{{\mathbf f}}
+
+\def\S{{\cal S}}
+\def\T{{\cal T}}
+
+\def\R{{\mathds R}}
+
+\def\tf{{\theta_f}}
+\def\td{{\theta_d}}
+\def\ty{{\theta_y}}
+\def\htf{{\hat\theta_f}}
+\def\htd{{\hat\theta_d}}
+\def\hty{{\hat\theta_y}}
+\newcommand{\ys}{y}
+\newcommand{\yt}{y}
+
+% uncertainty is separated with a "plus-minus" symbol
+\sisetup{separate-uncertainty=true}
+
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest} 
+\pgfplotsset{plot coordinates/math parser=false}
+
+% This is needed for plots.
+\newlength\figureheight
+\newlength\figurewidth
+
+
+%\newcommand{\subfig}[1]{{\em(#1)}}
+
+%\renewcommand{\topfraction}{0.85}
+%\renewcommand{\textfraction}{0.1}
+%\renewcommand{\floatpagefraction}{0.85}
+%\parskip 0pt
+
+\makeatletter
+\makeatother
+
+
+% Quebec's header
+
+
+\newcommand{\phib}{{\pmb \phi}}
+\newcommand{\uu}{{\mathbf{u}}}
+%\renewcommand{\ww}{\uu}
+
+\newcommand{\redplus}{``\red{$\boldsymbol{{+}}$}''}
+\newcommand{\greenminus}{``\green{$\boldsymbol{{\pmb{-}}}$}''}
+
+% To harmonize the transatlantic notation! 
+% \renewcommand{\eqdef}{=}
+\newcommand{\Acal}{{\mathcal{A}}}
+\newcommand{\Xcal}{{\mathcal{X}}}
+\newcommand{\Ycal}{{\mathcal{Y}}}
+\newcommand{\Lcal}{{\mathcal{L}}}
+\newcommand{\Dcal}{{\mathcal{D}}}
+\newcommand{\Hcal}{{\mathcal{H}}}
+\renewcommand{\Xcal}{X}
+\renewcommand{\Ycal}{Y}
+\newcommand{\dsum}{\displaystyle\sum}
+\newcommand{\dprod}{\displaystyle\prod}
+
+
+\DeclareMathOperator*{\argmax}{\mathrm{argmax}}
+\DeclareMathOperator*{\argmin}{\mathrm{argmin}}
+
+\newcommand{\DS}{{\Dcal_\textsc{S}}}
+\newcommand{\DT}{{\Dcal_\textsc{T}}}
+\newcommand{\DSX}{{\Dcal_\textsc{S}^{_\Xcal}}}
+\newcommand{\DTX}{{\Dcal_\textsc{T}^{_\Xcal}}}
+
+\newcommand{\RDS}{R_{\DS}}
+\newcommand{\RDT}{R_{\DT}}
+\newcommand{\RS}{R_{S}}
+\newcommand{\RD}{R_{D}}
+\renewcommand{\S}{\DSX}
+\renewcommand{\T}{\DTX}
+\newcommand{\xb}{{\mathbf x}}
+\newcommand{\yb}{{\mathbf y}}
 
 
 
@@ -479,12 +478,12 @@ While deep learning has approached super-human performance in 2D image recogniti
 \printnomenclature
 
 
-\input{intro.tex}
+\input{Chapters/intro.tex}
 \newpage 
-\input{related.tex}
+\input{Chapters/related.tex}
 \newpage 
-% \input{Chapters/histloss/hist-paper}
-% \newpage 
+\input{Chapters/shape_retrieval/main}
+\newpage 
 % \input{Chapters/bilinear/bilinear-paper}
 % \newpage 
 % \input{Chapters/gradrev/main}

@@ -1,0 +1,41 @@
+\section{3D Large-Scale Retrieval}
+\label{sec:2}
+\subsection{Large-Scale 3D Shape datasets}
+
+As can be seen the great improvements in recent years for the problem of 2D large-scale image recognition, are not just the result of wide-spread adoption of Deep Learning techniques, but also it is due to the availability of large datasets that capture sufficient variety of features at different scales to be representative of some domain.
+However, only recently in the 3D recognition and retrieval such datasets started being published.
+
+The recent competition ModelNet evaluated several models utilizing Neural Networks for 3D retrieval. ModelNet40 is a subset of this dataset, and it is going to be our main benchmark for the retrieval task.
+The approach for creating descriptors from multiple projections of a 3D shape with a transfer learning from ImageNet showed the best performance \cite{su15mvcnn}. No full 3D algorithms that process voxels directy have been described up to now.
+
+\subsection{Shape descriptors}
+
+To make inferences about 3D objects for purposes of computer vision or computer graphics, researchers developed a big amount of shape descriptors\cite{kazhdan2003rotation,knopp2010hough,bronstein2011shape,kokkinos2012intrinsic}.
+
+Shape descriptors usually fit into two categories: one where shape descriptors are computed using 3D representations of objects, e.g. voxel discretizations, meshes, point clouds, or implicit surfaces, and the second one that describes a shape of a 3D object by a collection of 2D projections, often from multiple viewpoints.
+
+Before large-scale 3D shape datasets such as ModelNet \cite{wu20153d} and 3dShapeNet model which learns shape descriptors from voxel representation of a mesh object through 3D convolutional nets, 3D shape descriptors were mostly special functions capturing specific geometric properties of the shape surface or volume, for example: spherical functions computed on volumetric grids \cite{kazhdan2003rotation}, generalization of SIFT and SURF feature descriptors for voxel grids \cite{knopp2010hough}, or for non-rigid bodies and deformable shapes heat kernel signatures on meshes \cite{bronstein2011shape,kokkinos2012intrinsic}. Developing classifiers and other supervised machine learning algorithms on top of such 3D shape descriptors poses a number of challenges. The success of CNNs image descriptors allows us to hope that descriptors based on 3D convolutional nets can be also beneficial compared to classic descriptors.
+
+\subsection{Triplet learning}
+Recent work in \cite{hoffer2015deep} shows that learning representations with triplets of examples
+gives much better results than learning with pairs using the same network. Inspired by this, we
+focus on learning feature descriptors based on triplets of patches.
+
+Learning with triplets involves training from samples of the form $(a, p, n)$, where 
+\begin{itemize}
+\item  $a$ is an anchor object,
+\item $p$ denotes a positive object, which is a sample we want to be closer to $a$ and usually being a different sample of the same class as $p$, and
+\item $n$ is a negative sample belonging to a different class than $a$ and $p$.
+\end{itemize}
+Optimizing parameters of the network brings $a$ and $p$ close in the feature space, and pushes apart $a$ and $n$.
+
+Finally, let us introduce this triplet loss, also known as the ranking loss. It was first proposed for learning embedding using CNNs in \cite{wang2014learning} and can be defined as follows:
+\begin{itemize}
+\item Let us define $\delta_+ = \mathrm{cosine}(f(a), f(p))$ and $\delta_- = \mathrm{cosine}(f(a), f(n))$, i.e. this is a cosine distance between some feature representations $f(\cdot)$ for different objects,
+\item Then for a particular triplet we calculate the triplet loss using the formula
+\[
+\lambda ( \delta_+, \delta_- ) = \max (0, \mu + \delta_+ - \delta_- ) \,,
+\]
+where $\mu$ is a margin parameter. The correct order should be $\delta_- > \delta_+ + \mu$,
+\item If order of objects, provided by their corresponding descriptors are incorrect w.r.t. the triplet loss, then the network adjusts its weights through back-propagation signal to reduce the error.
+\end{itemize}

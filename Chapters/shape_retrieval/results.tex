@@ -1,0 +1,34 @@
+\section{Results}
+\label{sec:5}
+We found that the retrieval performance improves with increase in the input spatial resolution. However, such an effect is difficult to check experimentally and to use in practice, as e.g. for usual 3D dense CNNs the computational time is prohibitively large. In our case, data sparsity helps us to process data in reasonable time even with input resolution up to $100^3$ voxels, therefore we can benefit from the increase of the input spatial resolution when performing retrieval.
+In Figure~\ref{fig:pr_curve} we can see that our method is comparable to \cite{wu20153d} in low recall, and better at higher recall values, that indicates better scalability of our method.
+In Table~\ref{tab:classification} for the retrieval we used features from the one before last layer of the network of size 192, which in  comparison to 4000 in 3DShapeNet model \cite{wu20153d} is 20 times smaller but achieves almost the same retrieval metrics.
+
+We evaluated our network architecture described in Table~\ref{tab:net-architecture} on popular state-of-the-art frameworks for Deep Learning, such as Tensorflow\cite{tensorflow2015-whitepaper} on GPU and Theano\cite{2016arXiv160502688short} on CPU.
+Using Keras\cite{chollet2015keras} 2.0.2 with Tensorflow\cite{tensorflow2015-whitepaper} 1.2.1 backend on Nvidia Titan X GPU with 12Gb of GPU memory, we were able to exhaust all of it with batch size equal to 12, and performed forward passes on average 0.0301 seconds/sample, which is comparable to processing speed of our implementation with render size of about 60-70.
+Other setup was an implementation of our network architecture on Keras with Theano backend using Intel i7-5820K 6-core CPU processor, took 1.53 seconds/sample, which is significantly slower.
+% We provide training code for all experiments in our repository\footnote{\url{https://github.com/gangiman/PySparseConvNet}}.
+
+
+\begin{table}[t]
+  \caption{Evaluation on Modelnet40}
+  \label{tab:classification}
+  \centering
+  \begin{tabular}{llll}
+    \toprule
+    method & Classification & Retrieval AUC & Retrieval mAP \\
+    \midrule
+    3DShapeNet \cite{wu20153d} & 77.32\% & 49.94\% & 49.23\% \\
+    MVCNN \cite{su15mvcnn} & 90.10\% & --- & 80.20\% \\
+    VoxNet \cite{maturana2015voxnet} & 83.00\% & --- & --- \\
+    VRN \cite{brock2016generative} & 91.33\% & --- & --- \\
+    \textbf{S3DCNN (proposed)} & \textbf{90.30}\% & \textbf{36.05}\% & \textbf{33.67}\% \\
+    \textbf{S3DCNN + triplet (proposed)} & --- & \textbf{48.81}\% & \textbf{46.71}\% \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsubsection*{Acknowledgments}
+We are very grateful to Dmitry Yarotsky for his contribution to this research project. Big Thanks to Benjamin Graham for some useful comments and ideas. Thanks to Rasim Akhunzyanov for his help in debugging the PySparseConvNet code.
+
+The research was partially supported by the Russian Science Foundation grant (project 14-50-00150).
