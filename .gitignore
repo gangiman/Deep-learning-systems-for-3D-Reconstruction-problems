@@ -1,0 +1,5 @@
+Chapters/*.zip
+*.nlo
+*.out
+*.toc
+*.gz
