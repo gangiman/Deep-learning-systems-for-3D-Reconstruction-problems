@@ -1,0 +1,8 @@
+\section{Conclusion}
+
+In this work we showed that it is possible to significantly compress and speed up models ($17\times$ model size reduction and $2\times$ latency improvement) for DensePose estimation task utilizing existing state-of-the-art solutions of this task's subproblems, achieving a good balance between speed, model size and average precision of the model. In the process, we performed an ablation study of 23 different backbones and detection pipeline characteristics, particularly applied for the DensePose task.
+By optimizing different parts of R-CNN-like models, we achieved significant performance improvement compared to the baseline model.
+We performed deployment of the final model to the mobile device, measured its performance, and discovered factors affecting it. 
+The proposed architecture Mobile Parsing R-CNN is both fast and light-weight. Notably, the final model weighs 13.8MB and runs near real-time $\sim27$ FPS on Nvidia Tesla 1080Ti GPU, and $\sim1$ FPS on a mobile device using the only CPU. Using a runtime environment that utilizes mobile GPU or Neural Network acceleration hardware (NPUs), it would be trivial to get near-real-time performance on a mobile phone.
+\newline\newline
+\noindent\textbf{Acknowledgment.} The authors acknowledge the usage of the Skoltech CDISE HPC cluster Zhores for obtaining the results presented in this paper. This work was supported partially by the Ministry of Education and Science of the Russian Federation (Grant no. 14.756.31.0001).

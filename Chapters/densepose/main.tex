@@ -1,0 +1,149 @@
+% \documentclass[10pt,twocolumn,letterpaper]{article}
+
+% \usepackage{wacv}
+% \usepackage{times}
+% \usepackage{epsfig}
+% \usepackage{graphicx}
+% \usepackage{amsmath}
+% \usepackage{amssymb}
+% \usepackage{placeins}
+% % \usepackage{authblk}
+
+% % Include other packages here, before hyperref.
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% %
+% %%% IMPORTANT - These next three lines are crucial.
+% %               (1) PLEASE enter your paper ID (given by CMT) replacing the
+% %                   '****' right below here with the ID from CMT.
+% %               (2) Leave the \wacvfinacopy commented out for the submission
+% %                   version, but UNCOMMENT it for your CAMERA-READY upload.
+% %               (3) For the camera-ready version, you may be asked to set a
+% %                   starting page number.  If so, replace the '9876' below with
+% %                   the starting page number assigned by the publication chair.
+ 
+% %(1)
+% \def\wacvPaperID{410} % Enter the WACV Paper ID here
+
+% %(2)
+% \wacvfinalcopy % *** Uncomment this line for the final submission
+
+% %(3)
+% \ifwacvfinal
+% \def\assignedStartPage{1} % *** Enter the assigned starting page number (instead of 9876)
+% \fi
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% % If you comment hyperref and then uncomment it, you should delete
+% % egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% % run, let it finish, and you should be clear).
+% % \usepackage{hyperref}
+% \ifwacvfinal
+% \usepackage{hyperref}
+% \hypersetup{breaklinks=true,bookmarks=false}
+% \else
+% \usepackage{hyperref}
+% \hypersetup{pagebackref=true,breaklinks=true,colorlinks,bookmarks=false}
+% \fi
+
+% % Pages are numbered in submission mode, and unnumbered in camera-ready
+% \ifwacvfinal
+% \setcounter{page}{\assignedStartPage}
+% \else
+% \pagestyle{empty}
+% \fi
+
+% \def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% \begin{document}
+
+%%%%%%%%% TITLE
+% \title{Making DensePose fast and light}
+\chapter{Making DensePose fast and light}
+
+% \author{
+%     Ruslan Rakhimov\textsuperscript{1}\thanks{Equal contribution}\space, 
+%     Emil Bogomolov\textsuperscript{1}$^*$, 
+%     Alexandr Notchenko\textsuperscript{1},\\
+%     Fung Mao\textsuperscript{2}, 
+%     Alexey Artemov\textsuperscript{1}, 
+%     Denis Zorin\textsuperscript{1,3}, 
+%     Evgeny Burnaev\textsuperscript{1}\\
+%     \textsuperscript{1}{\small Skolkovo Institute of Science and Technology}\\
+%     \textsuperscript{2}{\small Huawei Moscow Research Center (Russia)}\\
+%     \textsuperscript{3}{\small New York University}\\
+%     {\tt\small\{ruslan.rakhimov, e.bogomolov, alexandr.notchenko\}@skoltech.ru,}\\
+%     {\tt\small fung.mao@huawei.com, a.artemov@skoltech.ru, dzorin@cs.nyu.edu, e.burnaev@skoltech.ru}\\
+% }
+
+% \author{%
+%     Ruslan Rakhimov\textsuperscript{1}\thanks{Equal contribution} \\
+%     {\tt\small ruslan.rakhimov@skoltech.ru}
+%     \and
+%     Emil Bogomolov\textsuperscript{1}$^*$ \\
+%     {\tt\small e.bogomolov@skoltech.ru}
+%     \and
+%     Alexandr Notchenko\textsuperscript{1} \\
+%     {\tt\small alexandr.notchenko@skolkovotech.ru}
+%     \and
+%     Fung Mao\textsuperscript{2} \\
+%     {\tt\small fung.mao@huawei.com}
+%     \and
+%     Alexey Artemov\textsuperscript{1} \\
+%     {\tt\small a.artemov@skoltech.ru}
+%     \and\and\and
+%     Denis Zorin\textsuperscript{1,3} \\
+%     {\tt\small dzorin@cs.nyu.edu}
+%     \and\and\and
+%     Evgeny Burnaev\textsuperscript{1} \\
+%     {\tt\small e.burnaev@skoltech.ru}
+%     \and\and\and
+%     \textsuperscript{1}{\small Skolkovo Institute of Science and Technology}\\
+%     \textsuperscript{2}{\small Huawei Moscow Research Center (Russia)}\\
+%     \textsuperscript{3}{\small New York University}
+% }
+
+% \author[1]{Ruslan Rakhimov\thanks{Equal contribution}}
+% \author[1]{Emil Bogomolov$^*$}
+% \author[1]{Alexandr Notchenko}
+% \author[2]{Fung Mao}
+% \author[1]{Alexey Artemov}
+% \author[1,3]{Denis Zorin}
+% \author[1]{Evgeny Burnaev}
+
+% \affil[1]{Skolkovo Institute of Science and Technology,\{ruslan.rakhimov,e.bogomolov,alexandr.notchenko,a.artemov,e.burnaev\}}
+% \affil[2]{Huawei Moscow Research Center (Russia)}
+% \affil[3]{New York University}
+
+
+% \affil[1]{University of Southern California, Los Angeles, CA \authorcr Email: {\tt \{uid1, uid2\}@usc.edu}\vspace{1.5ex}}
+% \affil[2]{NASA Jet Propulsion Laboratory, Pasadena, CA \authorcr Email: {\tt uid3@jpl.nasa.gov} \vspace{-2ex}} 
+
+% \author[1]{Ruslan Rakhimov\thanks{Equal contribution}\\ ruslan.rakhimov@skoltech.ru}
+% \author[2]{Emil Bogomolov$^*$\\{\tt\small e.bogomolov@skoltech.ru}}
+% \affil[1]{Department of Mathematics, University X}
+% \affil[2]{Department of Biology, University Y}
+
+% \maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+
+% \input{Chapters/densepose/sections/0_abstract}
+% \input{Chapters/densepose/sections/1_intro} 
+% \input{Chapters/densepose/sections/2_related}
+\input{Chapters/densepose/sections/3_mobilercnn}
+\input{Chapters/densepose/sections/4_experiments}
+\input{Chapters/densepose/sections/5_conclusion}
+
+%\FloatBarrier
+
+% {\small
+% \bibliographystyle{ieee_fullname}
+% \bibliography{egbib}
+% }
+
+% \end{document}
