@@ -1,0 +1,81 @@
+\section{Related work}
+\label{sec:related}
+
+\subsection{Depth maps and visual metrics}
+
+In most papers on depth image/map reconstruction and upsampling, a limited number of simple image comparison metrics are used.  Mean-square error (MSE) and its variations prevail (\eg, \cite{eigen2014depth,honauer2015hci, honauer2016dataset,honauer2016benchmark}). A common closely related alternative is the fraction of pixels exceeding a given threshold in pointwise differences (the BadPix metrics). For images, these measures do not capture important aspects of human perception~\cite{wang2009mean}.
+
+In contrast, visual similarity metrics aim to be consistent with human judgment, \eg, in the sense of similarity ordering
+(which of two images is more similar to ground truth?). 
+%Designing a numerical measure that agrees with human perception is difficult, as
+%many independent factors affect the perception of similarity, often contradicting each other:
+%high-level structure, color, style, \etc.
+Well-established visual metrics include those based on \emph{structural similarity}:  SSIM \cite{wang2004image},
+FSIM \cite{zhang2011fsim}, MSSIM \cite{wang2003multiscale}. 
+%Structural similarity index
+%combines luminance, contrast and structure components,  where structure is measured by correlation
+%of luminance values in windows.
+We discuss FSIM in greater detail in Section~\ref{sec:metrics}.
+
+A different metric, operating both as a visual discriminator (\ie, computing the probability
+of a pair of images to be perceived as different) and computing a measure of visual difference is
+presented in \cite{mantiuk2011hdr}.  It is based on a sophisticated model of low-level visual processing.
+%including models for complex phenomena such as intra-ocular light scatter, spectral sensitivity of retinal cells, luminance and contrast masking. Many aspects of this model are based on approximations to experimental data on low-level visual
+%perception.
+The authors show it to perform better on two common visual quality databases compared to one
+of the variants of structural similarity metrics. 
+
+Recently, a number of perceptually-based visual metrics produced by
+neural nets were proposed (see \cite{Zhang_2018_CVPR} for a detailed overview). 
+Building on deep features learned for, \eg, a classification task, one 
+may opt for a simple metric in the feature space (\eg, $L^2$ distance),
+obtaining a perceptually-based measure. Such \emph{neural net-based metrics}
+were demonstrated to outperform statistical measures such as SSIM
+across a variety of deep architectures and training objectives.
+These approaches are in part motivated by modeling of low-level visual processing with neural nets (see, \eg, \cite{yamins2016using}).
+
+\subsection{The depth super-resolution task and related problems}
+
+% depth-only depth SR (input contains a solitary depth map)
+% single-image depth SR (input is single depth + RGB)
+% multiple-image depth SR (input is several single depth + RGB images, typically with different lighting or other conditions e.g. noise realizations)
+% multiple-view depth SR (input is several depth + RGB images, typically taken from different positions)
+% video-based depth SR (input is RGB-D video)
+
+Depth super-resolution is closely related to a number of other tasks performed on depth maps:  
+in particular, denoising, enhancement, inpainting, and densification (see, \eg, \cite{chen2018estimating, cheng2018depth, mal2018sparse, hua2018normalized,chodosh2018deep, ma2018self, uhrig2017sparsity, yan2018ddrnet}), 
+we focus on papers addressing the super-resolution problem directly. More specifically, we 
+review methods for  estimation of high-resolution depth image 
+from a single low-resolution depth image and a high-resolution RGB image.
+A number of works consider pure depth map upsampling (no RGB), e.g.,  applying edge-guided~\cite{chen2018single} and novel view synthesis-based approaches~\cite{song2018deeply}. As a rule, however, recent depth sensors are equipped with a high-resolution color camera, making it natural to consider additional RGB data.
+
+%One may view this
+%as a combined upsampling/enhancement process, wherein finer details of a depth image
+%are estimated at a higher spatial resolution.
+
+\paragraph{Learning-based methods.}
+Among learning-based methods, convolutional neural networks (CNNs) have achieved impressive 
+performance in high-level computer vision tasks and recently have been applied to depth super-resolution~\cite{chen2018single, song2018deeply,xiao2018joint, li2016deep,kim2018deformable,agresti2017deep,zhao2017simultaneously,hui2016depth,riegler2016deep,song2016deep}.
+
+Most of research on single depth map super-resolution using CNNs has been within the RGB-D framework~\cite{li2016deep,song2016deep,xiao2018joint,riegler2016deep}, as color information is easy to integrate into typical CNN architectures. A general approach would stack multiple stages of convolutional layers to extract multi-resolution features and fuse them to predict a target high-resolution depth. Building upon this idea, \cite{riegler2016deep,song2016deep} add subsequent optimization stages to produce sharper results. The method \cite{hui2016depth} follows a similar approach: it resolves ambiguity in the low-resolution depth map upsampling by adding high-frequency features from high-resolution RGB data. Other approaches to CNN-based image-guided depth super-resolution include linear filtering with CNN-derived kernels~\cite{kim2018deformable}, deep fusion of time-of-flight depth and stereo images~\cite{agresti2017deep}, and a method based on generative adversarial networks~\cite{zhao2017simultaneously}. However, no attempts have been made to quantify the quality of the resulting upsampled depth map in terms of the corresponding 3D surface reconstructions; instead, the focus has been on quality measures designed for RGB images, applied to depth map directly. In contrast, we focus on metrics tailored to visual surface quality.
+
+% It is interesting to note that none of these papers used depth-based reconstructed surface to quantify depth map super-resolution accuracy opposed to optimization-based methods. 
+
+% Another typical feature of CNN-based approaches is that these CNN models are trained to perform super-resolution for specific downsampling rate, i.e. for another rate the whole model should be re-trained on ground-truth depth maps downsampled \wrt the new rate. It is obvious, that in such case results of super-resolution depend on the model of downsampling. Moreover, some of super-resolution methods (e.g. \cite{chen2018single}) require to use as input a depth map upsampled by bicubic interpolation. It is well known that depth maps commonly produced by conventional sensors may have holes, so the bicubic interpolation spreads these holes across interpolated depth map that could significantly distort results of super-resolution.
+Dictionary learning has been extensively investigated for depth super-resolution, with some representative approaches being~\cite{ferstl2015variational,gu2017learning,li2018depth}.  However, dictionary learning is typically restricted to small dimensions and as a result to structurally simpler depth maps as opposed to CNN-based methods that leverage layer-wise training to obtain hierarchical data representations.
+%\LA{EB: please check this claim} \DZ{small dimensions are not a problem in itself; the question is, what the downsides in terms of results}
+
+One strategy commonly adopted to reduce ambiguity in depth image super-resolution is to combine depth data with a different (and complementary) data, and use a method that can take advantage of the additional data.  Instances of these are variational approaches using shape-from-shading optimization to improve single-image depth super-resolution~\cite{haefner2018fight}, or combining reflectance map estimation with multiple-image depth super-resolution~\cite{peng2017depth}.
+While showing impressive results in many instances, these methods suffer from the false guidance when the RGB data contains high-frequency details. These methods typically require prior segmentation of foreground objects, depending heavily on the quality of such a segmentation. Additionally,~\cite{haefner2018fight} implies that the shape reflectance follows the Potts prior, an assumption often violated in practice. In contrast, our learning-based method makes no assumptions on the reflectance prior.
+%Additionally, \cite{peng2017depth} requires the input to have at least four RGB-D images, while we focus on single-image depth super-resolution.
+Another strategy to tackle ambiguities in super-resolution is to design sophisticated regularizers to balance the data-fidelity terms against a structural image prior~\cite{ham2018robust,jiang2018depth,yang2014color}.
+In contrast to such approaches, which require custom hand-crafted regularized objectives and optimization procedures, the trainable form of our method is standard (\ie, gradient-based optimization of a CNN).
+%in particular, we employ an off-the-shelf network architecture and optimizer. 
+
+A less common, but promising  strategy is to leverage multiple frames of RGB-D video for depth estimation~\cite{tsuchiya2017depth}. While we do not consider this setting in our work, we expect that the main elements of the approach we propose also apply in this setting. 
+%owever,~\cite{tsuchiya2017depth} rely on a separate optical flow estimation model used to predict a refined depth image.
+%We focus on single-image depth super-resolution model and require no video processing models.
+%\DZ{did not understand the sentence below, is it multiple frames?}
+%\LA{Above is "same model, more data", below is "same data, more modelling"}
+Yet another approach is to choose a carefully-designed model such as~\cite{zuo2018minimum}
+featuring a sophisticated metric defined in a space of minimum spanning trees and including an explicit edge inconsistency model. Compared to our approaches, such models require manual tuning of multiple hyperparameters.

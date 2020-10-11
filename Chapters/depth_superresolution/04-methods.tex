@@ -1,0 +1,64 @@
+
+\section{Methods}
+\label{sec:methods}
+
+% Motivation:
+% 1. We're using surface-(geometry-)aware loss/metrics to (1) evaluate how good is the reconstruction, (2) do visually better on reconstruction
+% 2. We have selected a number of approaches known from literature (describe them here). 
+% 3. This is how we performed this selection: (1), (2), (3).
+% 3. This is the summary of the compared approaches.
+% 4. This is the descriptions of the approaches themselves. Here is the minimized metric, and other stuff that's interesting about them.
+% 5. We propose our methods: here are their descriptions.
+
+We consider the question whether RMSE provides a good measure of the visual quality of the results produced by existing methods, many of which use RMSE as a loss function, and whether an alternative loss function can do better. 
+Our approach to evaluation is to evaluate a set of methods in a uniform manner irrespective of the architecture, assessing the visual quality of the resulting 3D surfaces with several perceptual metrics.  We have considered a broad range of metrics and identified a representative set (other metric, e.g., neural network-based, are typically correlated with the chosen metrics).
+
+% Targeting the assessment of visual reconstruction quality, we form a representative set of recent approaches to single-image depth super-resolution, that we compare with our proposed method. 
+%Note that we do not aim for an exhaustive evaluation of the available approaches or for a comprehensive comparison with state-of-the-art, but rather focus on comparing against a possibly broader range of competitors. 
+
+We selected five depth-map upsampling methods with distinct underlying principles: recent CNN-based learnable methods \cite{riegler2016deep,hui2016depth,mal2018sparse,yan2018ddrnet,Ulyanov_2018_CVPR},
+optimization-based \cite{haefner2018fight}, and filtering-based approaches \cite{xie2016edge}. 
+Some of the methods we have included were developed for slightly different tasks but can be easily adapted for 
+super-resolution (which we did).  
+The pure super-resolution methods we include are \cite{riegler2016deep,hui2016depth,haefner2018fight,xie2016edge}. Other methods were designed for denoising~\cite{yan2018ddrnet,gu2017learning} and  densification of sparsely sampled depth images \cite{mal2018sparse}. \cite{Ulyanov_2018_CVPR} describes a method for  super-resolution of photos, but easily generalizes to depth maps. 
+%We omit the comparison with some methods (such as~\cite{zhang2018image}), even though they report state-of-the-art results. 
+In this section, we briefly summarize these methods and present two methods based on our approach.
+% \todo{basically the idea here would be that no matter what method and which task it was originally trained on, perceptual metrics show how good the result is in terms of the perceived quality of the surface}
+
+% The selection was performed according to the following criteria: (1) availability of code used for testing the model, (2) only post-2014 methods were considered. \LA{how else did we select?}
+% We validate our evaluation methodology using a broad range of recent approaches to single-image depth super-resolution. 
+% As the evaluated methods, we have selected a number of recent approaches to single image depth super-resolution. 
+% \todo{add motivation for evaluating these methods? why is this interesting? how is each method important for our work?}
+
+\paragraph{Evaluated methods.} 
+\noindent\emph{Deep multi-scale guided networks \cite{hui2016depth}} is 
+a carefully-designed and state-of-the-art deep learning architecture, using different strategies to upsample different spectral
+components of low-resolution depth map (\eg, high-frequency \vs.\ low-frequency components). 
+
+\noindent\emph{Deep primal-dual networks \cite{riegler2016deep}.}
+Standing out of the typical mostly empirical approaches, the state-of-the-art PDN model features two stages: the first is composed of fully-convolutional layers that produce a rough super-resolved depth, and the second solves an unrolled variational optimization problem that estimates sharp and noise-free results.
+
+\noindent\emph{Depth super-resolution from shading~\cite{haefner2018fight}} is a state-of-the-art method relying on a shape-from-shading functional as a part of the process.  The method bases on an insight that high-frequency information necessary to achieve depth super-resolution which preserves details could be provided by the photometric data. 
+
+\noindent\emph{Edge-guided depth super-resolution~\cite{xie2016edge}} is a depth-only MRF-based super-resolution approach combining depth upsamping with high resolution smooth edge prediction problem. 
+
+\noindent\emph{Deep image prior~\cite{Ulyanov_2018_CVPR}} is a zero-shot image super-resolution algorithm, based on a remarkable observation that the structure of the network itself, without any specialized training, may be used for optimization. We note that this model is mask/hole-agnostic and allows for simultaneous super-resolution\,\&\,inpainting without any modifications.
+
+All methods (except for~\cite{xie2016edge}) use high-resolution RGB guidance image as additional input. However, no method was evaluated from the point of view of visual quality of the resulting surface. 
+
+\paragraph{Our modified methods.}
+%\OV{Same as in the following paragraph}
+To demonstrate the importance of using visually-based loss function, we train a  state-of-the-art CNN architecture MSG-Net \cite{hui2016depth} for upsampling only task and a zero-shot Deep Image Prior model \cite{Ulyanov_2018_CVPR} for joint upsampling and hole-filling task. Our visually-based loss function is the weighted sum of two terms -- Laplacian pyramid loss $\mathcal{E}_{\mathrm{LAP}}(d, \hiresdepth)$, see \cite{pmlr-v80-bojanowski18a}, and squared normal deviation $\mathcal{E}_{\mathrm{SURF}}(d, \hiresdepth)$:
+\begin{multline}
+\label{eq:our_visual_metric}
+\widehat{d}^{\mathrm{(HR)}}_* = 
+    \argmin\limits_{ \hiresdepth} \mathcal{E}_{\mathrm{LAP}}(d, \hiresdepth) +
+    w\cdot\mathcal{E}_{\mathrm{SURF}}(d, \hiresdepth).
+\end{multline}
+The integration of this loss into both methods is straightforward, but has a dramatic impact on the results. 
+
+%\begin{multline*}
+%\widehat{d}^{\mathrm{(HR)}}_* = 
+%    \argmin\limits_{ \hiresdepth} \mathcal{E}_{\mathrm{MSE}}(d, %\hiresdepth) +
+%    \mathcal{E}_{\mathrm{SURF}}(d, \hiresdepth) 
+%\end{multline*}

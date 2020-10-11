@@ -1,0 +1,11 @@
+
+\section{Conclusions}
+\label{sec:concl}
+
+As we observed, common methods for color image-guided depth super-resolution optimize RMSE criterion, often combined with a smoothness penalty. However, this does not guarantee perceptually accurate reconstruction of 3D shapes from depth. Using a range of synthetic and real data we have demonstrated that using a visual metric for 3D surfaces constructed from upsampled depth maps to measure their quality results in better reconstructions from perceptual point of view, when combined with neural network-based 
+upsampling methods.  Our metric  and learning architecture are relatively simple and we expect that further enhancements will be possible with further development of these ideas. In particular, combining these with inpainting methods to eliminate gaps
+may be promising. 
+
+We have focused on the case of single regularly sampled RGBD images, but a lot of geometric data has less regular form. Thus, the future work would be to adapt the developed methodology to the more general sampling of depth maps (e.g., coming from LIDAR imaging)  guided by multiple frames of RGB video. In the most general form, our approach can be extended to point clouds, optionally annotated with a collection of RGB images.
+
+
