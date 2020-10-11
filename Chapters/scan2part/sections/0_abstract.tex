@@ -1,0 +1,67 @@
+\begin{abstract}
+% In this paper, we explore the part taxonomies of objects in indoor scenes and their effect on scene understanding and reconstruction models. To do that we introduce the problem of real-world 3D scene part segmentation. To help us design a benchmark for this problem, we introduce a new dataset titled "Scan2Part". Using this dataset, we train models capable of solving the problem of part segmentation for scene data collected with 3D sensors.
+ 
+ 
+We propose Scan2Part, a method to segment individual parts of objects in real-world, noisy indoor RGB-D scans.
+%
+To this end, we explore the part taxonomies of objects in indoor scenes and their effect on scene understanding models.
+%
+Specifically, we propose a new U-Net-based architecture that captures the fine-scale detail of the underlying 3D scan geometry by leveraging a multi-scale feature hierarchy.
+%
+As output, we are able to predict fine-grained per-object part labels, even when the geometry is coarse or partially missing.
+%
+In order to train our method, we introduce the Scan2Part dataset, which is the first large-scale effort on real-world scenes providing detailed semantic labels at the part level in the real-world setting.
+%
+In total, we provide 242,081 correspondences between 53,618 PartNet parts of 2,477 ShapeNet objects and 1,506 Scannet scenes, and we set up a new benchmark with a hidden test set.
+%
+%Experiments show that method outperforms the best state-of-the-art baseline adopted for this task by 6.32\% mIoU.
+%
+Overall, we believe that both our method as well as newly introduced dataset is a stepping stone forward towards  structural understanding of real-world 3D environments.
+
+% More ideas:
+% 1. In contrast with semantic or instance segmentation tasks, part segmentation is inherently ambiguous for humans. Thus, a way forward for increasing the level of detail may be data-driven part taxonomies.
+% 2. These networks, that we propose, are able to jointly learn efficient representations, thus enhancing each other's performance on a number of levels of hierarchy.
+
+%
+%Compared to state-of-the-art methods, our network architecture outperforms the best baseline model by 6.32\% mIoU.
+
+
+\begin{comment}
+\vspace{5cm}
+
+
+\begin{itemize}
+    \item We compressed and projected original PartNet taxonomy to Scannet dataset, then pruned it even further depending on class statistics of objects from real-world scenes.
+    \item We used segmentation neural network with U-Net with resudual blocks to compute features of voxels.
+    \item Using features we predict probabilities of voxel corresponding to instance and semantic labels in the parts taxonomy.
+    \item Integrating probabilities of parts to have a better prediction of whole objects and their component parts at the same time.
+    \item We an
+\end{itemize}
+
+
+In order to train our method, we a introduce new Scan2Part dataset with 242,081 correspondences between 53,618 PartNet parts of 2,477 ShapeNet objects and 1,506 Scannet scenes. 
+
+
+Specifically, we introduce the problem of real-world 3D scene part segmentation.  %redundant with first sentence
+We introduce a new Scan2Part dataset with 242081 correspondences between 53618 PartNet parts of 2477 ShapeNet objects and 1506 Scannet scenes. 
+%
+This approach is to training segmentation models of different levels of detail in a joint way while improving the results of each.
+
+% Most of the state of the art research on part segmentation of shapes is performed on Meshes or CAD model datasets, where 3D data modeled through sampling of point clouds or voxelisation, which ignores real-world measurement effects like noise, occlusion and sensor limitations. 
+
+We also explore connections between problems of part instance segmentation, semantic part segmentation, and scene graph inference. We demonstrate how parts taxonomies affect the ability of models to perform segmentation and suggest data-driven approaches to creating new part taxonomies. The models we trained are capable of segmenting scenes into object parts in noisy, heavily occluded environments.
+In conclusion, we discuss the limits of applicability of part annotation to raw data measured from sensors and attempting to estimate the best possible performance for part segmentation problem for data with limited resolution and sensor noise.
+
+% \MATTHIAS{Please make bullet points of method here}
+% Our method:
+
+% \begin{itemize}
+%     \item We compressed and projected original PartNet taxonomy to Scannet dataset, then pruned it even further depending on class statistics of objects from real-world scenes.
+%     \item We used segmentation neural network with U-Net with resudual blocks to compute features of voxels.
+%     \item Using features we predict probabilities of voxel corresponding to instance and semantic labels in the parts taxonomy.
+%     \item Integrating probabilities of parts to have a better prediction of whole objects and their component parts at the same time.
+%     \item We analyse prediction errors and suggest an update to a taxonomy so that scene predictions can be more accurate.
+% \end{itemize}
+\end{comment}
+
+\end{abstract}

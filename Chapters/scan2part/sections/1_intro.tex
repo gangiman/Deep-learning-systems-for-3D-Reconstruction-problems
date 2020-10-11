@@ -1,0 +1,116 @@
+\section{Introduction}
+
+%Motivation: RGB-D scanning is here and we want to have a fine-grained understanding of the 3D captures
+In the recent years, a wide variety of consumer-grade RGB-D sensors, such as the Intel Real Sense, Microsoft Kinect, depth-sensor enabled smartphones, enabled inexpensive and rapid RGB-D data acquisition. Increasing availability of large, labeled datasets (e.g.,~\cite{chang2017matterport3d,dai2017scannet})  made possible development of deep learning methods for 3D object classification and semantic segmentation. At the same time, acquired 3D data is often incomplete and noisy; while one can identify and segment the objects in the scene, reconstructing high-quality geometry of objects remains a challenging problem.  
+
+An example of the new approach in recent work 
+\cite{avetisyan2019scan2cad}, uses a large dataset of clean, labeled geometric shapes
+\cite{chang2015shapenet}, for classification/segmentation associating the input point or voxel data with object labels from the dataset, along with adapting geometry to 3D data.  This approach ensures that the output geometry has high quality, and is robust with respect to noise and missing data in the input.  
+At the same time, a ``flat'' classification/segmentation approach, with each object in the database corresponding to a separate label and matched to a subpart of the input data corresponding to the whole object, does not scale well as the number of classes grows and often runs into difficulties in the cases of extreme occlusion (only a relatively small part of an object is visible). 
+Significant improvements can be achieved by considering object \emph{parts}, or more generally part hierarchies. 
+Part-based segmentation of 3D datasets promises to offer a significant improvement both in finding the best matching shape in the dataset, recognizing objects from  highly incomplete data (e.g., from a couple of parts) from  as well as more precise geometry adaptation as well as, potentially, assembly of new shapes out of existing parts yielding a closer match to the input data. 
+
+% large collection of 3D models in database can be reduced to structured representations, 
+%objects with occluded sub-parts still can be recognized by parts available in the scan and the rest can be guessed with high probability, using parts, we can reconstruct new objects that are not yet present in the database of shapes. \LA{Whoa: we must either prove this by experiments, or appeal to existing researcg}
+
+%based on different approaches for volumetric information integration, from enhancements of  methods such as volumetric fusion \cite{curless1996volumetric}, to 
+%probabilistic  methods, and plethora of methods based on their combinations.
+
+%Compared to computer graphics models manually created by 3D professionals, 3D scans are noisy and incomplete.
+% - есть задача восстановления сцен по шумным сканам (всякие слова и ссылки на этот счет были и у нас в статье, и в статьях нисснера про scan2cad)
+%Amount of noise and limited resolution of \VI{consumer-grade} consumer grade scanning hardware pose significant challenges for solving this important problem of scene reconstruction. 
+%Approaches of reconstruction based on fitting existing 3D assets into scene scans, have shown a lot of promise but still had problems with finding exact models from large database such as ShapeNet \cite{chang2015shapenet}, because of occlusion and lack of spatial context.
+
+% TODO rewrite
+
+%Learning-based approaches are very good at extracting features representative of objects and scenes as a whole, allowing to fill in occluded areas or guess parts affected by noise \cite{dai2017shape,dai2018scancomplete,song2017semantic}. These features are sufficient for scene completion, but they are not as good at recovering geometric primitives like: sharp edges, planar surfaces or borders between sub-parts, resulting in reconstruction quality much poorer than that of 3D content created by humans.
+
+In this work, we focus on the key problem of semantic part segmentation of objects in the scenes, enabling further improvements in  dataset-based reconstruction. 
+
+%\LA{new task: semantic partseg, most parts visible thus apps: nonvisible parts can be inferred, better shape coverage}
+
+In human-made environments, a lot of objects have naturally defined semantic sub-parts, and those sub-parts can, in turn, have their sub-parts, i.e., parts form \emph{hierarchies}.  In our work, we use scene and object representation based on such part hierarchies.  We show how a part-labeled dataset of scanned 3D data suitable for machine learning applications can be constructed, and used to improve the performance of segmentation algorithms. 
+
+%Definitions of sub-parts are based on a set of primitive elements that were manufactured by one formation method or from one material.
+
+%Because of that and the fact that static scenes have other relationships between objects (fixed to each other or in direct surface contact), it's reasonable to suggest a scene description format that possesses a property of hierarchy (e.g., trees or other kinds of graphs).
+%We represent scenes as a discrete structures with properties of composability and complex relationships of its parts to compose a whole object and in turn compose a scene from separate objects.
+%\LA{usefulness of parts}
+
+%In the last 4 years, the field of computer vision saw an increase in Real-world 3D Scenes datasets acquired using depth sensors and LIDAR's. 
+%
+%However, due to the limitation of sensors resolution ability, the level of detailization remains the same.
+%\DZ{I am not sure this is the reason, and in any case, you need to explain what exactly detailizaiton means in this context}
+
+Our contributions include: 
+\begin{enumerate}
+\item A new dataset Scan2Part, composed of 1,506 3D reconstructions of real-world scenes with 2,477 aligned 3D CAD models represented by real-world 3D geometry and annotated using hierarchical annotation, which links 3D scene reconstruction with part-annotation of everyday objects.
+% \MATTHIAS{highlight stats}
+\item We analyze gathered labels and perform compression (aggregation) of instance part taxonomy into hierarchical semantic labels. %\textcolor{blue}{VI: почему 1 и 2 контрибьюшн -- это отдельные пункты, если это всё про 1 датасет}
+\item We train multiple models in 3 distinct setups to solve a problem of semantic segmentation of parts in a scene which helps with discovery of new objects and segmentation of objects in the noisy and incomplete geometry of an RGB-D scans. 
+%\item 
+%\DZ{I would not necessarily make this a separate contribution matbe merge with previous}
+%We determined at what detalization level objects loose their unique spacial characteristics and become practically indistinguishable from each other. %\textcolor{blue}{VI: может быть конкретно характеризовать, на каком уровне? типа на уровне разделения объекта на ~10 частей в среднем}
+\end{enumerate}
+
+% \textcolor{blue}{VI: создание нового направления сегментации сцены на части}
+
+% \textcolor{blue}{VI: создание пайплайна, которое позволяет улучшить качество обучения высокоуровневых объектов за счёт низкоуровневых объектов}
+
+
+
+%\LA{Contributions: 
+%* 
+%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+% По идее, introduction надо изложить каким-то таким образом (коллеги поправят, если что):
+\begin{comment}
+\DZ{...I could not follow what the introduction is saying; 
+the point of each paragraph is clear but they do not seem to form a coherent story motivating the work;  I can rewrite this, but I'd like to understand first what exactly you had in mind.
+\newline
+Here is a summary, by paragraph: 
+\newline
+$\bullet$We have a lot of data now, so reconstruction is important and many methods were developed
+\newline
+$\bullet$Deep learning was used a lot for segmentation and classification because of reconstruction datasets 
+[how do reconstruction datasets help with segmentsaiton/classification? why are we talking about classification/segmentation when we started talking about reconstruction?]
+\newline
+$\bullet$But more work is needed to use this in real applications
+\newline
+$\bullet$Reconstruction is difficult because data is noisy, 
+one way to solve it is by matching with databases, but this does not always work [ok so back to reconstruction, introducing CAD shape fitting]
+\newline
+$\bullet$Learning can also extract features which are good for scene completion but not good for geometric primitives
+[back to DL again, and features, why do we need these for reconstruction? ]
+\newline
+$\bullet$We can do better if we solve a new problem of semantic part segmentation: can recognize occluded objects better, 
+reconstruct new objects not present in the database. 
+Unclear item: large collections can be reduced to new representations
+[part segmentation can help to overcome some limitations of CAD shape fitting ]
+\newline
+$\bullet$ Objects can be naturally made of parts, so scenes need to be described by hierarchies
+[seems like a trivial observation but ok, if it were leading somewhere]
+\newline
+$\bullet$Here are our contributions: (1) dataset collected, (2) compressed 
+taxonomy (where did it come from) into hierachical labels,
+[never talked about taxonomies yet and we are compressing one all of a sudden] (3) several models tested to do part segmentation helping  (in what sense?) to discover new objects and segment objects in noisy/incomplete data (4) determine what detalization level is too coarse [why is this last thing interesting?]
+}
+\end{comment}
