@@ -3,3 +3,16 @@ Chapters/*.zip
 *.out
 *.toc
 *.gz
+
+intro.aux
+intro.fdb_latexmk
+intro.fls
+intro.log
+
+Thesis_main.aux
+Thesis_main.bbl
+Thesis_main.blg
+Thesis_main.fdb_latexmk
+Thesis_main.fls
+Thesis_main.log
+Thesis_main.pdf

@@ -1,4 +1,4 @@
-\section{Related work}
+\section{DensePose - Related work}
 
 \noindent 
 \textbf{DensePose task.} DensePose-COCO dataset contains a large set of images of people collected ``in the wild'' together with different annotations: (i) bounding boxes, (ii) foreground-background masks, (iii) dense correspondences --- points $p \in S$ of a reference 3D model $S\in\mathbb{R}^3$ of the object associated with triplets $(c, u, v) \in\{1, \ldots, C\} \times[0,1]^{2}$, where $c$ indicates which one of $C$ body parts contains the pixel and $(u,v)$ represents the corresponding location (UV coordinates) in the chart of the part \cite{smpl}.
@@ -20,7 +20,7 @@ In recent years the neural architecture search (NAS) techniques gained popularit
 
 \begin{figure}[!hbtp]
 \centering
-\includegraphics[width=0.4\textwidth]{images/scheme.pdf}
+\includegraphics[width=0.4\textwidth]{Figures/densepose/scheme.pdf}
 \caption{The high level structure of the Mobile Parsing R-CNN model. $C_i$, $P_i$ represent feature levels with a resolution of $1/2^i$ of the input image. $P_6$ is obtained via stride-2 pooling on $P_5$.}
 \label{fig:scheme}
 \end{figure}
