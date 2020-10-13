@@ -34,38 +34,26 @@ At the same time, a ``flat'' classification/segmentation approach, with each obj
 Significant improvements can be achieved by considering object \emph{parts}, or more generally part hierarchies. 
 Part-based segmentation of 3D datasets promises to offer a significant improvement both in finding the best matching shape in the dataset, recognizing objects from  highly incomplete data (e.g., from a couple of parts) from  as well as more precise geometry adaptation as well as, potentially, assembly of new shapes out of existing parts yielding a closer match to the input data. 
 
-% large collection of 3D models in database can be reduced to structured representations, 
-%objects with occluded sub-parts still can be recognized by parts available in the scan and the rest can be guessed with high probability, using parts, we can reconstruct new objects that are not yet present in the database of shapes. \LA{Whoa: we must either prove this by experiments, or appeal to existing researcg}
+large collection of 3D models in database can be reduced to structured representations, 
+objects with occluded sub-parts still can be recognized by parts available in the scan and the rest can be guessed with high probability, using parts, we can reconstruct new objects that are not yet present in the database of shapes.
 
-%based on different approaches for volumetric information integration, from enhancements of  methods such as volumetric fusion \cite{curless1996volumetric}, to 
-%probabilistic  methods, and plethora of methods based on their combinations.
+Based on different approaches for volumetric information integration, from enhancements of  methods such as volumetric fusion \cite{curless1996volumetric}, to probabilistic  methods, and plethora of methods based on their combinations.
 
-%Compared to computer graphics models manually created by 3D professionals, 3D scans are noisy and incomplete.
-% - есть задача восстановления сцен по шумным сканам (всякие слова и ссылки на этот счет были и у нас в статье, и в статьях нисснера про scan2cad)
-%Amount of noise and limited resolution of \VI{consumer-grade} consumer grade scanning hardware pose significant challenges for solving this important problem of scene reconstruction. 
-%Approaches of reconstruction based on fitting existing 3D assets into scene scans, have shown a lot of promise but still had problems with finding exact models from large database such as ShapeNet \cite{chang2015shapenet}, because of occlusion and lack of spatial context.
+Compared to computer graphics models manually created by 3D professionals, 3D scans are noisy and incomplete.
+Amount of noise and limited resolution of consumer-grade scanning hardware pose significant challenges for solving this important problem of scene reconstruction. 
+Approaches of reconstruction based on fitting existing 3D assets into scene scans, have shown a lot of promise but still had problems with finding exact models from large database such as ShapeNet \cite{chang2015shapenet}, because of occlusion and lack of spatial context.
 
-% TODO rewrite
-
-%Learning-based approaches are very good at extracting features representative of objects and scenes as a whole, allowing to fill in occluded areas or guess parts affected by noise \cite{dai2017shape,dai2018scancomplete,song2017semantic}. These features are sufficient for scene completion, but they are not as good at recovering geometric primitives like: sharp edges, planar surfaces or borders between sub-parts, resulting in reconstruction quality much poorer than that of 3D content created by humans.
+Learning-based approaches are very good at extracting features representative of objects and scenes as a whole, allowing to fill in occluded areas or guess parts affected by noise \cite{dai2017shape,dai2018scancomplete,song2017semantic}. These features are sufficient for scene completion, but they are not as good at recovering geometric primitives like: sharp edges, planar surfaces or borders between sub-parts, resulting in reconstruction quality much poorer than that of 3D content created by humans.
 
 In this work, we focus on the key problem of semantic part segmentation of objects in the scenes, enabling further improvements in  dataset-based reconstruction. 
-
-%\LA{new task: semantic partseg, most parts visible thus apps: nonvisible parts can be inferred, better shape coverage}
+Semantic part-segmentation, can help in these situations, when sufficient number of the object parts is visible model can infer the non-visible parts essentially completing an object in sense of maximum probability conditioned on input data.
 
 In human-made environments, a lot of objects have naturally defined semantic sub-parts, and those sub-parts can, in turn, have their sub-parts, i.e., parts form \emph{hierarchies}.  In our work, we use scene and object representation based on such part hierarchies.  We show how a part-labeled dataset of scanned 3D data suitable for machine learning applications can be constructed, and used to improve the performance of segmentation algorithms. 
 
-%Definitions of sub-parts are based on a set of primitive elements that were manufactured by one formation method or from one material.
+Definitions of sub-parts are based on a set of primitive elements that were manufactured by one formation method or from one material.
 
-%Because of that and the fact that static scenes have other relationships between objects (fixed to each other or in direct surface contact), it's reasonable to suggest a scene description format that possesses a property of hierarchy (e.g., trees or other kinds of graphs).
-%We represent scenes as a discrete structures with properties of composability and complex relationships of its parts to compose a whole object and in turn compose a scene from separate objects.
-%\LA{usefulness of parts}
-
-%In the last 4 years, the field of computer vision saw an increase in Real-world 3D Scenes datasets acquired using depth sensors and LIDAR's. 
-%
-%However, due to the limitation of sensors resolution ability, the level of detailization remains the same.
-%\DZ{I am not sure this is the reason, and in any case, you need to explain what exactly detailizaiton means in this context}
-
+Because of that and the fact that static scenes have other relationships between objects (fixed to each other or in direct surface contact), it's reasonable to suggest a scene description format that possesses a property of hierarchy (e.g., trees or other kinds of graphs).
+Representing scenes as a discrete structures with multiple relationships between nodes. Such relationships like composability of its parts and affordances between whole objects, in turn allowing to compose a scene from separate objects.
 
 \todo{merge these paragraphs}
 
@@ -84,16 +72,112 @@ Proximity Graphs - concept that allows to build a bridge between Point Clouds an
 
 
 \section{Problem of 3D reconstruction}
+
+Solutions for a reconstruction problem can be grouped in two major groups:
+\begin{enumerate}
+    \item Optimisation of scene state,
+    \item Optimisation of inverse model.
+\end{enumerate}
+
+If $X$ - is scene data, $z$ - is the state of the scene, and $g_i(z)$ - projection function of 3D scene $z$ state to perspective $i$, then to find an optimal 3D reconstruction, one solves this minimisation problem:
+\begin{equation}
+z_{rec} = \min_z\sum_i|X_i-g_i(z)|_2 .
+\end{equation}
+
+This approach only solves problem for once scene and does not provide any semantic information about it, only basic geometric information. 
+The second approach is more modern and better fitted for machine learning applications, because instead of optimizing state of the scene, it's optimizes a model that performs computation from input data to some semantic (intrinsic) parameters, and can be described as following optimisation procedure:
+\begin{equation}
+\min_\theta\sum_i|X_i-g_i(f_\theta(\pi))|_2,\ \ \pi=I_\theta(X_i),\ \ z=f_\theta(\pi),
+\end{equation}
+where $\pi$ - are scene parameters, $f_\theta(\pi)$ - is a generative model that generates 3D state $z$ and it's function is determined by tunable parameters $\theta$.
+
+
 \subsection{Definitions and examples}
 \subsection{Data sources and devices}
 \subsection{3D data representations}
 
+We can describe a 3D object in multiple ways, and codification of it's properties has ramifications about capturing different information about objects and scenes, as well as kinds of models that can regenerate them or computational resources needed to process it.
+Each representation has it's own pros and cons. We assume 3D information representation to be positive effective and usefull if it captures more relevant information with less storage requirement (compression), increases signal to noise ratio of data, captures shape and texture properties with minimum trade-off.
 
-\section{Inverse Problem formulation}
+Here are some popular examples of 3D data representations:
+\begin{enumerate}
+	\item Multiple 2D projections - captures surface texture, highly redundant representation if images overlap, also vulnerable to optic illusions.
+	\item Voxels - simple, most of the time can be sparse, represents rough volumetric properties vell but losses most of surface properties.
+	\item Point Cloud - are sparse in a sense that they don't capture empty space, losing all surface properties besides color and estimated normals and most of volumetric properties.
+	\item 2.5D (RGB-D) images are widespread because of cheap measurement devices, capture volumentric depth but succeptable to occlusion of bodies in a scene and records a lot of noise with actual signal.
+\end{enumerate}
+
+
+\section{Inverse Graphics Problem formulation}
+
+\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,wu20153d,2016arXiv160805137I}
+
+Inverse graphics approach enables to solve a problem of "real-world" scene understanding through reconstruction of that scene and comparison it to measured data in some form.
+
+Because it's a fairly new method it has some unexplored facets:
+\begin{enumerate}
+    \item How can we scale to hundreds and thousands of objects with different parameters.
+    \item Embedded representations better than procedural generation
+    \item Are there format that can have all advantages of CAD models and probabilistic properties that arise from real-world uncertainties.
+\end{enumerate}
+
+Central goals of computational perception is to get structured description of scenes from measurements such as photographic images, scans and videos.
+
+Computer Vision as Inverse Graphics is the most rational formulations that could help us achieve this goal.
+
+In the past, it has been hard to directly solve these problems in practice because of computational limitations.
+
+However, it may be right time to take another look at this idea due to significant advances in deep learning for computer vision, probabilistic programming, and computer graphics.
+
+Probabilistic programming - a tool that allows us to implement complex models while keeping ability to perform inference, extend with other probabilistic models by being general-purpose.
+
+Re-formalizing inverse graphics in terms of probabilistic programming and deep learning allow us to solve even more complicated vision problems with off-the-shelf computational technology.
+
+To make this approach scalable, my research can incorporate effective techniques such as: approximate Bayesian computation, differentiable programming for rendering.
+
+Computer Graphics nowadays seems to be improving at a great pace in terms of designing solutions for hard image synthesis problems, but these solutions are usually hand-made and not flexible enough to cover all needs for general-purpose real world object generating, latest advances in generative models can help with that.
+
+
 \subsection{Overcoming lack of information}
 
 \section{Datasets}
+
+Only recently research community started accumuulating sugnifficant amount of algined sensor data to solve large scale 3D reconstruction problems in deep learning context. In last 4 years we saw an explosion of 3D shape databases and 2D-to-3D indoor scene datasets, such as ShapeNet, 2D-3D Semantic, Scannet and Matterport3D datasets. Because accuracy and reacall properties of deep learning models scale with amount and variety of data, number of state-of-the-art models grew as well.
+
 \section{Architectures}
+
+\subsection{Implicit 2D models}
+
+Like inverse graphics network. Model takes 2D images and returns 2D images with 3D properties changed. 
+
+\subsection{3D convolutional models}
+
+Model generates or processes voxel image with 3D convolutional operation implemented Dense or Sparse.
+
+\subsection{2D to 3D Projection models}
+
+Model uses camera parameters to compute 3D representation using 2D/2.5D images and projection operation.
+
+\subsection{Point Set layers}
+
+Neural Network processes a set of points to classify, segment or predict new set of points.
+
+\subsection{Graph-Convolutional layers}
+
+Model processes Geometric Graph where nodes represent points registered on a surface of objects or parts of objects, and has geometric or other information representing edges between points. Layers process activations associated with nodes taking into account the connectivity.
+
+\subsection{Differentiable rendering layers}
+
+Rendering operation is implemented in a differentiable way, allowing backpropogation of gradient information from 2D images to meshes and textures of the objects being rendered.
+
+\subsection{Mesh generating layers}
+
+Neaural Network layers that can create a mesh by way of processing a template 3D shape with parametracised operation or meshing other 3D shape representation generated by computation from weights and input.
+
+\subsection{Implicit 3D models}
+
+Models like NeRF, PIFU3D, neural network implements a rendering function depending on view angle and other graphics parameters, one model represents one scene and don't generalise for viriety of scene inputs.
+
 \section{Contributions}
 
 % \chapt{hist}, \chapt{bilinear} and \chapt{gradrev} use  person re-identification architecture of \citep{Yi14} as a baseline method (it is also  described in \sect{intro_architectures}).  \chapt{bilinear} is based on the results of \chapt{hist}: the loss function introduced in \chapt{hist} is used for 

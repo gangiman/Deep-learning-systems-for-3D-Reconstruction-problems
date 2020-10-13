@@ -1,6 +1,17 @@
 \section{Experimental Results}
 \label{sec:results}
 
+\paragraph{The choice of scene understanding levels. }
+\label{results:levels}
+We evaluate the algorithms at three granularity levels for each object category: coarse-, middle- and fine-grained, roughly corresponding to evaluation in~\cite{mo2019partnet}. 
+Because of arbitrary nature of part labels in the PartNet dataset, metric scale doesn't always correspond to levels of object taxonomy. We choose to train on first 3 levels of object taxonomy to minimize discrepancy in geometry for levels >= 4.
+Here are main guiding principles for levels of detail selection in a general case:
+\begin{itemize}
+    \item The higher the number of classes the lower segmentation performance of the model
+    \item The higher the number of voxels for a given label class the higher prediction accuracy of that class
+    \item The lower the level of detail the simpler geometry of parts on that level 
+\end{itemize}
+
 \begin{wraptable}{r}{5.5cm}
 \caption{Model configurations that we consider, with $\alpha_i$ in~\eqref{eq:semseg_loss}.}
 \begin{tabular}{lrrr}\\\toprule  
@@ -17,16 +28,6 @@ MTT-123-fine    & .2 & .3 & .5 \\
 \label{table:configurations}
 \end{wraptable} 
 
-\paragraph{The choice of scene understanding levels. }
-\label{results:levels}
-We evaluate the algorithms at three granularity levels for each object category: coarse-, middle- and fine-grained, roughly corresponding to evaluation in~\cite{mo2019partnet}. 
-Because of arbitrary nature of part labels in the PartNet dataset, metric scale doesn't always correspond to levels of object taxonomy. We choose to train on first 3 levels of object taxonomy to minimize discrepancy in geometry for levels >= 4.
-Here are main guiding principles for levels of detail selection in a general case:
-\begin{itemize}
-    \item The higher the number of classes the lower segmentation performance of the model
-    \item The higher the number of voxels for a given label class the higher prediction accuracy of that class
-    \item The lower the level of detail the simpler geometry of parts on that level 
-\end{itemize}
 
 Trying to find the optimal trade-off between principle described above we concluded that all of the relevant information will be preserved if we work with hierarchy levels equal or lower than 3, and minimum number of voxels for a given class equal to 1800.
 
