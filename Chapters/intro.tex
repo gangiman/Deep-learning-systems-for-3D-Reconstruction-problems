@@ -92,6 +92,10 @@ The second approach is more modern and better fitted for machine learning applic
 where $\pi$ - are scene parameters, $f_\theta(\pi)$ - is a generative model that generates 3D state $z$ and it's function is determined by tunable parameters $\theta$.
 
 
+In reconstruction process information can be introduced only in two possive ways: 1) input signal - data measured by some spatial sensor, 2) by adding a priori knowledge while training the Inverse model or by design choice of reconstruction algprithm. Between the two source exist a fundamental trade-off and detirmination of which is dominant can be quite difficult \cite{tatarchenko2019single}.
+
+
+
 \subsection{Definitions and examples}
 \subsection{Data sources and devices}
 \subsection{3D data representations}
@@ -153,6 +157,8 @@ Like inverse graphics network. Model takes 2D images and returns 2D images with 
 \subsection{3D convolutional models}
 
 Model generates or processes voxel image with 3D convolutional operation implemented Dense or Sparse.
+
+Semantic information can boost the reconstruction performance because deep learning systems are able to pick up onto consistent signal \cite{jiao2018look,tatarchenko2019single,kendall2018multi}.
 
 \subsection{2D to 3D Projection models}
 
