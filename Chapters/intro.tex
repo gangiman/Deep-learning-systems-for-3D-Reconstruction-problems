@@ -17,23 +17,58 @@
 %architectures
 %definitions?
 %contribution - what is done
+\section{Context}
+\subsection{Problem of 3D reconstruction}
 
-\section{Problem of 3D reconstruction}
+\subsection{Approaches for solving 3D Reconstruction problem}
+
+Solutions for a reconstruction problem can be grouped in two major groups: 1) Geometric approach - when problem is represented as optimisation of scene state given constrains on projections of scene state to data, 2) Machine Learning approach - inverse model is optimisation.
+
+If $X$ - is scene data, $z$ - is the state of the scene, and $g_i(z)$ - projection function of 3D scene $z$ state to perspective $i$, then to find an optimal 3D reconstruction, one solves this minimisation problem:
+\begin{equation}
+z_{rec} = \min_z\sum_i|X_i-g_i(z)|_2 .
+\end{equation}
+
+This approach only solves problem for once scene and does not provide any semantic information about it, only basic geometric information. 
+The second approach is more modern and better fitted for machine learning applications, because instead of optimizing state of the scene, it's optimizes a model that performs computation from input data to some semantic (intrinsic) parameters, and can be described as following optimisation procedure:
+\begin{equation}
+\min_\theta\sum_i|X_i-g_i(f_\theta(\pi))|_2,\ \ \pi=I_\theta(\{X_i\}_i),\ \ z=f_\theta(\pi),
+\end{equation}
+where $\pi$ - are scene parameters, $f_\theta(\pi)$ - is a generative model that generates 3D state $z$ and it's function is determined by tunable parameters $\theta$.
+
+In reconstruction process information can be introduced in two possible ways: 1) input signal - data measured by some spatial sensor, 2) by adding a priori knowledge while training the Inverse model or by design choice of reconstruction algprithm. Between the two source exist a fundamental trade-off and detirmination of which is dominant can be quite difficult \cite{tatarchenko2019single}.
+
+
 \subsection{Objectives and Motivations}
 
 The goal of this work to improve methods of 3D reconstruction in holistic context using deep learning systems. For efficient applications such as robotics in human environments and mixed reality more advanced machine perception systems are needed. Human perception is a complex system with several properties not all of which are replicated in modern machine perception systems. From cognitive sciences it's known that ability to model environments is one of the most important for perception system, in area of computer vision this is known as an ability to perform \textit{3D reconstruction} of scenes and environments. To solve this problem in a general case requires application of machine learning.
 
 In particular, the development of such holistic deep 3D reconstruction system includes several important tasks:
-\begin{enumerate}
-􏰀 \item Capturing sensor data complete with color and depth information of sufficient quality
- \item Recalling objects from large scale database of objects
- \item Segmenting variety of most common elements from sensor data, such as household objects and architectural components
- \item Detecting and reconstructing shape and pose of and human bodies.
-\end{enumerate}
+
+\begin{itemize}
+􏰀    \item Capturing scenes, complete with colour and depth data of a sufficient quality,
+    \item Recalling objects from large scale database of objects,
+    \item Segmenting variety of most common elements from sensor data, such as household objects and architectural components,
+    \item Detecting and reconstructing shape and pose of and human bodies.
+\end{itemize}
 
 Each of these sub-tasks constitutes a challenge in the context of human perception.
 
 The presence of noise in sensor data (e.g., consumer grade depth cameras) is a serious problem for all downstream sub-tasks, low fidelity of this data causes a considerable compaunding performance drop.
+
+\subsection{3D data representations}
+
+We can describe a 3D object in multiple ways, and codification of it's properties has ramifications about capturing different information about objects and scenes, as well as kinds of models that can regenerate them or computational resources needed to process it.
+Each representation has it's own pros and cons. We assume 3D information representation to be positive effective and usefull if it captures more relevant information with less storage requirement (compression), increases signal to noise ratio of data, captures shape and texture properties with minimum trade-off.
+
+Here are some popular examples of 3D data representations:
+\begin{enumerate}
+	\item Multiple 2D projections - captures surface texture, highly redundant representation if images overlap, also vulnerable to optic illusions.
+	\item Voxels - simple, most of the time can be sparse, represents rough volumetric properties vell but losses most of surface properties.
+	\item Point Cloud - are sparse in a sense that they don't capture empty space, losing all surface properties besides color and estimated normals and most of volumetric properties.
+	\item 2.5D (RGB-D) images are widespread because of cheap measurement devices, capture volumentric depth but succeptable to occlusion of bodies in a scene and records a lot of noise with actual signal.
+\end{enumerate}
+
 
 
 %Motivation: RGB-D scanning is here and we want to have a fine-grained understanding of the 3D captures
@@ -82,46 +117,9 @@ CAD constructor network translates that graph into CAD object (tree with primiti
 
 Proximity Graphs - concept that allows to build a bridge between Point Clouds and Graph Processing. This area of computational geometry has a lot of theoretical results to offer for Deep Learning piplene designer.
 
-\subsection{Geometric and Machine Learning approaches for solving 3D Reconstruction problem}
-
-Solutions for a reconstruction problem can be grouped in two major groups:
-\begin{enumerate}
-    \item Optimisation of scene state,
-    \item Optimisation of inverse model.
-\end{enumerate}
-
-If $X$ - is scene data, $z$ - is the state of the scene, and $g_i(z)$ - projection function of 3D scene $z$ state to perspective $i$, then to find an optimal 3D reconstruction, one solves this minimisation problem:
-\begin{equation}
-z_{rec} = \min_z\sum_i|X_i-g_i(z)|_2 .
-\end{equation}
-
-This approach only solves problem for once scene and does not provide any semantic information about it, only basic geometric information. 
-The second approach is more modern and better fitted for machine learning applications, because instead of optimizing state of the scene, it's optimizes a model that performs computation from input data to some semantic (intrinsic) parameters, and can be described as following optimisation procedure:
-\begin{equation}
-\min_\theta\sum_i|X_i-g_i(f_\theta(\pi))|_2,\ \ \pi=I_\theta(X_i),\ \ z=f_\theta(\pi),
-\end{equation}
-where $\pi$ - are scene parameters, $f_\theta(\pi)$ - is a generative model that generates 3D state $z$ and it's function is determined by tunable parameters $\theta$.
-
-
-In reconstruction process information can be introduced only in two possive ways: 1) input signal - data measured by some spatial sensor, 2) by adding a priori knowledge while training the Inverse model or by design choice of reconstruction algprithm. Between the two source exist a fundamental trade-off and detirmination of which is dominant can be quite difficult \cite{tatarchenko2019single}.
-
-
 
 \subsection{Definitions and examples}
 \subsection{Data sources and devices}
-\subsection{3D data representations}
-
-We can describe a 3D object in multiple ways, and codification of it's properties has ramifications about capturing different information about objects and scenes, as well as kinds of models that can regenerate them or computational resources needed to process it.
-Each representation has it's own pros and cons. We assume 3D information representation to be positive effective and usefull if it captures more relevant information with less storage requirement (compression), increases signal to noise ratio of data, captures shape and texture properties with minimum trade-off.
-
-Here are some popular examples of 3D data representations:
-\begin{enumerate}
-	\item Multiple 2D projections - captures surface texture, highly redundant representation if images overlap, also vulnerable to optic illusions.
-	\item Voxels - simple, most of the time can be sparse, represents rough volumetric properties vell but losses most of surface properties.
-	\item Point Cloud - are sparse in a sense that they don't capture empty space, losing all surface properties besides color and estimated normals and most of volumetric properties.
-	\item 2.5D (RGB-D) images are widespread because of cheap measurement devices, capture volumentric depth but succeptable to occlusion of bodies in a scene and records a lot of noise with actual signal.
-\end{enumerate}
-
 
 \section{Inverse Graphics Problem formulation}
 

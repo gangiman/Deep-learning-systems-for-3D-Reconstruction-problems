@@ -1,5 +1,4 @@
-\section{Scan2Part - Related Work}
-\label{sec:related}
+% !TEX root = ../../Thesis_main.tex
 
 \paragraph{Deep learning for 3d scene understanding.}
 \label{related:scene-understanding}
@@ -17,8 +16,8 @@ To segment instances, recently proposed volumetric and point-based approaches us
 % Hierarchical segmentation gives better results even without explicit parts learning \cite{Tao2020HierarchicalMA}
 
 Part-aware methods for learning  focus on meshes or complete, clean point clouds constructed from 3D CAD models. The most closely related work  is semantic parts labeling (e.g.,~\cite{yi2016scalable,wang2017cnn,qi2017pointnet,mo2019partnet,yi2019gspn,zhang2019point}) and part instance segmentation~\cite{zhang2019point} for voxelized or point-sampled 3D shapes. Other works focus on leveraging parts structure of clean shapes for co-segmentation~\cite{chen2019bae,zhu2019cosegnet}, hierarchical mesh segmentation~\cite{yi2017learning}, shape assembly/generation~\cite{mo2019structurenet,wu2019sagnet,wu2019pq,mo2020pt2pc}, geometry abstraction~\cite{russell2009associative,li2017grass,sun2019learning}, and other applications.
-% yi2017learning - hierarhical part decomposition for 3D shapes by mesh segmentation
-% muralikrishnan2018tags2parts - 3D CNN on volumes for part discovery from written tags
+
+There is also exist work that attempts to perform hierarhical part decomposition for 3D shapes by mesh segmentation~\cite{yi2017learning}. In setting where part labels are less precise and correspond as tags to objects 3D CNN on volumes for part discovery can be used~\cite{muralikrishnan2018tags2parts}.
 % mo2019structurenet - learn a latent space for 3D shape parts enabling shape generation, editing (but only a single non-semantic experiment on real-world data)
 % wu2019sagnet voxelized shape generation 
 % wu2019pq assembly of voxelized parts
