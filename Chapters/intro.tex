@@ -1,4 +1,4 @@
-
+% !TEX root = ../Thesis_main.tex
 \chapter{Introduction}
 
 %video surveillance+
@@ -20,6 +20,21 @@
 
 \section{Problem of 3D reconstruction}
 \subsection{Objectives and Motivations}
+
+The goal of this work to improve methods of 3D reconstruction in holistic context using deep learning systems. For efficient applications such as robotics in human environments and mixed reality more advanced machine perception systems are needed. Human perception is a complex system with several properties not all of which are replicated in modern machine perception systems. From cognitive sciences it's known that ability to model environments is one of the most important for perception system, in area of computer vision this is known as an ability to perform \textit{3D reconstruction} of scenes and environments. To solve this problem in a general case requires application of machine learning.
+
+In particular, the development of such holistic deep 3D reconstruction system includes several important tasks:
+\begin{enumerate}
+􏰀 \item Capturing sensor data complete with color and depth information of sufficient quality
+ \item Recalling objects from large scale database of objects
+ \item Segmenting variety of most common elements from sensor data, such as household objects and architectural components
+ \item Detecting and reconstructing shape and pose of and human bodies.
+\end{enumerate}
+
+Each of these sub-tasks constitutes a challenge in the context of human perception.
+
+The presence of noise in sensor data (e.g., consumer grade depth cameras) is a serious problem for all downstream sub-tasks, low fidelity of this data causes a considerable compaunding performance drop.
+
 
 %Motivation: RGB-D scanning is here and we want to have a fine-grained understanding of the 3D captures
 In the recent years, a wide variety of consumer-grade RGB-D sensors, such as the Intel Real Sense, Microsoft Kinect, depth-sensor enabled smartphones, enabled inexpensive and rapid RGB-D data acquisition. Increasing availability of large, labeled datasets (e.g.,~\cite{chang2017matterport3d,dai2017scannet})  made possible development of deep learning methods for 3D object classification and semantic segmentation. At the same time, acquired 3D data is often incomplete and noisy; while one can identify and segment the objects in the scene, reconstructing high-quality geometry of objects remains a challenging problem.  
@@ -110,7 +125,7 @@ Here are some popular examples of 3D data representations:
 
 \section{Inverse Graphics Problem formulation}
 
-\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,wu20153d,2016arXiv160805137I}
+\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,wu20153d,izadinia2017im2cad}
 
 Inverse graphics approach enables to solve a problem of "real-world" scene understanding through reconstruction of that scene and comparison it to measured data in some form.
 
@@ -146,6 +161,15 @@ Only recently research community started accumuulating sugnifficant amount of al
 
 \section{Architectures}
 
+PanopticFusion~\cite{narita2019panopticfusion} is a model that is able to segment large indoor scenes and separate \textit{Stuff} and \textit{Things}.
+
+
+For outdoor datasets Point Cloud representation of data is more common because of large empty spaces and the way LiDAR sensor collects data. In such setting instance segmentation is nessesary first step for reconstruction~\cite{zhang2020instance}.
+
+\subsection{Multi-view models}
+
+Detailed comparision of multi-view 2D CNN model and 3D volumetric CNN can be found in \cite{qi2016volumetric}.
+
 \subsection{Implicit 2D models}
 
 Like inverse graphics network. Model takes 2D images and returns 2D images with 3D properties changed. 
@@ -179,6 +203,8 @@ Neaural Network layers that can create a mesh by way of processing a template 3D
 \subsection{Implicit 3D models}
 
 Models like NeRF, PIFU3D, neural network implements a rendering function depending on view angle and other graphics parameters, one model represents one scene and don't generalise for viriety of scene inputs.
+
+
 
 \section{Contributions}
 

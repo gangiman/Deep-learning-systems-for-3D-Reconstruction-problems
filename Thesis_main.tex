@@ -1,7 +1,7 @@
 %% ----------------------------------------------------------------
 %% Thesis.tex -- MAIN FILE (the one that you compile with LaTeX)
 %% ----------------------------------------------------------------
-
+% !TEX root = Thesis_main.tex
 % Set up the document
 \documentclass[a4paper, 11pt, oneside]{Thesis}  % Use the "Thesis" style, based on the ECS Thesis style by Steve Gunn
 \graphicspath{Figures/}  % Location of the graphics files (set up for graphics to be in PDF format)
@@ -16,8 +16,6 @@
 \usepackage{verbatim}  % Needed for the "comment" environment to make LaTeX comments
 \usepackage{vector}  % Allows "\bvec{}" and "\buvec{}" for "blackboard" style bold vectors in maths
 \hypersetup{urlcolor=blue, colorlinks=true}  % Colours hyperlinks in blue, but this can be distracting if there are many links.
-
-\newcommand{\bilinearroot}{Chapters/bilinear}
 
 \newcommand{\fig}[1]{Figure~\ref{fig:#1}}
 \newcommand{\pr}[1]{Problem~\ref{pr:#1}}
@@ -350,7 +348,7 @@
 \addtocontents{toc}{\vspace{1em}}  % Add a gap in the Contents, for aesthetics
 
 
-This work considers 3D reconstruction problems, mainly a task of recreating a scene with many objects of different nature such as indoor structure of buildings, furniture, common objects and human bodies. Current state-of-the-art systems are highly specialised in processing a specific subset of objects uniform in their spatial and visual properties, and they don't generalize well outside of it's subset.
+This work considers 3D reconstruction problems, mainly a task of recreating a scene with many objects of different nature such as architectural components of buildings, common objects such as furniture and human bodies. Current state-of-the-art systems are highly specialised in processing a specific subset of objects uniform in their spatial and visual properties, and they don't generalize well outside of it's subset.
 
 Computing relevant spatial features for sensor data is a crucial problem for Deep Learning based 3D reconstruction pipelines. Choice of scene representation for predictions and reconstructions also imensly importnant. Controling the domain to which different models compute predictions from sensor data, leads to a new level of quality, accuracy and applicability. This work pruposes a conceptual framework which unifyes 3D reconstruction models and provides ways to improve these models to solve their repsective tasks.
 
@@ -523,7 +521,7 @@ While deep learning has approached super-human performance in 2D image recogniti
 \label{Bibliography}
 \lhead{\emph{Bibliography}}  % Change the left side page header to "Bibliography"
 \bibliographystyle{plainnat}  % Use the "unsrtnat" BibTeX style for formatting the Bibliography
-\bibliography{Bibliography}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
+\bibliography{Bibliography.bib}  % The references (bibliography) information are stored in the file named "Bibliography.bib"
 
 
 \begin{titlepage}
