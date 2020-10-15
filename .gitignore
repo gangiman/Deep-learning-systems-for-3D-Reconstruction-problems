@@ -16,3 +16,5 @@ Thesis_main.fdb_latexmk
 Thesis_main.fls
 Thesis_main.log
 Thesis_main.pdf
+.DS_Store
+*/.DS_Store

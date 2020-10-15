@@ -1,3 +1,4 @@
+% !TEX root = ../../Thesis_main.tex
 \section{Retrieval-based Reconstruction}
 \label{sec:retrieval_reconstruction}
 
@@ -7,3 +8,12 @@ Scan2Cad and simmilar methods which use retrival as way to "explain" registered 
 \label{sec:shape_retrieval}
 
 Many papers about how to take a codified shape of an object or scanned data and find record in a shape database. Many aspects related to completeness of database and other retrieval problems.
+
+In the current state-of-the-art systems Convolutional Neural Networks are widely used, their effectiveness at processing 2D images is also suggestive of their efficacy to process 3D objects if presented in the form of several rendered views of the object. For example on one ModelNet40 \cite{wu20153d} benchmark three recent papers, based on this idea, showed incremental improvements in recognition performance \cite{su15mvcnn,johns2016pairwise,hegde2016fusionnet}. However, it can be argued that high performance is predicated by the usage of CNNs pre-trained on ImageNet \cite{deng2009imagenet}.
+
+Voxel representation of 3D shapes (i.e. a shape is represented as a three-dimensional grid, where occupied cells are binary values) are compatible with ConvNets input layers but create a number of difficulties.
+Adding a third spatial dimension in the input grid correspondingly increases computational costs. Number of cells scales as a power of three w.r.t. the resolution of the voxel grid. Low resolution grids make it difficult to differentiate between similar shapes, and lose some of the fine details available in 2D renderings of equivalent resolution.
+
+Some 3D Dense Convolutional Networks have been evaluated on the ModelNet40 benchmark \cite{maturana2015voxnet,sedaghat2016orientation,wu20153d,brock2016generative}, but they still not perform as well as their multi-rendering 2D counterparts.
+
+At the same time using Modified Spatially Sparse Neural Networks algorithms \cite{graham2014spatially} to process data we are able to have reasonable training and inference time even with input resolution up to $100^3$ voxels.
