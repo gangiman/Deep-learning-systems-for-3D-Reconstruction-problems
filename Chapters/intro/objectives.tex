@@ -6,7 +6,7 @@ The goal of this work to improve methods of 3D reconstruction in holistic contex
 In particular, the development of such holistic deep 3D reconstruction system includes several important tasks:
 
 \begin{itemize}
-	\item Capturing scenes, complete with colour and depth data of a sufficient quality,
+    \item Capturing scenes, complete with colour and depth data of a sufficient quality,
     \item Segmenting variety of elements from sensor data, such as most common household objects and architectural components (e.g. floor, walls, ceiling, windows and doors),
     \item Recalling objects from large scale database of objects,
     \item Detecting and reconstructing shape and pose of the human bodies.
@@ -24,7 +24,11 @@ This part is intro to depth super resolution paper
 
 \subsection{Body Shape Reconstruction}
 
+\todo{extend}
 \textit{Body Shape Reconstruction} also known as \textit{Body Shape Regression} is a task 
+ 
+ with in intself contains information about pose
+
 
 \noindent 
 \textbf{DensePose task.} DensePose-COCO dataset contains a large set of images of people collected ``in the wild'' together with different annotations: (i) bounding boxes, (ii) foreground-background masks, (iii) dense correspondences --- points $p \in S$ of a reference 3D model $S\in\mathbb{R}^3$ of the object associated with triplets $(c, u, v) \in\{1, \ldots, C\} \times[0,1]^{2}$, where $c$ indicates which one of $C$ body parts contains the pixel and $(u,v)$ represents the corresponding location (UV coordinates) in the chart of the part \cite{smpl}.
