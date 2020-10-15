@@ -2,3 +2,44 @@
 \section{Datasets}
 
 Only recently research community started accumuulating sugnifficant amount of algined sensor data to solve large scale 3D reconstruction problems in deep learning context. In last 4 years we saw an explosion of 3D shape databases and 2D-to-3D indoor scene datasets, such as ShapeNet, 2D-3D Semantic, Scannet and Matterport3D datasets. Because accuracy and reacall properties of deep learning models scale with amount and variety of data, number of state-of-the-art models grew as well.
+
+\subsection{3D scene understanding datasets}
+\label{related:datasets}
+% 2) Задача может быть сформулирована как семантическая/экземплярная сегментация 3D-представления сцены на уровне частей. Такое понимание существенно продвинет приложения, в частности в робототехнике (grasping етс.). Однако, до сегодняшнего момента для продвижения таких задач с помощью deep learning подходов нет возможности ввиду отсутствия достаточного бенчмарка или датасета: 
+% — Датасеты 3D-реконструкций сцен (например scannet, matterport, s3dis — реальных сцен) — не обладают разметкой частей, кроме того, некоторые из них (suncg, scenenet) — синтетические
+% — Датасеты с реальными данными для сегментации (например RGBD данные NYU v1/v2, sun rgbd) не обязательно относятся к реконструированным 3d-сценам (чаще являются отдельными объектами/кадрами)
+% — Датасеты с разметкой для сегментации частей (partnet) являются синтетическими / датасетами CAD-моделей, а не сканами реальных объектов
+% — Ряд датасетов является outdoor (semantic3d, kitti) и мы опускаем такие данные из рассмотрения
+
+
+A number of approaches use computer graphics methods to create realistic 3D scenes procedurally~\cite{2012-scenesynth,handa2016understanding,song2016ssc,McCormac:etal:ICCV2017,InteriorNet18,garcia2018robotrix}.
+Such datasets can in principle provide arbitrarily fine semantic labels but commonly suffer from the reality gap caused by synthetic images, while our proposed dataset is built by transferring part annotations to real-world noisy scans.
+Recent advances in RGB-D sensor technology have resulted in the development of a variety of 3D datasets capturing real 3D scenes~\cite{armeni20163d,hua2016scenenn,dai2017scannet,chang2017matterport3d,2017arXiv170201105A,replica19arxiv}, however, none of these provide part-level object annotations.
+In contrast, our dataset provides semantic and instance part labels for a large-scale collection of indoor 3D reconstructions.
+%~\cite{dai2017scannet} and manually annotated 3D shape correspondences~\cite{dai2017scannet,avetisyan2019scan2cad}.
+
+% outdoor: 
+% hackel2017isprs
+
+% 2) real-world datasets with semantic labeling
+
+% 3) datasets with part segmentations 
+
+Early collections of part-annotated meshes~\cite{Chen:2009:ABF} are limited by their relatively smaller scale.
+With the introduction of a comprehensive ShapeNet benchmark~\cite{chang2015shapenet}, a coarse semantic part annotation has been created using active learning~\cite{yi2016scalable}. 
+More recently, a large-scale effort to systematically annotate 3D shapes within a coherent hierarchy was presented~\cite{mo2019partnet}.
+Still, none of these CAD-based collections include real-world 3D data, limiting their potential use. Our benchmark is designed to address this reality gap.
+% Methods developed for segmenting clean and complete synthetic data do not translate directly to sensor 3D data.
+%To enable development of methods for part segmentation of real-world data, we introduce Scan2Part, to the best of our knowledge, the first labeled parts dataset based on scanned 3D data. 
+
+% However, the object part annotations were applied to ShapeNet meshes objects that were created digitally and not measured by sensors. 
+Large-scale 3D understanding datasets commonly require costly manual annotations by tens to hundreds of expert crowd workers (annotators), preceded by the development of custom labeling software~\cite{armeni20163d,hua2016scenenn,dai2017scannet,chang2017matterport3d,2017arXiv170201105A,replica19arxiv,yi2016scalable,mo2019partnet}.
+Moreover, annotating parts in 3D objects from scratch is connected to inherent ambiguity in part definitions, as revealed by~\cite{yi2016scalable,mo2019partnet}. This challenge is even more pronounced for noisy, incomplete 3D scans produced by RGB-D fusion.
+We have chosen to instead build our Scan2Part dataset fully automatically by leveraging correspondences between four publicly available 3D collections: ScanNet~\cite{dai2017scannet}, Scan2CAD~\cite{avetisyan2019scan2cad}, ShapeNet~\cite{chang2015shapenet}, and PartNet~\cite{mo2019partnet} datasets.
+% One may choose from a number of datasets providing part-level labels, specifically~\cite{Chen:2009:ABF,yi2016scalable,mo2019partnet}; compa\LA{finish}
+% we chose mo2019partnet as they provide a detailed taxonomy
+% relatively small numbers of object instances [5], or on coarse yet non-hierarchical part annotations [45], restricting the applications that involves understanding fine-grained and hierarchical shape segmentation.
+% more fine-grained part an- notations that contains 18 parts per shape on average.
+% assign consistent semantic labels
+As a result, we (1) become free from ambiguity in part definitions by re-using consistent, well-defined labels from~\cite{mo2019partnet}, and (2) are able to compute appropriate levels of semantic detail for our benchmark without manual re-labeling.
+

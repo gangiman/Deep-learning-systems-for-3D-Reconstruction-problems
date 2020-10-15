@@ -4,7 +4,7 @@
 
 About inductive bias and an ability to construct complicated objects from parts, adding hierarchy to scene ontology.
 
-\paragraph{Deep learning for 3d scene understanding.}
+\subsection{Deep learning for 3d scene understanding}
 \label{related:scene-understanding}
 Deep learning has been applied for semantic 3D scene understanding in a variety of ways, and we only review the core work related to the semantic and instance segmentation of 3D scenes. 
 Most relevant to our work, deep learning approaches have been used on 3D reconstructions of scenes represented by \emph{3D volumetric grids} ~\cite{dai2017scannet,dai20183dmv,hou20193d,liu2019masc}. For volumetric grid, 3D convolutions may be defined analogously to 2D convolutions in image domains, giving rise to 3D convolutional neural nets (3D CNNs).
@@ -22,60 +22,23 @@ To segment instances, recently proposed volumetric and point-based approaches us
 Part-aware methods for learning  focus on meshes or complete, clean point clouds constructed from 3D CAD models. The most closely related work  is semantic parts labeling (e.g.,~\cite{yi2016scalable,wang2017cnn,qi2017pointnet,mo2019partnet,yi2019gspn,zhang2019point}) and part instance segmentation~\cite{zhang2019point} for voxelized or point-sampled 3D shapes. Other works focus on leveraging parts structure of clean shapes for co-segmentation~\cite{chen2019bae,zhu2019cosegnet}, hierarchical mesh segmentation~\cite{yi2017learning}, shape assembly/generation~\cite{mo2019structurenet,wu2019sagnet,wu2019pq,mo2020pt2pc}, geometry abstraction~\cite{russell2009associative,li2017grass,sun2019learning}, and other applications.
 
 There is also exist work that attempts to perform hierarhical part decomposition for 3D shapes by mesh segmentation~\cite{yi2017learning}. In setting where part labels are less precise and correspond as tags to objects 3D CNN on volumes for part discovery can be used~\cite{muralikrishnan2018tags2parts}.
-% mo2019structurenet - learn a latent space for 3D shape parts enabling shape generation, editing (but only a single non-semantic experiment on real-world data)
-% wu2019sagnet voxelized shape generation 
-% wu2019pq assembly of voxelized parts
-% mo2019structedit computes embeddings for shape differences for fine-grained shape manipulation, however focuses on graph structure of shape not 3D sensor data
+
+Hierarchical part structure of objects can be effectevly represented in latent space, in \cite{mo2019structurenet} model learns a latent space for 3D shape parts enabling shape generation, allows for part editing, but it's unclear if all these properties will generalize because there was only a single non-semantic experiment on real-world data. In a follow up paper \cite{mo2020structedit} model computes embeddings for shape differences for fine-grained shape manipulation, however again the paper focuses on graph structure of sampled objects shape not on 3D sensor data.
+
+SagNet \cite{wu2019sagnet} is similar to \cite{mo2019structurenet} because it performs part-aware shape generation but uses medium of voxels instead of point clouds,
+
+Another approach to introduce structural knowledge into a model is to perform reconstruction by assembling parts, either representing them as separate shapes or some geometric primitive like 3D Boxes, in PQ-Net~\cite{wu2020pq} it's shown that this approach can work pretty well.
+
 % luo2020learning - focusess on bottom-up segmentation of shapes from unseen categories
 % mo2020pt2pc 3D shape generation from part trees
 % sun2019learning abstract parts geometry by cuboids
+
 In comparison, our focus is on learning part-based semantic and instance segmentation of noisy and fragmented real-world 3D scans. 
 
 Other methods have been studied in the context of 3D scene segmentation, such as complementing CNNs with conditional random fields~\cite{pham2019jsis3d,pham2019real,wang2017cnn}, however, these are beyond the scope of this paper.
 
 
-\paragraph{3D scene understanding datasets.}
-\label{related:datasets}
-% 2) Задача может быть сформулирована как семантическая/экземплярная сегментация 3D-представления сцены на уровне частей. Такое понимание существенно продвинет приложения, в частности в робототехнике (grasping етс.). Однако, до сегодняшнего момента для продвижения таких задач с помощью deep learning подходов нет возможности ввиду отсутствия достаточного бенчмарка или датасета: 
-% — Датасеты 3D-реконструкций сцен (например scannet, matterport, s3dis — реальных сцен) — не обладают разметкой частей, кроме того, некоторые из них (suncg, scenenet) — синтетические
-% — Датасеты с реальными данными для сегментации (например RGBD данные NYU v1/v2, sun rgbd) не обязательно относятся к реконструированным 3d-сценам (чаще являются отдельными объектами/кадрами)
-% — Датасеты с разметкой для сегментации частей (partnet) являются синтетическими / датасетами CAD-моделей, а не сканами реальных объектов
-% — Ряд датасетов является outdoor (semantic3d, kitti) и мы опускаем такие данные из рассмотрения
-
-
-A number of approaches use computer graphics methods to create realistic 3D scenes procedurally~\cite{2012-scenesynth,handa2016understanding,song2016ssc,McCormac:etal:ICCV2017,InteriorNet18,garcia2018robotrix}.
-Such datasets can in principle provide arbitrarily fine semantic labels but commonly suffer from the reality gap caused by synthetic images, while our proposed dataset is built by transferring part annotations to real-world noisy scans.
-Recent advances in RGB-D sensor technology have resulted in the development of a variety of 3D datasets capturing real 3D scenes~\cite{armeni20163d,hua2016scenenn,dai2017scannet,chang2017matterport3d,2017arXiv170201105A,replica19arxiv}, however, none of these provide part-level object annotations.
-In contrast, our dataset provides semantic and instance part labels for a large-scale collection of indoor 3D reconstructions.
-%~\cite{dai2017scannet} and manually annotated 3D shape correspondences~\cite{dai2017scannet,avetisyan2019scan2cad}.
-
-% outdoor: 
-% hackel2017isprs
-
-% 2) real-world datasets with semantic labeling
-
-% 3) datasets with part segmentations 
-
-Early collections of part-annotated meshes~\cite{Chen:2009:ABF} are limited by their relatively smaller scale.
-With the introduction of a comprehensive ShapeNet benchmark~\cite{chang2015shapenet}, a coarse semantic part annotation has been created using active learning~\cite{yi2016scalable}. 
-More recently, a large-scale effort to systematically annotate 3D shapes within a coherent hierarchy was presented~\cite{mo2019partnet}.
-Still, none of these CAD-based collections include real-world 3D data, limiting their potential use. Our benchmark is designed to address this reality gap.
-% Methods developed for segmenting clean and complete synthetic data do not translate directly to sensor 3D data.
-%To enable development of methods for part segmentation of real-world data, we introduce Scan2Part, to the best of our knowledge, the first labeled parts dataset based on scanned 3D data. 
-
-% However, the object part annotations were applied to ShapeNet meshes objects that were created digitally and not measured by sensors. 
-Large-scale 3D understanding datasets commonly require costly manual annotations by tens to hundreds of expert crowd workers (annotators), preceded by the development of custom labeling software~\cite{armeni20163d,hua2016scenenn,dai2017scannet,chang2017matterport3d,2017arXiv170201105A,replica19arxiv,yi2016scalable,mo2019partnet}.
-Moreover, annotating parts in 3D objects from scratch is connected to inherent ambiguity in part definitions, as revealed by~\cite{yi2016scalable,mo2019partnet}. This challenge is even more pronounced for noisy, incomplete 3D scans produced by RGB-D fusion.
-We have chosen to instead build our Scan2Part dataset fully automatically by leveraging correspondences between four publicly available 3D collections: ScanNet~\cite{dai2017scannet}, Scan2CAD~\cite{avetisyan2019scan2cad}, ShapeNet~\cite{chang2015shapenet}, and PartNet~\cite{mo2019partnet} datasets.
-% One may choose from a number of datasets providing part-level labels, specifically~\cite{Chen:2009:ABF,yi2016scalable,mo2019partnet}; compa\LA{finish}
-% we chose mo2019partnet as they provide a detailed taxonomy
-% relatively small numbers of object instances [5], or on coarse yet non-hierarchical part annotations [45], restricting the applications that involves understanding fine-grained and hierarchical shape segmentation.
-% more fine-grained part an- notations that contains 18 parts per shape on average.
-% assign consistent semantic labels
-As a result, we (1) become free from ambiguity in part definitions by re-using consistent, well-defined labels from~\cite{mo2019partnet}, and (2) are able to compute appropriate levels of semantic detail for our benchmark without manual re-labeling.
-
-
-\paragraph{Assembly from parts and hierarchy.}
+\subsection{Assembly from parts and hierarchy}
 A lot of researchers over the last 20 years came to the idea that scenes and images are better represented as discrete structures with relational and hierarchical properties.
 New datasets that make explicit relations on visual objects were created recently \cite{krishna2017visual}, spurring new research in scene graphs \cite{DBLP:journals/corr/abs-1804-01622,Xu_2017_CVPR} and reconstruction. 
 In cognitive science, it have been conjectured for a long time that ability to compose complex objects and scenes from parts is a fundamental part of human perception \cite{hoffman1984parts,biederman1987recognition}. The concept of "Recognition-by-components" is closely related to "analysis-by-synthesis" \cite{yuille2006vision,yildirim2015efficient} approach in machine learning. 
