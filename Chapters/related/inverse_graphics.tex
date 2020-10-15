@@ -1,8 +1,6 @@
-\section{Inverse Graphics Problem formulation}
+\section{Inverse Graphics}
 
-\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,wu20153d,izadinia2017im2cad}
-
-Inverse graphics approach enables to solve a problem of "real-world" scene understanding through reconstruction of that scene and comparison it to measured data in some form.
+Inverse graphics approach~\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,Izadinia_2017_CVPR}enables to solve a problem of "real-world" scene understanding through reconstruction of that scene and comparison it to measured data in some form.
 
 Because it's a fairly new method it has some unexplored facets:
 \begin{enumerate}
@@ -87,25 +85,15 @@ For specific sub-domain like "bedrooms" with know sophisticated generators like 
 
 New approaches to use Neural Networks to create meshes also emerging: like SurfNet~\cite{Sinha_2017_CVPR}. A lot of works by M. Bronstein attacks a problem of applying deep learning to a surface decomposition problem, for more details see a comprehensive review~\cite{2016arXiv161108097B}.
 
-\subsection{Datasets}
-\label{sec:datasets}
-In last ten to five years, number of datasets with indoor scenes containing fine-aligned objects with their exactly matched 3D models have increased. For example IKEA object dataset~\cite{lim2013parsing}
 
-Recently couple of big Indoor Scene benchmarks of 2D-3D aligned data were introduced: ScanNet~\cite{dai2017scannet} and 2D-3D Semantics~\cite{armeni2017joint}. These datasets have a lot of RGB images with depth information semantic labeling for 2D in a usual image segmentation format and full 3D meshes of scenes with specific mesh faces provided with object labeling.
+A lot of researchers over the last 20 years came to the idea that scenes and images are better represented as discrete structures with relational and hierarchical properties. 
+New datasets that make explicit relations on visual objects were created recently \cite{krishna2017visual}, spurring new research in scene graphs \cite{DBLP:journals/corr/abs-1804-01622,Xu_2017_CVPR}.
+For example Mumford and Zhu in \cite{zhu2006stochastic}, discussed that spatial scenes can have a "grammar" on spatial objects and geometric primitives.
+Inverse Graphics as a paradigm of computer vision is quite old, but it started getting popular again as the result of advancements in deep learning and computer graphics. In \cite{wu2017neural} problem of obtaining a parametric description of a synthetic scene is achieved through hourglass-like encoder-decoder architecture, where graphics engine takes place of the encoder, we utilize a similar approach.
+Two very similar recent papers SPIRAL \cite{pmlr-v80-ganin18a} and Canvas-Drawer networks \cite{frans2018unsupervised} provide a method to generate a sequence of actions in graphical editing software resulting in an image, but those separate actions (brush strokes) are not manipulate and don't provide a way to disentangle topological and style properties. 
+In recent years multiple groups started using deep learning to approach inverse graphics task \cite{ellis2018learning,Tulsiani_2017_CVPR}.
+The main difference of our work is two-fold: 1) we model probabilistic distribution on space of annotated graphs and therefore on space of graphical programs, and 2) because we use geometric graphs as a representation of data we can define different primitives that require a variable amount of keypoints. Our compressed representation captures semantic and spatial information at the same time.
+One of the papers dealt with a problem of modeling images as a hierarchy of sub-parts of some nature  \cite{russell2009associative}, or as a tree of geometric primitives (e.g. cylinders, spheres or 3D boxes) \cite{li2017grass}.
 
-Shape datasets are also helpful because they can provide data for making priors on shape distribution. Two recent ones are ModelNet~\cite{wu20153d} and ShapeNet~\cite{chang2015shapenet}.
-
-\subsection{Adjacent problem: Sketch-to-3D}
-
-There exists a problem closely related to restoring 3D from 2D images, a generation of 3D shape with some properties provided some human drawing of desired object. In this context human drawings (Sketches) can be thought of as projection with some features extracted (edges, contours, shading, e.t.c.) and added noise from human visual system.
-A lot of existing solutions for this problem incorporate methods from Section~\ref{sec:approaches} like: creating strong explicit or implicit probabilistic prior for domain shapes and perform different kinds of optimization, this approach is also used in combination with Encoder-Decoder architectures to find representation invariant to human drawing noise and representative enough to encode variability on some parametric 3D shape family~\cite{han2017deepsketch2face,xu2014true2form,kulkarni2014inverse}.
-
-\subsection{Experiment Plan}
-
-Take AIR architecture~\cite{eslami2016attend} combine with generator from~\cite{rezende2016unsupervised} and train on 2D-3D datasets described in section~\ref{sec:datasets} in unsupervised, semi-supervised and fully supervised fashions.
-Also creating 3D generators trained on Shape Datasets might increase performance of our model because they reduce pressure to learn 3D shapes at the same time as composition and lighting properties.
-
-To evaluate performance of a model we can measure L2 image distance for explored and reconstructed images as well as 3D shape as distance in sum of dot-product of inferred and actual normals, also overlap of volumes provides a lot of information. Quality baseline solutions already exist for these datasets in respective papers~\cite{dai2017scannet,armeni2017joint}.
-
-\subsection{Potential impacts and novelty}
-Having a system that can parse indoor scenes with variable amount of objects with labels and get representations of unknown objects are natural needs for augmented/virtual reality applications and robotics. Probabilistic nature of this kind of implementation will help to deal with real-world uncertainties, also providing abilities of measuring dimensions of objects similar to approximate photogrammetry.
+The problem of analyzing point clouds was developed by multiple groups over the last three years; the best known of them is PointNet family of models (\cite{qi2016pointnet,qi2017pointnet++}), developed at Stanford.
+Because rendering is a surjective operation, obtaining its inverse is an ill-posed problem; thus, numerically solving it might lead to instability in learning observed in \cite{tian2018learning}. That is why modeling it as a probability distribution can be beneficial, finding a program to represent incomplete shape can have multiple modes, e.g., multiple likely solutions that have input as a projection. Works that deal with that are \cite{kulkarni2014inverse,wu20153d,kulkarni2015picture}.

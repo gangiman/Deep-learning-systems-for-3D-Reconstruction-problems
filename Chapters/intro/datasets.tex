@@ -43,3 +43,10 @@ We have chosen to instead build our Scan2Part dataset fully automatically by lev
 % assign consistent semantic labels
 As a result, we (1) become free from ambiguity in part definitions by re-using consistent, well-defined labels from~\cite{mo2019partnet}, and (2) are able to compute appropriate levels of semantic detail for our benchmark without manual re-labeling.
 
+% ------------------------- inverse graphics -------------------------
+
+In last ten to five years, number of datasets with indoor scenes containing fine-aligned objects with their exactly matched 3D models have increased. For example IKEA object dataset~\cite{lim2013parsing}
+
+Recently couple of big Indoor Scene benchmarks of 2D-3D aligned data were introduced: ScanNet~\cite{dai2017scannet} and 2D-3D Semantics~\cite{armeni2017joint}. These datasets have a lot of RGB images with depth information semantic labeling for 2D in a usual image segmentation format and full 3D meshes of scenes with specific mesh faces provided with object labeling.
+
+Shape datasets are also helpful because they can provide data for making priors on shape distribution. Two recent ones are ModelNet~\cite{wu20153d} and ShapeNet~\cite{chang2015shapenet}.

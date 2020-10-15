@@ -5,22 +5,12 @@
 
 \input Chapters/intro/objectives.tex
 
-\input Chapters/intro/inverse_graphics.tex
-
 \input Chapters/intro/datasets.tex
 
 \section{Contributions}
 
-
-\chapt{retrieval}
-
-
-\chapt{scan2part}
-
-% , \chapt{bilinear} and \chapt{gradrev} use  person re-identification architecture of \citep{Yi14} as a baseline method (it is also  described in \sect{intro_architectures}).
-
-% \chapt{bilinear} is based on the results of \chapt{hist}: the loss function introduced in \chapt{hist} is used for 
-% all the experiments in \chapt{bilinear} as it was demonstrated to show the best performance for person re-identification. 
+\chapt{densepose}, \chapt{retrieval} and \chapt{scan2part} perform reconstruction of closed families of objects, but \chapt{depth_superresolution} describes improvement of RGB-D sensor data by increasing it's resolution with help of prior on data.
+All of the chapters use some kind of Convolutional Neural Network architecture adapted for it's specific data domain and computation environment, for example \chapt{depth_superresolution} and \chapt{densepose} describe methods that can be used on end deivces such as smartphones and embedded devices.
 The results of \chapt{retrieval} were chronologically the earliest among all the results described in this work, therefore methods from \chapt{depth_superresolution} and \chapt{densepose} were not used there.
 
 Although the contributions of each of the chapters are mostly independent, they are all elements of building a holistic scene understanding pipeline and some can be applied in parallel. 

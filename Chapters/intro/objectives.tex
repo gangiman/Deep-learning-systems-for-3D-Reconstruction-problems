@@ -14,13 +14,14 @@ In particular, the development of such holistic deep 3D reconstruction system in
 
 Each of these sub-tasks constitutes a challenge in the context of human perception.
 
-The presence of noise in sensor data (e.g., consumer grade depth cameras) is a serious problem for all downstream sub-tasks, low fidelity of this data causes a considerable compaunding performance drop.
+Having a system that can parse indoor scenes with variable amount of objects with labels and get representations of unknown objects are natural needs for augmented/virtual reality applications and robotics.
 
 \subsection{Overcoming noise in depth images}
-
-This part is intro to depth super resolution paper
+The presence of noise in sensor data (e.g., consumer grade depth cameras) is a serious problem for all downstream sub-tasks, low fidelity of this data causes a considerable compaunding performance drop. Results obtained in \chapt{depth_superresolution} specifically targeted at quality improvement of these depth images.
 
 \subsection{Shape retrieval}
+
+Indoor environemnts mostly populated by human made objects with regular shapes and appearance determined by design and materials used, therefore they have a high amount of redundancy wich can be levered for retrieval purposes. Using Sparse 3D CNNs allows us to compute features which represent these objects and enable us to find them in a shape database. 
 
 \subsection{Body Shape Reconstruction}
 
@@ -76,16 +77,12 @@ In human-made environments, a lot of objects have naturally defined semantic sub
 Definitions of sub-parts are based on a set of primitive elements that were manufactured by one formation method or from one material.
 
 Because of that and the fact that static scenes have other relationships between objects (fixed to each other or in direct surface contact), it's reasonable to suggest a scene description format that possesses a property of hierarchy (e.g., trees or other kinds of graphs).
-Representing scenes as a discrete structures with multiple relationships between nodes. Such relationships like composability of its parts and affordances between whole objects, in turn allowing to compose a scene from separate objects.
-
-\todo{merge these paragraphs}
-
-In domain of human-made environments a lot of objects have sub-parts and those sub-parts can in turn have their own sub-parts. Definition of sub-part is often based on a set of primitive elements that were manufactured by one formation method or from one material. Because of that and the fact that static scenes have other relationships between objects (fixed to each other or in direct surface contact), it's reasonable to suggest a scene description format that possess a property of hierarchy (e.g. trees or other subgraphs).
 A lot of researchers over the last 20 years came to the same conclusion. A lot of work on that problem was done by Mumford and Zhu in \cite{zhu2006stochastic}.
+Representing scenes as a discrete structures with multiple relationships between nodes. Such relationships like composability of its parts and affordances between whole objects, in turn allowing to compose a scene from separate objects.
 
 One of the papers dealt with problem of modeling Images as a hierarchy of super-pixels. \cite{russell2009associative}, or as a tree of geometric primitives (e.g. cylinders, spheres or 3D boxes) \cite{li2017grass}.
 
-CAD constructor network translates that graph into CAD object (tree with primitives and combination rules). CAD rendered makes a mesh out of that object thus a residual between original PC and Mesh can be calculated.
+Many researchers tried to train models~\cite{avetisyan2019scan2cad,Izadinia_2017_CVPR} that can take that part graph and translate it into CAD object (tree with primitives and combination rules). The CAD software can render these object and compute a mesh from that object thus allowing to calculate a residual between original representation and a rendered Mesh.
 
-Proximity Graphs - concept that allows to build a bridge between Point Clouds and Graph Processing. This area of computational geometry has a lot of theoretical results to offer for Deep Learning piplene designer.
-
+There exists a problem closely related to restoring 3D from 2D images, a generation of 3D shape with some properties provided some human drawing of desired object. In this context human drawings (Sketches) can be thought of as projection with some features extracted (edges, contours, shading, e.t.c.) and added noise from human visual system.
+A lot of existing solutions for this problem incorporate methods from Section~\ref{sec:approaches} like: creating strong explicit or implicit probabilistic prior for domain shapes and perform different kinds of optimization, this approach is also used in combination with Encoder-Decoder architectures to find representation invariant to human drawing noise and representative enough to encode variability on some parametric 3D shape family~\cite{han2017deepsketch2face,xu2014true2form,kulkarni2014inverse}.
