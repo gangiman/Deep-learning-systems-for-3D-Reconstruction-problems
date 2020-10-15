@@ -27,11 +27,8 @@ Hierarchical part structure of objects can be effectevly represented in latent s
 
 SagNet \cite{wu2019sagnet} is similar to \cite{mo2019structurenet} because it performs part-aware shape generation but uses medium of voxels instead of point clouds,
 
-Another approach to introduce structural knowledge into a model is to perform reconstruction by assembling parts, either representing them as separate shapes or some geometric primitive like 3D Boxes, in PQ-Net~\cite{wu2020pq} it's shown that this approach can work pretty well.
-
-% luo2020learning - focusess on bottom-up segmentation of shapes from unseen categories
-% mo2020pt2pc 3D shape generation from part trees
-% sun2019learning abstract parts geometry by cuboids
+Another approach to introduce structural knowledge into a model is to perform reconstruction by assembling parts, either representing them as separate shapes or some geometric primitive like 3D Boxes \cite{sun2019learning}, in PQ-Net~\cite{wu2020pq} it's shown that this approach can work pretty well. The latest development from this group \cite{mo2020pt2pc} shows a generative model that can produce a 3D point cloud of desired shape from part tree of the object.
+Learning to model a process of grouping elements of 3D representation to assemble a hierarchy of parts is a very distinct problem, \cite{luo2020learning} - focusess on bottom-up segmentation of shapes from unseen categories using only simple MLP layers and many heuristics. 
 
 In comparison, our focus is on learning part-based semantic and instance segmentation of noisy and fragmented real-world 3D scans. 
 
