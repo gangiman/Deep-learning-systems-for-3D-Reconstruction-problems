@@ -4,8 +4,8 @@
 
 About inductive bias and an ability to construct complicated objects from parts, adding hierarchy to scene ontology.
 
-\subsection{Deep learning for 3d scene understanding}
-\label{related:scene-understanding}
+% \subsection{Deep learning for 3d scene understanding}
+% \label{related:scene-understanding}
 Deep learning has been applied for semantic 3D scene understanding in a variety of ways, and we only review the core work related to the semantic and instance segmentation of 3D scenes. 
 Most relevant to our work, deep learning approaches have been used on 3D reconstructions of scenes represented by \emph{3D volumetric grids} ~\cite{dai2017scannet,dai20183dmv,hou20193d,liu2019masc}. For volumetric grid, 3D convolutions may be defined analogously to 2D convolutions in image domains, giving rise to 3D convolutional neural nets (3D CNNs).
 \cite{dai20183dmv} uses auxiliary color information, 
@@ -19,7 +19,7 @@ To segment instances, recently proposed volumetric and point-based approaches us
 % 2) going beyond objects/instances: hierarchical and part-based 
 % Hierarchical segmentation gives better results even without explicit parts learning \cite{Tao2020HierarchicalMA}
 
-Part-aware methods for learning  focus on meshes or complete, clean point clouds constructed from 3D CAD models. The most closely related work  is semantic parts labeling (e.g.,~\cite{yi2016scalable,wang2017cnn,qi2017pointnet,mo2019partnet,yi2019gspn,zhang2019point}) and part instance segmentation~\cite{zhang2019point} for voxelized or point-sampled 3D shapes. Other works focus on leveraging parts structure of clean shapes for co-segmentation~\cite{chen2019bae,zhu2019cosegnet}, hierarchical mesh segmentation~\cite{yi2017learning}, shape assembly/generation~\cite{mo2019structurenet,wu2019sagnet,wu2019pq,mo2020pt2pc}, geometry abstraction~\cite{russell2009associative,li2017grass,sun2019learning}, and other applications.
+Part-aware methods for learning  focus on meshes or complete, clean point clouds constructed from 3D CAD models. The most closely related work  is semantic parts labeling (e.g.,~\cite{yi2016scalable,wang2017cnn,qi2017pointnet,mo2019partnet,yi2019gspn,zhang2019point}) and part instance segmentation~\cite{zhang2019point} for voxelized or point-sampled 3D shapes. Other works focus on leveraging parts structure of clean shapes for co-segmentation~\cite{chen2019bae,zhu2019cosegnet}, hierarchical mesh segmentation~\cite{yi2017learning}, shape assembly/generation~\cite{mo2019structurenet,wu2019sagnet,wu2020pq,mo2020pt2pc}, geometry abstraction~\cite{russell2009associative,li2017grass,sun2019learning}, and other applications.
 
 There is also exist work that attempts to perform hierarhical part decomposition for 3D shapes by mesh segmentation~\cite{yi2017learning}. In setting where part labels are less precise and correspond as tags to objects 3D CNN on volumes for part discovery can be used~\cite{muralikrishnan2018tags2parts}.
 

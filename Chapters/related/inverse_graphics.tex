@@ -1,6 +1,7 @@
+% !TEX root = ../../Thesis_main.tex
 \section{Inverse Graphics}
 
-Inverse graphics approach~\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,Izadinia_2017_CVPR}enables to solve a problem of "real-world" scene understanding through reconstruction of that scene and comparison it to measured data in some form.
+Inverse graphics approach~\cite{rezende2016unsupervised,eslami2016attend,kulkarni2015deep,Izadinia_2017_CVPR} enables to solve a problem of "real-world" scene understanding through reconstruction of that scene and comparison it to measured data in some form.
 
 Because it's a fairly new method it has some unexplored facets:
 \begin{enumerate}
@@ -9,44 +10,20 @@ Because it's a fairly new method it has some unexplored facets:
     \item Are there format that can have all advantages of CAD models and probabilistic properties that arise from real-world uncertainties.
 \end{enumerate}
 
-Central goals of computational perception is to get structured description of scenes from measurements such as photographic images, scans and videos.
+% Central goals of computational perception is to get structured description of scenes from measurements such as photographic images, scans and videos.
+% Computer Vision as Inverse Graphics is the most rational formulations that could help us achieve this goal.
 
-Computer Vision as Inverse Graphics is the most rational formulations that could help us achieve this goal.
+% In the past, it has been hard to directly solve these problems in practice because of computational limitations.
 
-In the past, it has been hard to directly solve these problems in practice because of computational limitations.
+% However, it may be right time to take another look at this idea due to significant advances in deep learning for computer vision, probabilistic programming, and computer graphics.
 
-However, it may be right time to take another look at this idea due to significant advances in deep learning for computer vision, probabilistic programming, and computer graphics.
+% Probabilistic programming - a tool that allows us to implement complex models while keeping ability to perform inference, extend with other probabilistic models by being general-purpose.
 
-Probabilistic programming - a tool that allows us to implement complex models while keeping ability to perform inference, extend with other probabilistic models by being general-purpose.
+% Re-formalizing inverse graphics in terms of probabilistic programming and deep learning allow us to solve even more complicated vision problems with off-the-shelf computational technology.
 
-Re-formalizing inverse graphics in terms of probabilistic programming and deep learning allow us to solve even more complicated vision problems with off-the-shelf computational technology.
-
-To make this approach scalable, my research can incorporate effective techniques such as: approximate Bayesian computation, differentiable programming for rendering.
+% To make this approach scalable, my research can incorporate effective techniques such as: approximate Bayesian computation, differentiable programming for rendering.
 
 Computer Graphics nowadays seems to be improving at a great pace in terms of designing solutions for hard image synthesis problems, but these solutions are usually hand-made and not flexible enough to cover all needs for general-purpose real world object generating, latest advances in generative models can help with that.
-
-% ---------------------------- Imported ------------------------------------
-\subsection{Problem statement}
-
-Inverse graphics approach enables to solve a problem of Indoor scene understanding through reconstruction of that scene and comparison it to measured data in some form. This problem can be decomposed in to several subproblems:
-
-\begin{enumerate}
-\item Problem of localizing and estimating the fine-pose of objects in the image with 3D models.
-\item Detecting and recognizing objects from their look with occlusions and in these lighting conditions.
-\item Extracting latent representation of objects in a scene that enable classification for known labels or creating a "new" label for an unseen object.
-\end{enumerate}
-
-A lot of papers solved some subset of above-mentioned problems, but some nuances of those problems didn't got scrutiny they deserve. For example:
-
-\begin{enumerate}
-    \item How can we scale to hundreds and thousands of objects with different parameters.
-    \item Have specified generators for different kinds of objects, e.g. exact copies or a family of shapes and textures.
-    \item Are there format that can have all advantages of structured models (e.g. CAD) and probabilistic properties that arise from real-world uncertainties.
-\end{enumerate}
-
-Our work is intended to answer those questions in a quantitative and qualitative manner.
-
-\subsection{Known solutions of sub-problems}
 
 For more detailed review of 3D scene generation and analysis you can see~\cite{2017arXiv170609577M}.
 
@@ -56,35 +33,11 @@ Attend-Infer-Repeat paper~\cite{eslami2016attend} describes an architecture whic
 
 Work on creating probability distribution for shapes is not new, a good example of that is 3DShapeNet~\cite{wu20153d} paper which besides introducing ModelNet large-scale shape dataset also showed that it's possible to make a multi-layer convolutional Restricted Boltzman Machine that can perform forward and back inference, shape completion and next best view estimation.
 
-\subsection{Popular approaches for 2D-3D}
-\label{sec:approaches}
-
-Using neural network to estimate 3D properties really depends on shape representation space, there are several main ways shapes are represented:
-
-\begin{enumerate}
-    \item \textbf{3D Voxel grid} - generated by deconvolutional network in hour-glass, auto-encoder or GAN network.
-    \item \textbf{Multiple Projections} - replacing 3D object with N renderings (either 2D, 2.5D)
-    \item \textbf{Point Cloud} - can be combined with previous item, don't capture surface information.
-    \item \textbf{Surface mesh} - not generated exactly but reconstructed from one of previous items, might be possible to generate with geometric deep learning methods
-    \item \textbf{Truncated Signed Distance Field functions (TSDF)} - representation of shape as a field function with specific properties.
-\end{enumerate}
-
-Multiple view projections shown to be a great way in discriminative tasks like in MVCNN paper~\cite{su15mvcnn}, but in a last year multiple papers used multiple-view projections in a generative setting, here are several examples~\cite{Soltani_2017_CVPR,girdhar2016learning,lin2017learning,Ulusoy_2017_CVPR,tatarchenko2016multi}.
-
-In work by Soltani~\cite{Soltani_2017_CVPR} combination 2D and 2.5D projections is used in a auto-encoder style architecture to capture distribution of shapes of objects from ShapeNet dataset~\cite{chang2015shapenet}.
-
-In Paper by Chen-Hsuan Lin~\cite{lin2017learning} two step network first tries to encode image to latent code, then create multiple projections of multiple points from this code from different angles then combining those points in to 3D point cloud regularizing shape and re-projecting with pseudo-renderer to estimate loss function.
-
-Similar but yet different approaches is used in work supervised by Abhinav Gupta~\cite{girdhar2016learning} where projections used to train in auto-encoder architecture latent representation of 3D shapes and 2D sub-network is connected to latent representation and used in inference time.
-
-Series of papers are using Point clouds to capture volumetric properties of shapes, like PointNet papers~\cite{qi2016pointnet,qi2017pointnet++}. They show good performance on volumetric benchmarks but don't provide any way to work with surfaces of objects without using some other surface reconstruction method first.
-
 Neural Networks can also be used to implicitly encode a probability distribution in auto-encoder like architecture as seen in \cite{dai2016shape,kulkarni2015deep,gwak2017weakly} but with some adjustment to encodings one can also encode texture, like in work by Tatarchenko et.al~\cite{tatarchenko2016multi}.
 
-For specific sub-domain like "bedrooms" with know sophisticated generators like CAD rendering engine in IM2CAD~\cite{izadinia2017im2cad} paper, estimating properties of scenes is done with direct optimization or a MCMC methods. 
+For specific sub-domain like "bedrooms" with know sophisticated generators like CAD rendering engine in IM2CAD~\cite{Izadinia_2017_CVPR} paper, estimating properties of scenes is done with direct optimization or a MCMC methods. 
 
 New approaches to use Neural Networks to create meshes also emerging: like SurfNet~\cite{Sinha_2017_CVPR}. A lot of works by M. Bronstein attacks a problem of applying deep learning to a surface decomposition problem, for more details see a comprehensive review~\cite{2016arXiv161108097B}.
-
 
 A lot of researchers over the last 20 years came to the idea that scenes and images are better represented as discrete structures with relational and hierarchical properties. 
 New datasets that make explicit relations on visual objects were created recently \cite{krishna2017visual}, spurring new research in scene graphs \cite{DBLP:journals/corr/abs-1804-01622,Xu_2017_CVPR}.
