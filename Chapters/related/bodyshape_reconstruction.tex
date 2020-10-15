@@ -2,4 +2,28 @@
 \section{Human Body Shape Reconstruction}
 \label{sec:body_reconstruction}
 
-About body shape regression and dense pose estimation.
+In the following, we review methods for human pose and shape reconstruction from RGB and RGB-D images.
+When it comes to more accurate reconstruction, clothing affects appearance sugnifficantly. Therefore, it might be relevant to include a short overview of clothing reconstruction and modeling.
+
+Methods for pose and shape reconstruction utilize parametric bodyshape models to constrain the search space~\cite{anguelov2005scape,hasler2009statistical,loper2015smpl,pons2015dyna,joo2018total}, or use static template model to capture pose and non-rigid surface deformation~\cite{xu2018monoperfcap,habermann2019livecap}, after that the 3D body model is projected to 2D poses to recover pose and shape information.
+Recently, the SMPL~\cite{loper2015smpl} model has been integrated with deep models~\cite{kanazawa2018end,pavlakos2018learning,omran2018neural,tung2017self}, this has increased robustness of the reconstruction process.
+
+All these systems mostly focus on pose detection, the shape estimation is often secondary, because of that the shape can be only extracted if it's exactly in the model space of the system.
+
+Information about clothing and hair can be recovered by optimization-based methods \cite{alldieck2018video,alldieck2018detailed}.
+From a video of a subject, the authors in \cite{alldieck2019learning} were able to trian a hybrid learning and optimization-based method.
+
+
+% However, all these methods can only process A-poses and depend on robust pose detection. The method in~\cite{weng2018photo} loosens this restriction and creates humanoid shapes from a single image via 2D warping of SMPL parameters, but only partially handles self-occlusion. Another recent line of research estimates pose and shape in form of a voxel representation \cite{varol2018bodynet,jackson20183d,natsume2018siclope}, which allows for more complex clothing but limits the level of detail. In \cite{Zheng2019DeepHuman} the authors alleviate this limitation by augmenting the visible parts with a predicted normal map. In contrast, we present 3D pose-independent shape estimation in a reference pose with high-resolution details also on non-visible parts.
+
+% Several previous methods exploited shading cues in high-frequency texture to estimate high-frequency detail. For instance, they estimated lighting and reflectance to compute shape-from-shading-refined geometry of a human template from stereo~\cite{wu2013set} or multi-view imagery~\cite{Wu:2012,LWSLVDT13}. 
+
+
+% Body shape under clothing has been estimated without~\cite{zahng2017shapeundercloth} and jointly with a separate clothing layer~\cite{ponsmoll2017clothcap} from 3D scans and from RGB-D~\cite{SimulCap19}. \cite{yang2018analyzing} introduces a technique, which allows complex clothing to be modeled as offsets from the naked body.
+% The work in~\cite{wang2018learning} describes a model that encodes shape, garment sketch, and garment model, in a single shared latent code, which enables interactive garment design. 
+% High frequency wrinkles are predicted as a function of pose either in UV space using a CNN~\cite{lahner2018deepwrinkles,jin2018pixel} or directly in 3D using a data-driven optimization method~\cite{popa2009wrinkling}. All these methods~\cite{lahner2018deepwrinkles,yang2018analyzing,jin2018pixel} target realistic \emph{animation} of clothing and can only predict garments in isolation~\cite{lahner2018deepwrinkles,jin2018pixel}.
+% Learning based normals and depth recovery~\cite{bednarik2018learning} or meshes~\cite{danvevrek2017deepgarment} has been demonstrated but again only for single garments. 
+% In contrast, our approach is the first to reconstruct the detailed shape of a \emph{full-body} from a \emph{single image} by learning an image-to-image mapping.
+
+
+

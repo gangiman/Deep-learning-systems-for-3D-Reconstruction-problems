@@ -1,7 +1,7 @@
 % !TEX root = ../../Thesis_main.tex
 \section{Objectives and Motivations}
 
-The goal of this work to improve methods of 3D reconstruction in holistic context using deep learning systems. For efficient applications such as robotics in human environments and mixed reality more advanced machine perception systems are needed. Human perception is a complex system with several properties not all of which are replicated in modern machine perception systems. From cognitive sciences it's known that ability to model environments is one of the most important for perception system, in area of computer vision this is known as an ability to perform \textit{3D reconstruction} of scenes and environments. To solve this problem in a general case requires application of machine learning.
+The goal of this work to improve methods of 3D reconstruction in holistic context using deep learning systems. For efficient applications such as robotics in human environments and mixed reality more advanced machine perception systems are needed. Human perception is a complex system with several properties not all of which are replicated in modern machine perception systems. From cognitive sciences it's known that ability to model environments is one of the most important for perception system, in area of computer vision this is known as an ability to perform \textit{3D reconstruction} of scenes and environments as shown on Fig~\ref{fig:holistic_reconstruction}. To solve this problem in a general case requires application of machine learning.
 
 \begin{figure}
 	\centering
@@ -32,18 +32,45 @@ Indoor environemnts mostly populated by human made objects with regular shapes a
 
 \subsection{Body Shape Reconstruction}
 
-\todo{extend}
-\textit{Body Shape Reconstruction} also known as \textit{Body Shape Regression} is a task 
- 
- with in intself contains information about pose
+\textit{Body Shape Reconstruction} also known as \textit{Body Shape Regression} is a task often jointly approached with pose reconstruction.
 
 
-\noindent 
-\textbf{DensePose task.} DensePose-COCO dataset contains a large set of images of people collected ``in the wild'' together with different annotations: (i) bounding boxes, (ii) foreground-background masks, (iii) dense correspondences --- points $p \in S$ of a reference 3D model $S\in\mathbb{R}^3$ of the object associated with triplets $(c, u, v) \in\{1, \ldots, C\} \times[0,1]^{2}$, where $c$ indicates which one of $C$ body parts contains the pixel and $(u,v)$ represents the corresponding location (UV coordinates) in the chart of the part \cite{smpl}.
+% \begin{figure}
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\linewidth]{Figures/orig_densepose}
+%     \caption{original image} \label{fig:orig}
+%   \end{subfigure}%
+%   \hspace*{\fill}   % maximize separation between the subfigures
+%   \begin{subfigure}{0.45\textwidth}
+%     \includegraphics[width=\linewidth]{Figures/proc_densepose}
+%     \caption{3D surface meshes overinposed in original image} \label{fig:proc}
+%   \end{subfigure}%
+% % \caption{A figure that contains three subfigures} \label{fig:1}
+% \end{figure}
+
+
+\begin{figure}[!tbp]
+% \vspace{-20pt}
+\centering
+\begin{minipage}[b]{0.45\textwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{Figures/orig_densepose}
+  \caption{original image}
+  \label{fig:orig}
+\end{minipage}
+\begin{minipage}[b]{0.45\textwidth}
+  \centering
+  \includegraphics[width=\columnwidth]{Figures/proc_densepose}
+  \caption{3D surface meshes}
+  \label{fig:proc}
+\end{minipage}
+\end{figure}
+
+
+DensePose-COCO dataset contains a large set of images of people collected ``in the wild'' together with different annotations: (i) bounding boxes, (ii) foreground-background masks, (iii) dense correspondences --- points $p \in S$ of a reference 3D model $S\in\mathbb{R}^3$ of the object associated with triplets $(c, u, v) \in\{1, \ldots, C\} \times[0,1]^{2}$, where $c$ indicates which one of $C$ body parts contains the pixel and $(u,v)$ represents the corresponding location (UV coordinates) in the chart of the part \cite{smpl}.
 The DensePose task is then to predict such triplets $(c, u, v)$ for each foreground pixel and every person in the image.
-\newline
 
-\noindent \textbf{DensePose R-CNN.} The baseline dense pose prediction model, and all the subsequent works \cite{parsing, uncertainty, monkeys} follow the architecture design of Mask R-CNN \cite{maskrcnn}.
+The baseline dense pose prediction model, and all the subsequent works \cite{parsing, uncertainty, monkeys} follow the architecture design of Mask R-CNN \cite{maskrcnn}.
 
 The model is a two-stage: first, it generates class-independent region proposals (boxes), then classifies and refines them using the box/class head. Finally, the DensePose head predicts the body part and UV coordinates for each pixel inside the box. Particularly, the model consists of many different blocks (see Fig.~\ref{fig:scheme}):
 \begin{itemize}
