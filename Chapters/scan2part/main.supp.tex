@@ -1,0 +1,153 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+% \usepackage[nonatbib,final]{neurips_2020}
+%\usepackage[nonatbib,preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+\usepackage[nonatbib]{neurips_2020}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+% \usepackage[T2A]{fontenc}
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb} % define this before the line numbering.
+\usepackage{color}
+% \usepackage[width=122mm,left=12mm,paperwidth=146mm,height=193mm,top=12mm,paperheight=217mm]{geometry}
+% \usepackage{cmap}					% поиск в PDF
+\usepackage[english]{babel}	% локализация и переносы
+% \usepackage[english,russian]{babel}
+\usepackage{wrapfig}
+\usepackage{longtable}
+
+\usepackage{booktabs, multirow} % for borders and merged ranges
+\usepackage{soul} % for underlines
+\usepackage[table,dvipsnames]{xcolor} % for cell colors
+\usepackage{changepage,threeparttable} % for wide tables
+
+\usepackage[export]{adjustbox}
+\usepackage{xfrac}
+\usepackage{wrapfig}
+\usepackage{placeins}
+\usepackage{colortbl}
+\definecolor{LightGray}{gray}{0.85}
+
+% \usepackage[dvipsnames]{xcolor}
+\newcommand{\lat}{\selectlanguage{english}}
+
+% \iftoggle{nocomments}{
+% 	\newcommand{\DZ}[1]{\ignorespaces}
+% 	\newcommand{\EB}[1]{\ignorespaces}
+% 	\newcommand{\OV}[1]{\ignorespaces}
+% 	\newcommand{\LA}[1]{\ignorespaces}
+% 	\newcommand{\VE}[1]{\ignorespaces}
+% 	\newcommand{\DV}[1]{\ignorespaces}
+% 	\newcommand{\todo}[1]{\ignorespaces}
+% 	\newcommand{\todoshort}[1]{\ignorespaces}
+% }{
+% }
+
+\newcommand{\MATTHIAS}[1]{\textcolor{Rhodamine}{\textbf{Matthias: #1}}}
+\newcommand{\DZ}[1]{\textcolor{ForestGreen}{DZ: #1}}
+\newcommand{\EB}[1]{\textcolor{magenta}{EB: #1}}
+\newcommand{\AN}[1]{\textcolor{orange}{\textbf{AN: #1}}}
+\newcommand{\LA}[1]{\textcolor{Plum}{\textbf{AA: #1}}}
+\newcommand{\VI}[1]{\textcolor{blue}{\textbf{VI: #1}}}
+\newcommand{\DV}[1]{\textcolor{Sepia}{\textbf{DV: #1}}}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{TODO: #1}}}
+\newcommand{\todoshort}[1]{\textcolor{red}{\textbf{#1}}}
+
+
+
+
+
+\title{Scan2Part: Part Segmentation\\of~Real-World 3D~Scenes\\Supplementary Material}
+
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+% \author{
+%     Alexandr Notchenko , Vladislav Ishimtsev , Evgeny Burnaev\\
+%   \texttt{\{a.notchenko,v.ishimtsev,e.burnaev\}@skoltech.ru} \\
+% Skolkovo Institute of Science and Technology \\
+% }
+% \author{%
+%   David S.~Hippocampus\thanks{Use footnote for providing further information
+%     about author (webpage, alternative address)---\emph{not} for acknowledging
+%     funding agencies.} \\
+%   Department of Computer Science\\
+%   Cranberry-Lemon University\\
+%   Pittsburgh, PA 15213 \\
+%   \texttt{hippo@cs.cranberry-lemon.edu} \\
+  % examples of more authors
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+% }
+
+\begin{document}
+
+
+\maketitle
+
+This supplementary material contains the neccessary technical detail regarding the construction of our benchmark, methodological notes including the architecture of our network and loss functions, and extended experimental evaluation of our method.
+
+\input{supp.sections/01_dataset}
+\FloatBarrier
+\clearpage
+
+\input{supp.sections/02_methodology}
+\FloatBarrier
+\clearpage
+
+\input{supp.sections/03_results}
+\FloatBarrier
+\clearpage
+
+\bibliographystyle{nips}
+\bibliography{references}
+
+
+\end{document}
